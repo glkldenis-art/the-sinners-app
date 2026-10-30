@@ -15,7 +15,7 @@
       --text: #ffffff;
       --subtext: #8e8e93;
       --border: rgba(255, 255, 255, 0.08);
-      --bottom-bar-h: 60px;
+      --bottom-bar-h: 62px;
     }
 
     * {
@@ -39,7 +39,7 @@
     .sticky-header {
       position: sticky;
       top: 0;
-      background: rgba(13, 13, 15, 0.95);
+      background: rgba(13, 13, 15, 0.96);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       z-index: 50;
@@ -117,7 +117,76 @@
       cursor: pointer;
     }
 
-    /* Сетка каталога */
+    /* Алфавитная лента */
+    .alphabet-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 10px 2px 14px 2px;
+      scrollbar-width: none;
+    }
+
+    .alphabet-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .alpha-btn {
+      min-width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: #aaa;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .alpha-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+    }
+
+    /* Список элементов по алфавиту (студии, актеры) */
+    .alpha-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .alpha-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.15s;
+    }
+
+    .alpha-item:active {
+      background: rgba(255, 255, 255, 0.08);
+      transform: scale(0.99);
+    }
+
+    .alpha-item-icon {
+      margin-right: 10px;
+      opacity: 0.7;
+    }
+
+    /* Сетка фильмов */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -125,7 +194,6 @@
       margin-top: 12px;
     }
 
-    /* Карточка фильма */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -166,7 +234,6 @@
       font-weight: 600;
     }
 
-    /* Перчик на карточке */
     .card-pepper {
       position: absolute;
       top: 6px;
@@ -187,10 +254,6 @@
     .card-pepper.active {
       background: rgba(229, 9, 20, 0.3);
       border-color: var(--accent);
-    }
-
-    .card-pepper:active {
-      transform: scale(1.3);
     }
 
     .poster-icon {
@@ -237,7 +300,7 @@
       text-overflow: ellipsis;
     }
 
-    /* Экраны разделов */
+    /* Экраны */
     .tab-view {
       display: none;
     }
@@ -258,7 +321,7 @@
       opacity: 0.7;
     }
 
-    /* Нижнее фиксированное меню */
+    /* Нижнее меню */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -309,7 +372,6 @@
       transform: scale(0.92);
     }
 
-    /* Кнопки-иконки (Рандом и Перчик) */
     .nav-btn-icon-only .icon {
       font-size: 22px;
     }
@@ -327,7 +389,7 @@
       display: none;
     }
 
-    /* Шторка (Bottom Sheet) */
+    /* 1. Шторка подробностей (Bottom Sheet) */
     .overlay {
       position: fixed;
       inset: 0;
@@ -443,6 +505,109 @@
       border-color: var(--accent);
     }
 
+    /* 2. Модальное окно РУЛЕТКИ (по центру экрана) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-window {
+      width: 100%;
+      max-width: 360px;
+      background: #191920;
+      border: 1px solid rgba(229, 9, 20, 0.4);
+      box-shadow: 0 0 30px rgba(229, 9, 20, 0.25);
+      border-radius: 20px;
+      padding: 22px 18px;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-window {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #aaa;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .modal-meta {
+      font-size: 12px;
+      color: #bbb;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 10px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-reroll {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
     .status-msg {
       text-align: center;
       padding: 24px 0;
@@ -472,29 +637,25 @@
     </div>
   </div>
 
-  <!-- Вкладка: НОВИНКИ (Каталог) -->
+  <!-- Вкладка: НОВИНКИ -->
   <div id="tab-feed" class="tab-view active">
     <div id="catalog-grid" class="grid"></div>
     <div id="scroll-status" class="status-msg">Загрузка релизов...</div>
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
-  <!-- Вкладка: СТУДИИ -->
+  <!-- Вкладка: СТУДИИ (с алфавитным указателем) -->
   <div id="tab-studios" class="tab-view">
-    <div class="placeholder-view">
-      <div class="icon">🏢</div>
-      <h3>Каталог Студий</h3>
-      <p style="font-size: 13px; margin-top: 6px;">Скоро здесь появится удобная группировка по всем студиям канала</p>
-    </div>
+    <div class="alphabet-scroll" id="studios-alphabet"></div>
+    <div class="alpha-list" id="studios-list"></div>
+    <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
   </div>
 
-  <!-- Вкладка: АКТЁРЫ -->
+  <!-- Вкладка: АКТЁРЫ (с алфавитным указателем) -->
   <div id="tab-actors" class="tab-view">
-    <div class="placeholder-view">
-      <div class="icon">⭐</div>
-      <h3>Каталог Актёров</h3>
-      <p style="font-size: 13px; margin-top: 6px;">Скоро здесь появится алфавитный список и поиск по персонам</p>
-    </div>
+    <div class="alphabet-scroll" id="actors-alphabet"></div>
+    <div class="alpha-list" id="actors-list"></div>
+    <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
   </div>
 
   <!-- Вкладка: ИЗБРАННОЕ (ПЕРЧИКИ) -->
@@ -507,7 +668,7 @@
     </div>
   </div>
 
-  <!-- Нижнее меню (Bottom Bar) -->
+  <!-- Нижняя панель навигации -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="icon">🎬</span>
@@ -521,7 +682,7 @@
       <span class="icon">👥</span>
       <span>Актёры</span>
     </button>
-    <button class="nav-btn nav-btn-icon-only" onclick="triggerRandomMovie()">
+    <button class="nav-btn nav-btn-icon-only" onclick="spinRoulette()">
       <span class="icon">🎲</span>
     </button>
     <button class="nav-btn nav-btn-icon-only" onclick="switchTab('favorites')">
@@ -530,7 +691,7 @@
     </button>
   </nav>
 
-  <!-- Шторка подробностей -->
+  <!-- Шторка подробностей фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -539,11 +700,34 @@
       <div class="sheet-actors" id="sheet-actors"></div>
       
       <div class="sheet-actions">
-        <button class="btn-watch" onclick="openChannelPost()">
+        <button class="btn-watch" onclick="openChannelPost(activeMovie?.telegram_url)">
           Смотреть в канале 🎬
         </button>
         <button id="sheet-fav-btn" class="btn-sheet-pepper" onclick="toggleCurrentFavorite()">
           🌶️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Окно РУЛЕТКИ (по центру) -->
+  <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
+    <div class="modal-window" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeRoulette()">✕</button>
+      
+      <div class="modal-badge">🎲 Кинорулетка</div>
+      <h2 id="roulette-title" class="modal-title">Выбираем...</h2>
+      
+      <div class="modal-meta" id="roulette-meta">
+        Подождите, крутим барабан...
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn-reroll" onclick="spinRoulette()">
+          <span>🎲</span> Ещё
+        </button>
+        <button class="btn-watch" onclick="openChannelPost(rouletteMovie?.telegram_url)">
+          Смотреть 🎬
         </button>
       </div>
     </div>
@@ -555,7 +739,10 @@
       tg.ready();
       tg.expand();
       if (tg.BackButton) {
-        tg.BackButton.onClick(() => closeSheet());
+        tg.BackButton.onClick(() => {
+          closeSheet();
+          closeRoulette();
+        });
       }
     }
 
@@ -569,9 +756,14 @@
     let currentSearch = '';
     let debounceTimer = null;
     let activeMovie = null;
+    let rouletteMovie = null;
     let currentTab = 'feed';
 
-    // Хранилище избранного
+    // Алфавит для студий и актеров
+    const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
+    let selectedStudioLetter = 'A';
+    let selectedActorLetter = 'A';
+
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
 
     const grid = document.getElementById('catalog-grid');
@@ -610,16 +802,13 @@
       updateFavCounter();
       updatePepperUI(movie.id);
 
-      if (currentTab === 'favorites') {
-        renderFavorites();
-      }
+      if (currentTab === 'favorites') renderFavorites();
     }
 
     function toggleCurrentFavorite() {
       if (!activeMovie) return;
       toggleFavorite(activeMovie);
-      const btn = document.getElementById('sheet-fav-btn');
-      btn.classList.toggle('active', isFav(activeMovie.id));
+      document.getElementById('sheet-fav-btn').classList.toggle('active', isFav(activeMovie.id));
     }
 
     function updatePepperUI(movieId) {
@@ -628,7 +817,7 @@
       });
     }
 
-    // Переключение вкладок
+    // Переключение основных вкладок
     function switchTab(tab) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       currentTab = tab;
@@ -646,6 +835,10 @@
         renderFavorites();
       } else if (tab === 'feed') {
         statusBadge.innerText = `${currentOffset} фильмов`;
+      } else if (tab === 'studios') {
+        initAlphabet('studios');
+      } else if (tab === 'actors') {
+        initAlphabet('actors');
       }
     }
 
@@ -660,17 +853,137 @@
       }
       emptyMsg.style.display = 'none';
 
-      favorites.forEach(m => {
-        favoritesGrid.appendChild(createCardElement(m));
-      });
+      favorites.forEach(m => favoritesGrid.appendChild(createCardElement(m)));
     }
 
-    // Случайный выбор (Рандом)
-    async function triggerRandomMovie() {
+    // ----------------------------------------------------
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ ДЛЯ СТУДИЙ И АКТЁРОВ
+    // ----------------------------------------------------
+    function initAlphabet(type) {
+      const container = document.getElementById(`${type}-alphabet`);
+      if (container.children.length > 0) return; // Уже построен
+
+      ALPHABET.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.className = `alpha-btn ${letter === 'A' ? 'active' : ''}`;
+        btn.innerText = letter;
+        btn.onclick = () => selectLetter(type, letter, btn);
+        container.appendChild(btn);
+      });
+
+      // Загружаем первую букву по умолчанию
+      loadAlphabetData(type, 'A');
+    }
+
+    function selectLetter(type, letter, btn) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      document.querySelectorAll(`#${type}-alphabet .alpha-btn`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadAlphabetData(type, letter);
+    }
+
+    async function loadAlphabetData(type, letter) {
+      const listEl = document.getElementById(`${type}-list`);
+      const statusEl = document.getElementById(`${type}-status`);
+      listEl.innerHTML = '';
+      statusEl.innerText = `Ищем на букву ${letter}...`;
+
+      try {
+        if (type === 'studios') {
+          // Ищем студии на выбранную букву
+          const filter = letter === '#' ? 'studio=not.ilike.*' : `studio=ilike.${letter}*`;
+          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=studio&${filter}&limit=600`;
+          
+          const res = await fetch(endpoint, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+          });
+          const data = await res.json();
+          
+          // Дедупликация
+          const studios = Array.from(new Set(data.map(d => d.studio?.trim()).filter(Boolean))).sort();
+
+          if (studios.length === 0) {
+            statusEl.innerText = `На букву ${letter} студий не найдено`;
+            return;
+          }
+          statusEl.innerText = `Найдено студий: ${studios.length}`;
+
+          studios.forEach(st => {
+            const item = document.createElement('div');
+            item.className = 'alpha-item';
+            item.innerHTML = `<span><span class="alpha-item-icon">🏢</span>${st}</span><span>›</span>`;
+            item.onclick = () => filterFeedByQuery(st);
+            listEl.appendChild(item);
+          });
+
+        } else if (type === 'actors') {
+          // Ищем актеров по тегам #Letter...
+          const filter = `actors=ilike.*%23${letter}*`;
+          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&${filter}&limit=600`;
+
+          const res = await fetch(endpoint, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+          });
+          const data = await res.json();
+
+          const actorsSet = new Set();
+          const regex = new RegExp(`#(${letter}[a-zA-Z0-9_]+)`, 'gi');
+
+          data.forEach(d => {
+            if (!d.actors) return;
+            let match;
+            while ((match = regex.exec(d.actors)) !== null) {
+              actorsSet.add(match[1]);
+            }
+          });
+
+          const actors = Array.from(actorsSet).sort();
+
+          if (actors.length === 0) {
+            statusEl.innerText = `На букву ${letter} актёров не найдено`;
+            return;
+          }
+          statusEl.innerText = `Найдено актёров: ${actors.length}`;
+
+          actors.forEach(ac => {
+            const item = document.createElement('div');
+            item.className = 'alpha-item';
+            item.innerHTML = `<span><span class="alpha-item-icon">⭐</span>${ac}</span><span>›</span>`;
+            item.onclick = () => filterFeedByQuery(ac);
+            listEl.appendChild(item);
+          });
+        }
+      } catch (err) {
+        statusEl.innerText = 'Ошибка загрузки данных';
+      }
+    }
+
+    // Клик по студии или актеру мгновенно фильтрует каталог в Новинках
+    function filterFeedByQuery(query) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      searchInput.value = query;
+      currentSearch = query;
+      searchClear.style.display = 'block';
+      switchTab('feed');
+      fetchMovies(true);
+    }
+
+    // ----------------------------------------------------
+    // ОКНО РУЛЕТКИ (СЛУЧАЙНЫЙ ФИЛЬМ)
+    // ----------------------------------------------------
+    async function spinRoulette() {
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      
-      statusBadge.innerText = '🎲 Ищем фильм...';
-      const randomOffset = Math.floor(Math.random() * 500); // берем из пула
+      if (tg?.BackButton) tg.BackButton.show();
+
+      const modal = document.getElementById('roulette-modal');
+      const titleEl = document.getElementById('roulette-title');
+      const metaEl = document.getElementById('roulette-meta');
+
+      modal.classList.add('active');
+      titleEl.innerText = '🎲 Крутим рулетку...';
+      metaEl.innerHTML = 'Выбираем релиз из архива...';
+
+      const randomOffset = Math.floor(Math.random() * 500);
       const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=1&offset=${randomOffset}`;
 
       try {
@@ -678,17 +991,32 @@
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         });
         const [movie] = await res.json();
+        
         if (movie) {
-          showMovieDetails(movie);
+          rouletteMovie = movie;
+          titleEl.innerText = movie.title || 'Фильм без названия';
+          metaEl.innerHTML = `
+            <div><b>Год:</b> ${movie.year || '—'}</div>
+            <div><b>Студия:</b> ${movie.studio || 'The Sinners'}</div>
+            ${movie.country ? `<div><b>Страна:</b> ${movie.country_flag || ''} ${movie.country}</div>` : ''}
+            ${movie.duration ? `<div><b>Длительность:</b> ${movie.duration}</div>` : ''}
+            ${movie.actors ? `<div style="margin-top:4px;"><b>В ролях:</b> ${movie.actors}</div>` : ''}
+          `;
         }
       } catch (e) {
-        alert('Не удалось найти случайный фильм');
-      } finally {
-        statusBadge.innerText = `${currentOffset} фильмов`;
+        titleEl.innerText = 'Упс!';
+        metaEl.innerText = 'Не удалось загрузить фильм, попробуйте ещё раз.';
       }
     }
 
-    // Загрузка новинок из Supabase
+    function closeRoulette() {
+      document.getElementById('roulette-modal').classList.remove('active');
+      if (tg?.BackButton) tg.BackButton.hide();
+    }
+
+    // ----------------------------------------------------
+    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ
+    // ----------------------------------------------------
     async function fetchMovies(isReset = false) {
       if (isLoading || (!hasMore && !isReset)) return;
       isLoading = true;
@@ -704,7 +1032,7 @@
 
       if (currentSearch.trim()) {
         const query = encodeURIComponent(`*${currentSearch.trim()}*`);
-        endpoint += `&or=(title.ilike.${query},studio.ilike.${query})`;
+        endpoint += `&or=(title.ilike.${query},studio.ilike.${query},actors.ilike.${query})`;
       }
 
       try {
@@ -717,9 +1045,7 @@
 
         const movies = await res.json();
 
-        if (movies.length < PAGE_SIZE) {
-          hasMore = false;
-        }
+        if (movies.length < PAGE_SIZE) hasMore = false;
 
         if (movies.length === 0 && isReset) {
           scrollStatus.innerText = 'Ничего не найдено 😕';
@@ -821,9 +1147,7 @@
       actorsEl.innerHTML = m.actors ? `<span>В главных ролях:</span>${m.actors}` : '';
       actorsEl.style.display = m.actors ? 'block' : 'none';
 
-      const favBtn = document.getElementById('sheet-fav-btn');
-      favBtn.classList.toggle('active', isFav(m.id));
-
+      document.getElementById('sheet-fav-btn').classList.toggle('active', isFav(m.id));
       document.getElementById('sheet-overlay').classList.add('active');
     }
 
@@ -832,17 +1156,17 @@
       if (tg?.BackButton) tg.BackButton.hide();
     }
 
-    function openChannelPost() {
-      if (!activeMovie?.telegram_url) {
+    function openChannelPost(url) {
+      if (!url) {
         alert('Ссылка на этот релиз ещё не добавлена в базу');
         return;
       }
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
       if (tg?.openTelegramLink) {
-        tg.openTelegramLink(activeMovie.telegram_url);
+        tg.openTelegramLink(url);
       } else {
-        window.open(activeMovie.telegram_url, '_blank');
+        window.open(url, '_blank');
       }
     }
 
