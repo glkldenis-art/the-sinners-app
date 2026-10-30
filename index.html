@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Sinners</title>
   
-  <!-- Официальный SDK Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
-      --bg: #0f0f11;
-      --card-bg: #1a1a1e;
+      --bg: #0d0d0f;
+      --card-bg: #16161a;
       --accent: #e50914;
       --text: #ffffff;
       --subtext: #8e8e93;
-      --border: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.07);
     }
 
     * {
@@ -30,19 +29,32 @@
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       padding: 12px;
-      padding-bottom: 40px;
+      padding-top: 0;
+      padding-bottom: 50px;
     }
 
-    /* Шапка каталога */
-    .header {
+    /* Прилипающая шапка с поиском */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      background: rgba(13, 13, 15, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 50;
+      padding: 12px 0 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 4px 14px 4px;
+      margin-bottom: 10px;
+      padding: 0 4px;
     }
 
-    .header h1 {
-      font-size: 20px;
+    .header-top h1 {
+      font-size: 19px;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
@@ -52,8 +64,55 @@
       border: 1px solid var(--border);
       color: var(--subtext);
       font-size: 11px;
+      font-weight: 500;
       padding: 4px 8px;
       border-radius: 8px;
+    }
+
+    /* Поисковая строка */
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      font-size: 14px;
+      opacity: 0.5;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 36px 10px 34px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-input::placeholder {
+      color: #666;
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 14px;
+      padding: 4px;
+      display: none;
+      cursor: pointer;
     }
 
     /* Мобильная сетка 2 колонки */
@@ -61,9 +120,10 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
+      margin-top: 12px;
     }
 
-    /* Карточка фильма */
+    /* Карточка */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -79,11 +139,10 @@
       transform: scale(0.97);
     }
 
-    /* Блок постера (пропорция 2:3) */
     .poster-box {
       width: 100%;
       aspect-ratio: 2 / 3;
-      background: linear-gradient(145deg, #25252b, #121215);
+      background: linear-gradient(145deg, #1f1f26, #111114);
       position: relative;
       display: flex;
       align-items: center;
@@ -93,15 +152,15 @@
     }
 
     .poster-icon {
-      font-size: 32px;
-      opacity: 0.35;
+      font-size: 30px;
+      opacity: 0.3;
       margin-bottom: 6px;
     }
 
     .poster-title-preview {
       font-size: 11px;
       font-weight: 600;
-      color: #ccc;
+      color: #aaa;
       line-height: 1.25;
       display: -webkit-box;
       -webkit-line-clamp: 3;
@@ -148,7 +207,15 @@
       text-overflow: ellipsis;
     }
 
-    /* Выезжающая карточка (Bottom Sheet) */
+    /* Индикатор дозагрузки / Пустой результат */
+    .status-msg {
+      text-align: center;
+      padding: 24px 0;
+      font-size: 13px;
+      color: var(--subtext);
+    }
+
+    /* Модальная шторка (Bottom Sheet) */
     .overlay {
       position: fixed;
       inset: 0;
@@ -169,13 +236,13 @@
 
     .sheet {
       width: 100%;
-      background: #1c1c21;
+      background: #18181d;
       border-radius: 20px 20px 0 0;
       padding: 20px;
       border-top: 1px solid var(--border);
       transform: translateY(100%);
       transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-      max-height: 80vh;
+      max-height: 85vh;
       overflow-y: auto;
     }
 
@@ -195,22 +262,22 @@
       font-size: 18px;
       font-weight: 800;
       line-height: 1.3;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .sheet-meta-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--subtext);
+      gap: 6px;
       margin-bottom: 14px;
     }
 
     .sheet-meta-item {
       background: rgba(255, 255, 255, 0.05);
-      padding: 3px 8px;
+      font-size: 12px;
+      padding: 4px 8px;
       border-radius: 6px;
+      color: #ccc;
     }
 
     .sheet-actors {
@@ -218,10 +285,15 @@
       line-height: 1.5;
       color: #bbb;
       margin-bottom: 20px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 10px;
+      border-radius: 8px;
     }
 
     .sheet-actors span {
       color: var(--subtext);
+      display: block;
+      margin-bottom: 2px;
     }
 
     .btn-watch {
@@ -246,21 +318,40 @@
 </head>
 <body>
 
-  <div class="header">
-    <h1>THE SINNERS</h1>
-    <div id="movie-count" class="badge">Загрузка...</div>
+  <!-- Фиксированная шапка с поиском -->
+  <div class="sticky-header">
+    <div class="header-top">
+      <h1>THE SINNERS</h1>
+      <div id="status-badge" class="badge">Загрузка...</div>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        id="search-input" 
+        class="search-input" 
+        type="text" 
+        placeholder="Поиск по названию или студии..."
+        autocomplete="off"
+      >
+      <button id="search-clear" class="search-clear" onclick="clearSearch()">✕</button>
+    </div>
   </div>
 
+  <!-- Сетка фильмов -->
   <div id="catalog-grid" class="grid"></div>
 
-  <!-- Модальная шторка фильма -->
-  <div id="sheet-overlay" class="overlay" onclick="closeSheet(event)">
+  <!-- Триггер бесконечного скролла и статус -->
+  <div id="scroll-status" class="status-msg">Загрузка релизов...</div>
+  <div id="scroll-sentinel" style="height: 20px;"></div>
+
+  <!-- Шторка подробностей -->
+  <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
       <h2 id="sheet-title" class="sheet-title"></h2>
       <div class="sheet-meta-row" id="sheet-meta"></div>
       <div class="sheet-actors" id="sheet-actors"></div>
-      <button id="sheet-btn" class="btn-watch" onclick="openChannelPost()">
+      <button class="btn-watch" onclick="openChannelPost()">
         🎬 Смотреть в канале
       </button>
     </div>
@@ -270,16 +361,47 @@
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
-      tg.expand(); // Разворачиваем сразу на всю высоту экрана
+      tg.expand();
+      if (tg.BackButton) {
+        tg.BackButton.onClick(() => closeSheet());
+      }
     }
 
     const SUPABASE_URL = 'https://otcnrvimrqyppmfjnqpv.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_niMZLppQ5UZwkQWc6Pj29g_910mdIkQ';
+
+    const PAGE_SIZE = 24;
+    let currentOffset = 0;
+    let isLoading = false;
+    let hasMore = true;
+    let currentSearch = '';
+    let debounceTimer = null;
     let currentTelegramUrl = '';
 
-    async function loadCatalog() {
-      const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=30`;
-      
+    const grid = document.getElementById('catalog-grid');
+    const scrollStatus = document.getElementById('scroll-status');
+    const statusBadge = document.getElementById('status-badge');
+    const searchInput = document.getElementById('search-input');
+    const searchClear = document.getElementById('search-clear');
+
+    async function fetchMovies(isReset = false) {
+      if (isLoading || (!hasMore && !isReset)) return;
+      isLoading = true;
+
+      if (isReset) {
+        currentOffset = 0;
+        hasMore = true;
+        grid.innerHTML = '';
+        scrollStatus.innerText = 'Поиск...';
+      }
+
+      let endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=${PAGE_SIZE}&offset=${currentOffset}`;
+
+      if (currentSearch.trim()) {
+        const query = encodeURIComponent(`*${currentSearch.trim()}*`);
+        endpoint += `&or=(title.ilike.${query},studio.ilike.${query})`;
+      }
+
       try {
         const res = await fetch(endpoint, {
           headers: {
@@ -289,41 +411,91 @@
         });
 
         const movies = await res.json();
-        document.getElementById('movie-count').innerText = `${movies.length} новинок`;
 
-        const grid = document.getElementById('catalog-grid');
-        grid.innerHTML = '';
+        if (movies.length < PAGE_SIZE) {
+          hasMore = false;
+        }
 
-        movies.forEach(m => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.onclick = () => showMovieDetails(m);
+        if (movies.length === 0 && isReset) {
+          scrollStatus.innerText = 'Ничего не найдено 😕';
+          statusBadge.innerText = '0 фильмов';
+          isLoading = false;
+          return;
+        }
 
-          card.innerHTML = `
-            <div class="poster-box">
-              <span class="card-year">${m.year || ''}</span>
-              <div>
-                <div class="poster-icon">🎬</div>
-                <div class="poster-title-preview">${m.title || 'Фильм'}</div>
-              </div>
-            </div>
-            <div class="card-info">
-              <div class="card-title">${m.title || 'Без названия'}</div>
-              <div class="card-meta">
-                ${m.country_flag ? m.country_flag + ' ' : ''}${m.studio || 'The Sinners'}
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
+        renderCards(movies);
+        currentOffset += movies.length;
 
-      } catch (e) {
-        document.getElementById('movie-count').innerText = 'Ошибка загрузки';
+        statusBadge.innerText = currentSearch 
+          ? `Найдено: ${currentOffset}` 
+          : `${currentOffset} фильмов`;
+
+        scrollStatus.innerText = hasMore ? 'Прокрутите для загрузки...' : 'Архив просмотрен полностью';
+
+      } catch (err) {
+        scrollStatus.innerText = 'Ошибка загрузки сети';
+      } finally {
+        isLoading = false;
       }
     }
 
+    function renderCards(movies) {
+      movies.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => showMovieDetails(m);
+
+        card.innerHTML = `
+          <div class="poster-box">
+            <span class="card-year">${m.year || ''}</span>
+            <div>
+              <div class="poster-icon">🎬</div>
+              <div class="poster-title-preview">${m.title || 'Фильм'}</div>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-title">${m.title || 'Без названия'}</div>
+            <div class="card-meta">
+              ${m.country_flag ? m.country_flag + ' ' : ''}${m.studio || 'The Sinners'}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Слушатель ввода с паузой 400мс
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      searchClear.style.display = val ? 'block' : 'none';
+
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        currentSearch = val;
+        fetchMovies(true);
+      }, 400);
+    });
+
+    function clearSearch() {
+      searchInput.value = '';
+      currentSearch = '';
+      searchClear.style.display = 'none';
+      fetchMovies(true);
+    }
+
+    // Автоматическая подгрузка при скролле вниз
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !isLoading && hasMore) {
+        fetchMovies();
+      }
+    }, { rootMargin: '200px' });
+
+    observer.observe(document.getElementById('scroll-sentinel'));
+
+    // Шторка с деталями
     function showMovieDetails(m) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      if (tg?.BackButton) tg.BackButton.show();
 
       document.getElementById('sheet-title').innerText = m.title || 'Без названия';
       
@@ -336,24 +508,25 @@
       `;
 
       const actorsEl = document.getElementById('sheet-actors');
-      actorsEl.innerHTML = m.actors ? `<span>В ролях:</span> ${m.actors}` : '';
+      actorsEl.innerHTML = m.actors ? `<span>В главных ролях:</span>${m.actors}` : '';
+      actorsEl.style.display = m.actors ? 'block' : 'none';
 
       currentTelegramUrl = m.telegram_url || '';
       document.getElementById('sheet-overlay').classList.add('active');
     }
 
-    function closeSheet(e) {
+    function closeSheet() {
       document.getElementById('sheet-overlay').classList.remove('active');
+      if (tg?.BackButton) tg.BackButton.hide();
     }
 
     function openChannelPost() {
       if (!currentTelegramUrl) {
-        alert('Ссылка на пост ещё не заполнена в базе');
+        alert('Ссылка на этот релиз ещё не добавлена в базу');
         return;
       }
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
-      // Открываем нативный пост Telegram в канале
       if (tg?.openTelegramLink) {
         tg.openTelegramLink(currentTelegramUrl);
       } else {
@@ -361,7 +534,8 @@
       }
     }
 
-    loadCatalog();
+    // Первый старт
+    fetchMovies();
   </script>
 </body>
 </html>
