@@ -35,6 +35,7 @@
       padding-bottom: calc(var(--bottom-bar-h) + 25px);
     }
 
+    /* Шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -116,6 +117,7 @@
       cursor: pointer;
     }
 
+    /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
       gap: 6px;
@@ -152,9 +154,7 @@
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
-    /* =========================================
-       СТУДИИ & АКТЁРЫ (ЕДИНЫЙ VIP-ДИЗАЙН)
-       ========================================= */
+    /* VIP Студии & Актёры */
     .studios-wrap, .actors-wrap {
       margin-top: 6px;
     }
@@ -434,6 +434,69 @@
       opacity: 0.7;
     }
 
+    /* =========================================
+       ПЕРЕКЛЮЧАТЕЛЬ ИЗБРАННОГО И ИСТОРИИ (ПЕРЧИК)
+       ========================================= */
+    .media-switcher {
+      display: flex;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+      gap: 6px;
+    }
+
+    .media-tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--subtext);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .media-tab-btn.active {
+      background: rgba(229, 9, 20, 0.22);
+      color: #fff;
+      border: 1px solid rgba(229, 9, 20, 0.45);
+      box-shadow: 0 0 12px rgba(229, 9, 20, 0.2);
+    }
+
+    .media-header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding: 0 4px;
+    }
+
+    .media-clear-btn {
+      background: none;
+      border: none;
+      color: var(--subtext);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 6px;
+      opacity: 0.8;
+      display: none;
+    }
+
+    .media-clear-btn:active {
+      color: var(--accent);
+    }
+
+    /* Нижняя навигация */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -826,20 +889,49 @@
     <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
   </div>
 
-  <!-- Вкладка: АКТЁРЫ (VIP-Баннер + Сетка аватаров) -->
+  <!-- Вкладка: АКТЁРЫ -->
   <div id="tab-actors" class="tab-view">
     <div class="alphabet-scroll" id="actors-alphabet"></div>
     <div class="actors-wrap" id="actors-wrap"></div>
     <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
   </div>
 
-  <!-- Вкладка: ИЗБРАННОЕ -->
+  <!-- Вкладка: ИЗБРАННОЕ И ИСТОРИЯ (ПЕРЧИК) -->
   <div id="tab-favorites" class="tab-view">
-    <div id="favorites-grid" class="grid"></div>
-    <div id="favorites-empty" class="placeholder-view" style="display: none;">
-      <div class="icon">🌶️</div>
-      <h3>Здесь пока пусто</h3>
-      <p style="font-size: 13px; margin-top: 6px;">Жми на перчик на карточке или в шторке, чтобы сохранить кино в свою коллекцию</p>
+    <div class="media-switcher">
+      <button id="btn-subtab-favs" class="media-tab-btn active" onclick="switchMediaSubTab('favs')">
+        <span>🌶️</span>
+        <span id="label-subtab-favs">Избранное</span>
+      </button>
+      <button id="btn-subtab-history" class="media-tab-btn" onclick="switchMediaSubTab('history')">
+        <span>🕒</span>
+        <span id="label-subtab-history">История</span>
+      </button>
+    </div>
+
+    <div class="media-header-actions">
+      <span id="media-section-hint" class="section-subtitle" style="margin-bottom:0;">Отложенные фильмы:</span>
+      <button id="btn-clear-history" class="media-clear-btn" onclick="clearHistoryPrompt()">Очистить историю</button>
+    </div>
+
+    <!-- Сетка сохраненных перчиков -->
+    <div id="media-favs-view">
+      <div id="favorites-grid" class="grid"></div>
+      <div id="favorites-empty" class="placeholder-view" style="display: none;">
+        <div class="icon">🌶️</div>
+        <h3>Коллекция пуста</h3>
+        <p style="font-size: 13px; margin-top: 6px;">Жми на перчик на карточке фильма или в шторке, чтобы сохранить кино на потом</p>
+      </div>
+    </div>
+
+    <!-- Сетка истории просмотров -->
+    <div id="media-history-view" style="display: none;">
+      <div id="history-grid" class="grid"></div>
+      <div id="history-empty" class="placeholder-view" style="display: none;">
+        <div class="icon">🕒</div>
+        <h3>История просмотров чиста</h3>
+        <p style="font-size: 13px; margin-top: 6px;">Здесь появятся релизы, по которым вы переходили к просмотру в канале</p>
+      </div>
     </div>
   </div>
 
@@ -866,7 +958,7 @@
     </button>
   </nav>
 
-  <!-- Шторка фильма -->
+  <!-- Шторка подробностей фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -880,7 +972,7 @@
       </div>
 
       <div class="sheet-actions">
-        <button class="btn-watch" onclick="openChannelPost(activeMovie?.telegram_url)">
+        <button class="btn-watch" onclick="openChannelPost(activeMovie)">
           Смотреть в канале 🎬
         </button>
         <button id="sheet-fav-btn" class="btn-sheet-pepper" onclick="toggleCurrentFavorite()">
@@ -911,7 +1003,7 @@
         <button class="btn-reroll" onclick="spinRoulette()">
           <span>🎲</span> Ещё
         </button>
-        <button class="btn-watch" onclick="openChannelPost(rouletteMovie?.telegram_url)">
+        <button class="btn-watch" onclick="openChannelPost(rouletteMovie)">
           Смотреть 🎬
         </button>
       </div>
@@ -943,11 +1035,14 @@
     let activeMovie = null;
     let rouletteMovie = null;
     let currentTab = 'feed';
+    let currentMediaSubTab = 'favs';
 
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
+    
+    // Хранилища
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
+    let watchHistory = JSON.parse(localStorage.getItem('sinners_history') || '[]');
 
-    // Цветовая палитра монограмм
     const BRAND_PALETTE = [
       { bg: '#251217', color: '#ff4d5a', border: '#e50914' },
       { bg: '#0e1d2b', color: '#38bdf8', border: '#0284c7' },
@@ -973,6 +1068,7 @@
 
     const grid = document.getElementById('catalog-grid');
     const favoritesGrid = document.getElementById('favorites-grid');
+    const historyGrid = document.getElementById('history-grid');
     const scrollStatus = document.getElementById('scroll-status');
     const statusBadge = document.getElementById('status-badge');
     const searchInput = document.getElementById('search-input');
@@ -986,6 +1082,12 @@
       } else {
         favCounter.style.display = 'none';
       }
+      
+      const favLabel = document.getElementById('label-subtab-favs');
+      if (favLabel) favLabel.innerText = `Избранное (${favorites.length})`;
+      
+      const histLabel = document.getElementById('label-subtab-history');
+      if (histLabel) histLabel.innerText = `История (${watchHistory.length})`;
     }
 
     function isFav(id) {
@@ -1007,7 +1109,9 @@
       updateFavCounter();
       updatePepperUI(movie.id);
 
-      if (currentTab === 'favorites') renderFavorites();
+      if (currentTab === 'favorites' && currentMediaSubTab === 'favs') {
+        renderFavorites();
+      }
     }
 
     function toggleCurrentFavorite() {
@@ -1022,6 +1126,36 @@
       });
     }
 
+    // Сохранение в историю просмотров
+    function recordHistory(movie) {
+      if (!movie || !movie.id) return;
+      const idx = watchHistory.findIndex(m => m.id === movie.id);
+      if (idx > -1) {
+        watchHistory.splice(idx, 1);
+      }
+      watchHistory.unshift(movie);
+      if (watchHistory.length > 40) {
+        watchHistory = watchHistory.slice(0, 40);
+      }
+      localStorage.setItem('sinners_history', JSON.stringify(watchHistory));
+      updateFavCounter();
+      if (currentTab === 'favorites' && currentMediaSubTab === 'history') {
+        renderHistory();
+      }
+    }
+
+    function clearHistoryPrompt() {
+      if (watchHistory.length === 0) return;
+      if (confirm('Очистить всю историю просмотров?')) {
+        watchHistory = [];
+        localStorage.removeItem('sinners_history');
+        updateFavCounter();
+        renderHistory();
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      }
+    }
+
+    // Переключение основных вкладок
     function switchTab(tab) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       currentTab = tab;
@@ -1036,13 +1170,44 @@
       document.querySelectorAll('.nav-btn')[btnIndex]?.classList.add('active');
 
       if (tab === 'favorites') {
-        renderFavorites();
+        switchMediaSubTab(currentMediaSubTab);
       } else if (tab === 'feed') {
         statusBadge.innerText = `${currentOffset} фильмов`;
       } else if (tab === 'studios') {
         initAlphabet('studios');
       } else if (tab === 'actors') {
         initAlphabet('actors');
+      }
+    }
+
+    // Переключение подвкладок в "Перчике" (Избранное vs История)
+    function switchMediaSubTab(subTab) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      currentMediaSubTab = subTab;
+
+      const favsBtn = document.getElementById('btn-subtab-favs');
+      const histBtn = document.getElementById('btn-subtab-history');
+      const favsView = document.getElementById('media-favs-view');
+      const histView = document.getElementById('media-history-view');
+      const clearBtn = document.getElementById('btn-clear-history');
+      const hint = document.getElementById('media-section-hint');
+
+      if (subTab === 'favs') {
+        favsBtn.classList.add('active');
+        histBtn.classList.remove('active');
+        favsView.style.display = 'block';
+        histView.style.display = 'none';
+        clearBtn.style.display = 'none';
+        hint.innerText = 'Отложенные фильмы:';
+        renderFavorites();
+      } else {
+        histBtn.classList.add('active');
+        favsBtn.classList.remove('active');
+        favsView.style.display = 'none';
+        histView.style.display = 'block';
+        clearBtn.style.display = watchHistory.length > 0 ? 'block' : 'none';
+        hint.innerText = 'Недавно смотрели:';
+        renderHistory();
       }
     }
 
@@ -1060,8 +1225,25 @@
       favorites.forEach(m => favoritesGrid.appendChild(createCardElement(m)));
     }
 
+    function renderHistory() {
+      historyGrid.innerHTML = '';
+      const emptyMsg = document.getElementById('history-empty');
+      const clearBtn = document.getElementById('btn-clear-history');
+      statusBadge.innerText = `${watchHistory.length} в истории`;
+
+      if (watchHistory.length === 0) {
+        emptyMsg.style.display = 'block';
+        clearBtn.style.display = 'none';
+        return;
+      }
+      emptyMsg.style.display = 'none';
+      clearBtn.style.display = 'block';
+
+      watchHistory.forEach(m => historyGrid.appendChild(createCardElement(m)));
+    }
+
     // ====================================================
-    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ + АКТЁРЫ В ЕДИНОМ СТИЛЕ)
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ + АКТЁРЫ)
     // ====================================================
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
@@ -1190,9 +1372,6 @@
           }
 
         } else if (type === 'actors') {
-          // ==============================
-          // КАТАЛОГ АКТЁРОВ: ТОП + СЕТКА
-          // ==============================
           const wrap = document.getElementById('actors-wrap');
           wrap.innerHTML = '';
 
@@ -1250,7 +1429,7 @@
           }
           statusEl.innerText = `Найдено актёров: ${actors.length}`;
 
-          // 1. VIP ТОП АКТЁР
+          // VIP ТОП АКТЁР
           const topActor = actors[0];
           const topMono = getMonogram(topActor.name);
           const topBanner = document.createElement('div');
@@ -1267,7 +1446,7 @@
           `;
           wrap.appendChild(topBanner);
 
-          // 2. СЕТКА ОСТАЛЬНЫХ АКТЁРОВ (2 в ряд)
+          // СЕТКА ОСТАЛЬНЫХ АКТЁРОВ
           if (actors.length > 1) {
             const secTitle = document.createElement('div');
             secTitle.className = 'section-subtitle';
@@ -1604,17 +1783,20 @@
       if (tg?.BackButton) tg.BackButton.hide();
     }
 
-    function openChannelPost(url) {
-      if (!url) {
+    function openChannelPost(movie) {
+      if (!movie || !movie.telegram_url) {
         alert('Ссылка на этот релиз ещё не добавлена в базу');
         return;
       }
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
+      // Фиксируем просмотр в истории
+      recordHistory(movie);
+
       if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
+        tg.openTelegramLink(movie.telegram_url);
       } else {
-        window.open(url, '_blank');
+        window.open(movie.telegram_url, '_blank');
       }
     }
 
