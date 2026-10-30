@@ -4,47 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Sinners Test</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body style="background: #121212; color: #fff; font-family: sans-serif; padding: 20px;">
 
   <h2>Проверка связи с базой</h2>
-  <div id="status" style="margin-top: 10px; font-size: 14px;">Подключаемся к Supabase...</div>
+  <div id="status" style="margin-top: 10px; font-size: 15px; font-weight: bold; color: #ffeb3b;">
+    Отправляем запрос...
+  </div>
   
   <ul id="movies-list" style="margin-top: 20px; line-height: 1.8; padding-left: 20px;"></ul>
 
   <script>
+    // Ловим любые скрытые ошибки и выводим их прямо на экран
+    window.onerror = function(msg, url, line) {
+      const status = document.getElementById('status');
+      status.innerText = '❌ Ошибка JS: ' + msg + ' (строка ' + line + ')';
+      status.style.color = '#ff6b6b';
+    };
+
     const SUPABASE_URL = 'https://otcnrvimrqyppmfjnqpv.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_niMZLppQ5UZwkQWc6Pj29g_910mdIkQ';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    async function testLoad() {
+    async function loadMovies() {
       const status = document.getElementById('status');
       const list = document.getElementById('movies-list');
 
-      // Пробуем забрать первые 5 фильмов
-      const { data, error } = await supabase
-        .from('movies')
-        .select('id, title, year')
-        .limit(5);
+      try {
+        // Запрашиваем 5 записей напрямую через REST API Supabase
+        const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=5`;
+        
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
-      if (error) {
-        status.innerText = '❌ Ошибка подключения: ' + error.message;
+        if (!response.ok) {
+          const errText = await response.text();
+          status.innerText = `❌ Ошибка базы (${response.status}): ${errText}`;
+          status.style.color = '#ff6b6b';
+          return;
+        }
+
+        const movies = await response.json();
+
+        if (movies.length === 0) {
+          status.innerText = '⚠️ Связь есть, но таблица movies пустая!';
+          status.style.color = '#fcc419';
+          return;
+        }
+
+        status.innerText = `✅ Связь есть! Загружено фильмов: ${movies.length}`;
+        status.style.color = '#51cf66';
+
+        movies.forEach(movie => {
+          const li = document.createElement('li');
+          li.textContent = `${movie.title || 'Без названия'} (${movie.year || 'год не указан'}) — ID: ${movie.id}`;
+          list.appendChild(li);
+        });
+
+      } catch (err) {
+        status.innerText = '❌ Сбой сети: ' + err.message;
         status.style.color = '#ff6b6b';
-        return;
       }
-
-      status.innerText = `✅ Связь есть! Загружено фильмов: ${data.length}`;
-      status.style.color = '#51cf66';
-
-      data.forEach(movie => {
-        const li = document.createElement('li');
-        li.textContent = `${movie.title || 'Без названия'} (${movie.year || 'год не указан'})`;
-        list.appendChild(li);
-      });
     }
 
-    testLoad();
+    loadMovies();
   </script>
 </body>
 </html>
