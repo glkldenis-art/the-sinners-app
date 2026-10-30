@@ -40,7 +40,7 @@
       overflow-x: hidden;
     }
 
-    /* Прилипающая шапка с размытием */
+    /* Верхняя закрепленная шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -81,7 +81,7 @@
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 8px;
+      padding: 5px 9px;
       border-radius: 20px;
       cursor: pointer;
       display: flex;
@@ -102,7 +102,7 @@
       color: var(--subtext);
       font-size: 11px;
       font-weight: 600;
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 20px;
       letter-spacing: 0.2px;
     }
@@ -113,11 +113,13 @@
       align-items: center;
     }
 
-    .search-icon {
+    .search-icon-svg {
       position: absolute;
       left: 14px;
-      font-size: 14px;
-      opacity: 0.5;
+      width: 15px;
+      height: 15px;
+      stroke: #71717a;
+      pointer-events: none;
     }
 
     .search-input {
@@ -158,6 +160,66 @@
       cursor: pointer;
     }
 
+    /* Общие стили SVG иконок */
+    .btn-svg {
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      vertical-align: -2px;
+      margin-right: 4px;
+    }
+
+    .meta-svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      display: inline-block;
+      vertical-align: -2px;
+      margin-right: 4px;
+      opacity: 0.85;
+    }
+
+    .section-icon-svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--accent);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      display: inline-block;
+      vertical-align: -2px;
+      margin-right: 6px;
+    }
+
+    /* Векторный перчик */
+    .pepper-svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .card-pepper .pepper-svg {
+      width: 15px;
+      height: 15px;
+      opacity: 0.45;
+      filter: grayscale(1);
+      transition: all 0.2s;
+    }
+
+    .card-pepper.active .pepper-svg,
+    .hero-pepper.active .pepper-svg,
+    .btn-sheet-pepper.active .pepper-svg {
+      opacity: 1;
+      filter: grayscale(0) drop-shadow(0 0 6px rgba(229, 9, 20, 0.85));
+      transform: scale(1.15);
+    }
+
     /* 1. ГЛАВНАЯ ВИТРИНА (НОВИНКИ) */
     .hero-banner {
       background: radial-gradient(circle at 85% 20%, rgba(229, 9, 20, 0.28) 0%, transparent 60%),
@@ -196,6 +258,9 @@
       letter-spacing: 0.6px;
       text-transform: uppercase;
       box-shadow: 0 2px 10px rgba(229, 9, 20, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .hero-pepper {
@@ -207,7 +272,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
       transition: all 0.2s;
     }
 
@@ -215,7 +279,6 @@
       background: rgba(229, 9, 20, 0.4);
       border-color: var(--accent);
       box-shadow: 0 0 12px rgba(229, 9, 20, 0.6);
-      transform: scale(1.08);
     }
 
     .hero-title {
@@ -246,6 +309,8 @@
       padding: 4px 9px;
       border-radius: 8px;
       color: #d1d1db;
+      display: inline-flex;
+      align-items: center;
     }
 
     .hero-actions {
@@ -299,6 +364,8 @@
       font-weight: 800;
       color: #fff;
       letter-spacing: -0.2px;
+      display: inline-flex;
+      align-items: center;
     }
 
     .feed-section-badge {
@@ -533,7 +600,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -542,12 +608,12 @@
       background: rgba(229, 9, 20, 0.38);
       border-color: var(--accent);
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
-      transform: scale(1.08);
     }
 
-    .poster-icon {
-      font-size: 32px;
-      opacity: 0.35;
+    .poster-icon-svg {
+      width: 32px;
+      height: 32px;
+      stroke: rgba(255, 255, 255, 0.25);
       margin-bottom: 6px;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
     }
@@ -593,7 +659,7 @@
       text-overflow: ellipsis;
     }
 
-    /* 3. ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ */
+    /* 3. ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK) */
     .bottom-nav {
       position: fixed;
       bottom: 12px;
@@ -629,26 +695,40 @@
       transition: color 0.18s, transform 0.15s;
     }
 
-    .nav-btn .icon {
-      font-size: 19px;
-      transition: transform 0.18s;
+    .nav-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .nav-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
     }
 
     .nav-btn.active {
       color: #ffffff;
     }
 
-    .nav-btn.active .icon {
+    .nav-btn.active .nav-icon {
       filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.75));
-      transform: translateY(-1px) scale(1.08);
+      transform: translateY(-2px) scale(1.1);
+    }
+
+    .nav-btn.active .nav-icon svg {
+      stroke: #ffffff;
     }
 
     .nav-btn:active {
       transform: scale(0.9);
-    }
-
-    .nav-btn-icon-only .icon {
-      font-size: 22px;
     }
 
     .nav-badge {
@@ -733,6 +813,8 @@
       padding: 4px 9px;
       border-radius: 8px;
       color: #d1d1db;
+      display: inline-flex;
+      align-items: center;
     }
 
     .sheet-actors {
@@ -771,6 +853,10 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(229, 9, 20, 0.45);
       transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .btn-watch:active {
@@ -782,7 +868,6 @@
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid var(--border);
       border-radius: 14px;
-      font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -900,6 +985,7 @@
       font-weight: 800;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       cursor: pointer;
     }
@@ -1159,10 +1245,14 @@
       color: var(--subtext);
     }
 
-    .placeholder-view .icon {
-      font-size: 44px;
-      margin-bottom: 12px;
-      opacity: 0.7;
+    .placeholder-view .icon-wrap {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 14px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.85;
     }
 
     .media-switcher {
@@ -1234,17 +1324,19 @@
 </head>
 <body>
 
-  <!-- Шапка с живым поиском и переключателем языка -->
+  <!-- Верхняя шапка -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
       <div class="header-controls">
-        <button id="lang-btn" class="lang-pill" onclick="openLangModal()">🌐 EN</button>
+        <button id="lang-btn" class="lang-pill" onclick="openLangModal()">🇺🇸 EN</button>
         <div id="status-badge" class="badge">Loading...</div>
       </div>
     </div>
     <div class="search-box">
-      <span class="search-icon">🔍</span>
+      <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
       <input 
         id="search-input" 
         class="search-input" 
@@ -1259,20 +1351,30 @@
   <!-- Вкладка: НОВИНКИ -->
   <div id="tab-feed" class="tab-view active">
     
-    <!-- Витринный блок -->
     <div id="feed-showcase">
-      
       <!-- 1. Hero-Баннер: Фильм дня -->
       <div id="hero-banner" class="hero-banner" style="display: none;" onclick="openHeroDetails()">
         <div class="hero-badge-row">
-          <span class="hero-badge" id="txt-hero-badge">🔥 Daily Pick</span>
-          <div id="hero-pepper-btn" class="hero-pepper" onclick="toggleHeroFavorite(event)">🌶️</div>
+          <span class="hero-badge">
+            <svg style="width:12px;height:12px;" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+            </svg>
+            <span id="txt-hero-badge">Daily Pick</span>
+          </span>
+          <div id="hero-pepper-btn" class="hero-pepper" onclick="toggleHeroFavorite(event)">
+            <!-- Векторный перчик -->
+            <svg class="pepper-svg" viewBox="0 0 24 24" fill="none">
+              <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+              <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
         <div id="hero-title" class="hero-title">Loading daily pick...</div>
         <div id="hero-meta" class="hero-meta"></div>
         <div class="hero-actions">
           <button class="hero-btn-watch" onclick="openHeroPost(event)">
-            <span id="txt-hero-watch">Watch in Channel 🎬</span>
+            <svg class="btn-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <span id="txt-hero-watch">Watch in Channel</span>
           </button>
           <button class="hero-btn-details" onclick="openHeroDetails(event)">
             <span id="txt-hero-details">Details ›</span>
@@ -1282,14 +1384,24 @@
 
       <!-- 2. Горизонтальная карусель: Свежие поступления (20) -->
       <div class="feed-section-header">
-        <span class="feed-section-title" id="txt-recent-title">🔥 Fresh Releases</span>
+        <span class="feed-section-title">
+          <svg class="section-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          <span id="txt-recent-title">Fresh Releases</span>
+        </span>
         <span class="feed-section-badge" id="txt-recent-badge">Top 20</span>
       </div>
       <div class="carousel-scroll" id="recent-carousel"></div>
 
       <!-- 3. Чипсы каталога по странам -->
       <div class="feed-section-header" style="margin-top: 14px;">
-        <span class="feed-section-title" id="txt-country-title">🌍 Cinema by Country</span>
+        <span class="feed-section-title">
+          <svg class="section-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span id="txt-country-title">Cinema by Country</span>
+        </span>
       </div>
       <div class="country-chips-scroll" id="country-chips">
         <button class="country-chip active" id="chip-all-countries" onclick="filterByCountry('', this)">All Countries</button>
@@ -1304,11 +1416,16 @@
 
       <!-- Заголовок основной сетки -->
       <div class="feed-section-header" style="margin-top: 16px; margin-bottom: 2px;">
-        <span class="feed-section-title" id="grid-section-title">📦 Full Archive</span>
+        <span class="feed-section-title">
+          <svg class="section-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="2" y="3" width="20" height="18" rx="3"/><path d="M7 3v18"/><path d="M17 3v18"/><path d="M2 8h5"/><path d="M2 13h5"/><path d="M2 18h5"/><path d="M17 8h5"/><path d="M17 13h5"/><path d="M17 18h5"/>
+          </svg>
+          <span id="grid-section-title">Full Archive</span>
+        </span>
       </div>
     </div>
 
-    <!-- 4. Основная сетка архива 2x2 с бесконечным скроллом -->
+    <!-- 4. Основная сетка архива -->
     <div id="catalog-grid" class="grid"></div>
     <div id="scroll-status" class="status-msg">Loading archive...</div>
     <div id="scroll-sentinel" style="height: 20px;"></div>
@@ -1332,11 +1449,16 @@
   <div id="tab-favorites" class="tab-view">
     <div class="media-switcher">
       <button id="btn-subtab-favs" class="media-tab-btn active" onclick="switchMediaSubTab('favs')">
-        <span>🌶️</span>
+        <svg class="pepper-svg" style="width:15px;height:15px;" viewBox="0 0 24 24" fill="none">
+          <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+          <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
         <span id="label-subtab-favs">Favorites</span>
       </button>
       <button id="btn-subtab-history" class="media-tab-btn" onclick="switchMediaSubTab('history')">
-        <span>🕒</span>
+        <svg class="meta-svg" style="width:15px;height:15px;margin:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
         <span id="label-subtab-history">History</span>
       </button>
     </div>
@@ -1349,7 +1471,12 @@
     <div id="media-favs-view">
       <div id="favorites-grid" class="grid"></div>
       <div id="favorites-empty" class="placeholder-view" style="display: none;">
-        <div class="icon">🌶️</div>
+        <div class="icon-wrap">
+          <svg style="width:48px;height:48px;" viewBox="0 0 24 24" fill="none">
+            <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+            <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <h3 id="txt-favs-empty-title">Collection is empty</h3>
         <p id="txt-favs-empty-desc" style="font-size: 13px; margin-top: 6px;">Tap the pepper on any movie to save it for later</p>
       </div>
@@ -1358,37 +1485,77 @@
     <div id="media-history-view" style="display: none;">
       <div id="history-grid" class="grid"></div>
       <div id="history-empty" class="placeholder-view" style="display: none;">
-        <div class="icon">🕒</div>
+        <div class="icon-wrap">
+          <svg style="width:48px;height:48px;stroke:#71717a;" viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
         <h3 id="txt-history-empty-title">Watch history is clean</h3>
         <p id="txt-history-empty-desc" style="font-size: 13px; margin-top: 6px;">Releases you open in the channel will appear here</p>
       </div>
     </div>
   </div>
 
-  <!-- ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK) -->
+  <!-- ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK С SVG) -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
-      <span class="icon">🎬</span>
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="2" width="20" height="20" rx="4"/>
+          <path d="m10 8 6 4-6 4V8z"/>
+          <path d="M2 7h20"/><path d="m6 2 2 5"/><path d="m14 2 2 5"/>
+        </svg>
+      </span>
       <span id="nav-lbl-feed">Feed</span>
     </button>
+    
     <button class="nav-btn" onclick="switchTab('studios')">
-      <span class="icon">🏢</span>
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="m22 8-6 4 6 4V8z"/>
+          <rect x="2" y="6" width="14" height="12" rx="3"/>
+        </svg>
+      </span>
       <span id="nav-lbl-studios">Studios</span>
     </button>
+    
     <button class="nav-btn" onclick="switchTab('actors')">
-      <span class="icon">👥</span>
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </span>
       <span id="nav-lbl-actors">Actors</span>
     </button>
+    
     <button class="nav-btn nav-btn-icon-only" onclick="spinRoulette()">
-      <span class="icon">🎲</span>
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="4"/>
+          <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/>
+          <circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/>
+          <circle cx="12" cy="12" r="1.2" fill="currentColor"/>
+          <circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/>
+          <circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>
+        </svg>
+      </span>
     </button>
+    
     <button class="nav-btn nav-btn-icon-only" onclick="switchTab('favorites')">
-      <span class="icon">🌶️</span>
+      <span class="nav-icon">
+        <svg class="pepper-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+          <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+      </span>
       <span id="fav-counter" class="nav-badge">0</span>
     </button>
   </nav>
 
-  <!-- Шторка подробностей фильма -->
+  <!-- Шторка фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -1397,27 +1564,42 @@
       <div class="sheet-actors" id="sheet-actors"></div>
       
       <div id="sheet-franchise" class="franchise-section" style="display: none;">
-        <div class="franchise-title" id="txt-sheet-franchise">🍿 Other parts of this series:</div>
+        <div class="franchise-title">
+          <svg class="section-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="2" y="3" width="20" height="18" rx="3"/><path d="M7 3v18"/><path d="M17 3v18"/><path d="M2 8h5"/><path d="M2 13h5"/><path d="M2 18h5"/><path d="M17 8h5"/><path d="M17 13h5"/><path d="M17 18h5"/>
+          </svg>
+          <span id="txt-sheet-franchise">Other parts of this series:</span>
+        </div>
         <div class="franchise-scroll" id="sheet-franchise-list"></div>
       </div>
 
       <div class="sheet-actions">
         <button class="btn-watch" onclick="openChannelPost(activeMovie)">
-          <span id="txt-sheet-watch">Watch in Channel 🎬</span>
+          <svg class="btn-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <span id="txt-sheet-watch">Watch in Channel</span>
         </button>
         <button id="sheet-fav-btn" class="btn-sheet-pepper" onclick="toggleCurrentFavorite()">
-          🌶️
+          <svg class="pepper-svg" viewBox="0 0 24 24" fill="none">
+            <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+            <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Окно РУЛЕТКИ -->
+  <!-- Модалка Рулетки -->
   <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
       
-      <div class="modal-badge" id="txt-roulette-badge">🎲 Cinema Roulette</div>
+      <div class="modal-badge">
+        <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="4"/>
+          <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>
+        </svg>
+        <span id="txt-roulette-badge">Cinema Roulette</span>
+      </div>
       <h2 id="roulette-title" class="modal-title">Selecting...</h2>
       
       <div class="modal-meta" id="roulette-meta">
@@ -1425,16 +1607,26 @@
       </div>
 
       <div id="roulette-franchise" class="franchise-section" style="display: none;">
-        <div class="franchise-title" id="txt-roulette-franchise">🍿 Other parts of this series:</div>
+        <div class="franchise-title">
+          <svg class="section-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="2" y="3" width="20" height="18" rx="3"/><path d="M7 3v18"/><path d="M17 3v18"/><path d="M2 8h5"/><path d="M2 13h5"/><path d="M2 18h5"/><path d="M17 8h5"/><path d="M17 13h5"/><path d="M17 18h5"/>
+          </svg>
+          <span id="txt-roulette-franchise">Other parts of this series:</span>
+        </div>
         <div class="franchise-scroll" id="roulette-franchise-list"></div>
       </div>
 
       <div class="modal-buttons">
         <button class="btn-reroll" onclick="spinRoulette()">
-          <span id="txt-roulette-again">Roll Again 🎲</span>
+          <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="4"/>
+            <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>
+          </svg>
+          <span id="txt-roulette-again">Roll Again</span>
         </button>
         <button class="btn-watch" onclick="openChannelPost(rouletteMovie)">
-          <span id="txt-roulette-watch">Watch 🎬</span>
+          <svg class="btn-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <span id="txt-roulette-watch">Watch</span>
         </button>
       </div>
     </div>
@@ -1444,7 +1636,12 @@
   <div id="lang-modal" class="modal-overlay" onclick="closeLangModal()">
     <div class="modal-window" onclick="event.stopPropagation()" style="max-width:320px;">
       <button class="modal-close" onclick="closeLangModal()">✕</button>
-      <div class="modal-badge">🌐 Language / Язык</div>
+      <div class="modal-badge">
+        <svg style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span>Language / Язык</span>
+      </div>
       <h2 class="modal-title" style="margin-bottom:16px;">Select Language</h2>
 
       <div id="lang-list">
@@ -1487,21 +1684,21 @@
     }
 
     // ====================================================
-    // СИСТЕМА ЛОКАЛИЗАЦИИ (5 ЯЗЫКОВ)
+    // СИСТЕМА ЛОКАЛИЗАЦИИ
     // ====================================================
     const I18N = {
       en: {
         flag: "🇺🇸 EN",
         searchPlaceholder: "Search by title or studio...",
-        dailyPick: "🔥 Daily Pick",
-        watch: "Watch in Channel 🎬",
+        dailyPick: "Daily Pick",
+        watch: "Watch in Channel",
         details: "Details ›",
-        freshReleases: "🔥 Fresh Releases",
+        freshReleases: "Fresh Releases",
         top20: "Top 20",
-        byCountry: "🌍 Cinema by Country",
+        byCountry: "Cinema by Country",
         allCountries: "All Countries",
-        fullArchive: "📦 Full Archive",
-        moviesArchive: "🌍 Movies: ",
+        fullArchive: "Full Archive",
+        moviesArchive: "Movies: ",
         studiosAlphabetPrompt: "Select a letter to browse studios",
         studiosSearching: "Searching for letter {letter}...",
         studiosNone: "No studios found for letter {letter}",
@@ -1518,12 +1715,12 @@
         actorTagline: "Leading star for letter {letter}",
         actorMovies: "{count} movies in archive",
         otherActors: "Other actors starting with {letter}:",
-        rouletteBadge: "🎲 Cinema Roulette",
+        rouletteBadge: "Cinema Roulette",
         rouletteSpinning: "Rolling roulette...",
         rouletteSelecting: "Selecting release from archive...",
-        rouletteAgain: "Roll Again 🎲",
+        rouletteAgain: "Roll Again",
         sheetStarring: "Starring:",
-        franchiseOther: "🍿 Other parts of this series:",
+        franchiseOther: "Other parts of this series:",
         favsTab: "Favorites",
         historyTab: "History",
         favsHint: "Saved movies:",
@@ -1549,15 +1746,15 @@
       es: {
         flag: "🇪🇸 ES",
         searchPlaceholder: "Buscar por título o estudio...",
-        dailyPick: "🔥 Elección del día",
-        watch: "Ver en el canal 🎬",
+        dailyPick: "Elección del día",
+        watch: "Ver en el canal",
         details: "Detalles ›",
-        freshReleases: "🔥 Novedades",
+        freshReleases: "Novedades",
         top20: "Top 20",
-        byCountry: "🌍 Cine por país",
+        byCountry: "Cine por país",
         allCountries: "Todos los países",
-        fullArchive: "📦 Archivo completo",
-        moviesArchive: "🌍 Películas: ",
+        fullArchive: "Archivo completo",
+        moviesArchive: "Películas: ",
         studiosAlphabetPrompt: "Elige una letra para buscar estudios",
         studiosSearching: "Buscando letra {letter}...",
         studiosNone: "No hay estudios con la letra {letter}",
@@ -1574,12 +1771,12 @@
         actorTagline: "Líder de lanzamientos con la letra {letter}",
         actorMovies: "{count} películas en el archivo",
         otherActors: "Otros actores con la letra {letter}:",
-        rouletteBadge: "🎲 Ruleta de cine",
+        rouletteBadge: "Ruleta de cine",
         rouletteSpinning: "Girando ruleta...",
         rouletteSelecting: "Eligiendo del archivo...",
-        rouletteAgain: "Girar otra vez 🎲",
+        rouletteAgain: "Girar otra vez",
         sheetStarring: "Protagonistas:",
-        franchiseOther: "🍿 Más partes de esta saga:",
+        franchiseOther: "Más partes de esta saga:",
         favsTab: "Favoritos",
         historyTab: "Historial",
         favsHint: "Películas guardadas:",
@@ -1605,15 +1802,15 @@
       de: {
         flag: "🇩🇪 DE",
         searchPlaceholder: "Nach Titel oder Studio suchen...",
-        dailyPick: "🔥 Tipp des Tages",
-        watch: "Im Kanal ansehen 🎬",
+        dailyPick: "Tipp des Tages",
+        watch: "Im Kanal ansehen",
         details: "Details ›",
-        freshReleases: "🔥 Neuheiten",
+        freshReleases: "Neuheiten",
         top20: "Top 20",
-        byCountry: "🌍 Filme nach Land",
+        byCountry: "Filme nach Land",
         allCountries: "Alle Länder",
-        fullArchive: "📦 Gesamtes Archiv",
-        moviesArchive: "🌍 Filme: ",
+        fullArchive: "Gesamtes Archiv",
+        moviesArchive: "Filme: ",
         studiosAlphabetPrompt: "Buchstaben wählen für Studios",
         studiosSearching: "Suche nach {letter}...",
         studiosNone: "Keine Studios mit {letter} gefunden",
@@ -1630,12 +1827,12 @@
         actorTagline: "Meiste Releases mit Buchstabe {letter}",
         actorMovies: "{count} Filme im Archiv",
         otherActors: "Weitere Darsteller mit {letter}:",
-        rouletteBadge: "🎲 Film-Roulette",
+        rouletteBadge: "Film-Roulette",
         rouletteSpinning: "Roulette dreht sich...",
         rouletteSelecting: "Wähle Film aus dem Archiv...",
-        rouletteAgain: "Nochmal 🎲",
+        rouletteAgain: "Nochmal",
         sheetStarring: "Hauptdarsteller:",
-        franchiseOther: "🍿 Weitere Teile der Reihe:",
+        franchiseOther: "Weitere Teile der Reihe:",
         favsTab: "Favoriten",
         historyTab: "Verlauf",
         favsHint: "Gespeicherte Filme:",
@@ -1661,15 +1858,15 @@
       fr: {
         flag: "🇫🇷 FR",
         searchPlaceholder: "Rechercher par titre ou studio...",
-        dailyPick: "🔥 Choix du jour",
-        watch: "Regarder sur le canal 🎬",
+        dailyPick: "Choix du jour",
+        watch: "Regarder sur le canal",
         details: "Infos ›",
-        freshReleases: "🔥 Nouveautés",
+        freshReleases: "Nouveautés",
         top20: "Top 20",
-        byCountry: "🌍 Cinéma par pays",
+        byCountry: "Cinéma par pays",
         allCountries: "Tous les pays",
-        fullArchive: "📦 Archives complètes",
-        moviesArchive: "🌍 Films : ",
+        fullArchive: "Archives complètes",
+        moviesArchive: "Films : ",
         studiosAlphabetPrompt: "Choisissez une lettre pour les studios",
         studiosSearching: "Recherche pour la lettre {letter}...",
         studiosNone: "Aucun studio trouvé pour {letter}",
@@ -1686,12 +1883,12 @@
         actorTagline: "Leader des sorties avec la lettre {letter}",
         actorMovies: "{count} films dans les archives",
         otherActors: "Autres acteurs avec la lettre {letter} :",
-        rouletteBadge: "🎲 Ciné-Roulette",
+        rouletteBadge: "Ciné-Roulette",
         rouletteSpinning: "Lancement de la roulette...",
         rouletteSelecting: "Sélection d'un film...",
-        rouletteAgain: "Relancer 🎲",
+        rouletteAgain: "Relancer",
         sheetStarring: "Avec :",
-        franchiseOther: "🍿 Autres parties de cette saga :",
+        franchiseOther: "Autres parties de cette saga :",
         favsTab: "Favoris",
         historyTab: "Historique",
         favsHint: "Films enregistrés :",
@@ -1717,15 +1914,15 @@
       ru: {
         flag: "🇷🇺 RU",
         searchPlaceholder: "Поиск по названию или студии...",
-        dailyPick: "🔥 Выбор дня",
-        watch: "Смотреть в канале 🎬",
+        dailyPick: "Выбор дня",
+        watch: "Смотреть в канале",
         details: "Инфо ›",
-        freshReleases: "🔥 Свежие релизы",
+        freshReleases: "Свежие релизы",
         top20: "Топ 20",
-        byCountry: "🌍 Кино по странам",
+        byCountry: "Кино по странам",
         allCountries: "Все страны",
-        fullArchive: "📦 Полный архив",
-        moviesArchive: "🌍 Фильмы: ",
+        fullArchive: "Полный архив",
+        moviesArchive: "Фильмы: ",
         studiosAlphabetPrompt: "Выберите букву для поиска студий",
         studiosSearching: "Ищем на букву {letter}...",
         studiosNone: "На букву {letter} студий не найдено",
@@ -1742,12 +1939,12 @@
         actorTagline: "Лидер по числу релизов на букву {letter}",
         actorMovies: "{count} фильмов в архиве",
         otherActors: "Остальные актёры на букву {letter}:",
-        rouletteBadge: "🎲 Кинорулетка",
+        rouletteBadge: "Кинорулетка",
         rouletteSpinning: "Крутим рулетку...",
         rouletteSelecting: "Выбираем релиз из архива...",
-        rouletteAgain: "Ещё 🎲",
+        rouletteAgain: "Ещё",
         sheetStarring: "В главных ролях:",
-        franchiseOther: "🍿 Другие части серии:",
+        franchiseOther: "Другие части серии:",
         favsTab: "Избранное",
         historyTab: "История",
         favsHint: "Отложенные фильмы:",
@@ -1772,7 +1969,6 @@
       }
     };
 
-    // Определение языка (хранилище -> Telegram -> Английский по умолчанию)
     let currentLang = localStorage.getItem('sinners_lang');
     if (!currentLang) {
       const tgLang = (window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code || '').toLowerCase();
@@ -1793,7 +1989,7 @@
 
     function applyLanguageUI() {
       const langBtn = document.getElementById('lang-btn');
-      if (langBtn) langBtn.innerText = I18N[currentLang]?.flag || '🌐 EN';
+      if (langBtn) langBtn.innerText = I18N[currentLang]?.flag || '🇺🇸 EN';
 
       const sInput = document.getElementById('search-input');
       if (sInput) sInput.placeholder = t('searchPlaceholder');
@@ -2139,7 +2335,11 @@
               <span class="card-year">${m.year || ''}</span>
               <div class="poster-watermark" style="font-size: 60px;">${mono}</div>
               <div>
-                <div class="poster-icon" style="font-size:24px;">🎬</div>
+                <svg class="poster-icon-svg" style="width:24px;height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="2" y="2" width="20" height="20" rx="4"/>
+                  <path d="m10 8 6 4-6 4V8z"/>
+                  <path d="M2 7h20"/><path d="m6 2 2 5"/><path d="m14 2 2 5"/>
+                </svg>
               </div>
             </div>
             <div class="carousel-info">
@@ -2168,10 +2368,10 @@
 
       const meta = document.getElementById('hero-meta');
       meta.innerHTML = `
-        ${m.year ? `<span class="hero-meta-item">📅 ${m.year}</span>` : ''}
-        ${m.duration ? `<span class="hero-meta-item">⏱ ${m.duration}</span>` : ''}
+        ${m.year ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>${m.year}</span>` : ''}
+        ${m.duration ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${m.duration}</span>` : ''}
         ${m.country ? `<span class="hero-meta-item">${m.country_flag || ''} ${m.country}</span>` : ''}
-        ${m.studio ? `<span class="hero-meta-item">🏢 ${m.studio}</span>` : ''}
+        ${m.studio ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="3"/></svg>${m.studio}</span>` : ''}
       `;
 
       const pep = document.getElementById('hero-pepper-btn');
@@ -2601,7 +2801,7 @@
     }
 
     // ====================================================
-    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ (АРХИВ)
+    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ
     // ====================================================
     async function fetchMovies(isReset = false) {
       if (isLoading || (!hasMore && !isReset)) return;
@@ -2669,12 +2869,19 @@
       card.innerHTML = `
         <div class="poster-box">
           <div class="card-pepper ${favClass}" data-pepper-id="${m.id}" onclick="toggleFavorite(${JSON.stringify(m).replace(/"/g, '&quot;')}, event)">
-            🌶️
+            <svg class="pepper-svg" viewBox="0 0 24 24" fill="none">
+              <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+              <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
           </div>
           <span class="card-year">${m.year || ''}</span>
           <div class="poster-watermark">${mono}</div>
           <div>
-            <div class="poster-icon">🎬</div>
+            <svg class="poster-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="2" width="20" height="20" rx="4"/>
+              <path d="m10 8 6 4-6 4V8z"/>
+              <path d="M2 7h20"/><path d="m6 2 2 5"/><path d="m14 2 2 5"/>
+            </svg>
             <div class="poster-title-preview">${m.title || 'Movie'}</div>
           </div>
         </div>
@@ -2729,10 +2936,10 @@
       
       const meta = document.getElementById('sheet-meta');
       meta.innerHTML = `
-        ${m.year ? `<div class="sheet-meta-item">📅 ${m.year}</div>` : ''}
-        ${m.duration ? `<div class="sheet-meta-item">⏱ ${m.duration}</div>` : ''}
+        ${m.year ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>${m.year}</div>` : ''}
+        ${m.duration ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${m.duration}</div>` : ''}
         ${m.country ? `<div class="sheet-meta-item">${m.country_flag || ''} ${m.country}</div>` : ''}
-        ${m.studio ? `<div class="sheet-meta-item">🏢 ${m.studio}</div>` : ''}
+        ${m.studio ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="3"/></svg>${m.studio}</div>` : ''}
       `;
 
       const actorsEl = document.getElementById('sheet-actors');
@@ -2766,7 +2973,7 @@
       }
     }
 
-    // Инициализация
+    // Старт
     applyLanguageUI();
     loadFeedShowcase();
     fetchMovies();
