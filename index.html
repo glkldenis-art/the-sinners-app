@@ -35,7 +35,7 @@
       padding-bottom: calc(var(--bottom-bar-h) + 25px);
     }
 
-    /* Шапка */
+    /* Шапка с поиском */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -115,6 +115,248 @@
       padding: 4px;
       display: none;
       cursor: pointer;
+    }
+
+    /* =========================================
+       СТИЛИ ГЛАВНОЙ ВИТРИНЫ (НОВИНКИ)
+       ========================================= */
+    .hero-banner {
+      background: linear-gradient(145deg, #2a141b 0%, #15151c 60%, #121216 100%);
+      border: 1px solid rgba(229, 9, 20, 0.4);
+      box-shadow: 0 4px 25px rgba(229, 9, 20, 0.2);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .hero-banner:active {
+      transform: scale(0.98);
+    }
+
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .hero-badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 4px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero-pepper {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .hero-pepper.active {
+      background: rgba(229, 9, 20, 0.4);
+      border-color: var(--accent);
+    }
+
+    .hero-title {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.25;
+      color: #fff;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .hero-meta-item {
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 3px 7px;
+      border-radius: 6px;
+      color: #ccc;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .hero-btn-watch {
+      flex: 1;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .hero-btn-details {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Заголовки разделов в Новинках */
+    .feed-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 0 2px;
+    }
+
+    .feed-section-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .feed-section-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(229, 9, 20, 0.15);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    /* Карусель 20 новинок */
+    .carousel-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .carousel-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-card {
+      width: 124px;
+      flex-shrink: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease;
+    }
+
+    .carousel-card:active {
+      transform: scale(0.96);
+    }
+
+    .carousel-poster {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      background: linear-gradient(145deg, #1d1d24, #101014);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .carousel-info {
+      padding: 6px 8px 8px 8px;
+    }
+
+    .carousel-title {
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .carousel-meta {
+      font-size: 10px;
+      color: var(--subtext);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Чипсы стран */
+    .country-chips-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .country-chips-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .country-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--subtext);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .country-chip.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
     /* Алфавитная полоса */
@@ -434,9 +676,7 @@
       opacity: 0.7;
     }
 
-    /* =========================================
-       ПЕРЕКЛЮЧАТЕЛЬ ИЗБРАННОГО И ИСТОРИИ (ПЕРЧИК)
-       ========================================= */
+    /* Переключатель в "Перчике" */
     .media-switcher {
       display: flex;
       background: var(--card-bg);
@@ -857,6 +1097,7 @@
 </head>
 <body>
 
+  <!-- Поиск -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
@@ -877,8 +1118,59 @@
 
   <!-- Вкладка: НОВИНКИ -->
   <div id="tab-feed" class="tab-view active">
+    
+    <!-- Витринный блок (скрывается при активном текстовом поиске) -->
+    <div id="feed-showcase">
+      
+      <!-- 1. Hero-Баннер: Фильм дня -->
+      <div id="hero-banner" class="hero-banner" style="display: none;" onclick="openHeroDetails()">
+        <div class="hero-badge-row">
+          <span class="hero-badge">🔥 Выбор дня</span>
+          <div id="hero-pepper-btn" class="hero-pepper" onclick="toggleHeroFavorite(event)">🌶️</div>
+        </div>
+        <div id="hero-title" class="hero-title">Загрузка фильма дня...</div>
+        <div id="hero-meta" class="hero-meta"></div>
+        <div class="hero-actions">
+          <button class="hero-btn-watch" onclick="openHeroPost(event)">
+            Смотреть в канале 🎬
+          </button>
+          <button class="hero-btn-details" onclick="openHeroDetails(event)">
+            Инфо ›
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Горизонтальная карусель: Свежие поступления (20) -->
+      <div class="feed-section-header">
+        <span class="feed-section-title">🔥 Свежие релизы</span>
+        <span class="feed-section-badge">Топ 20</span>
+      </div>
+      <div class="carousel-scroll" id="recent-carousel"></div>
+
+      <!-- 3. Чипсы каталога по странам -->
+      <div class="feed-section-header" style="margin-top: 14px;">
+        <span class="feed-section-title">🌍 Кино по странам</span>
+      </div>
+      <div class="country-chips-scroll" id="country-chips">
+        <button class="country-chip active" onclick="filterByCountry('', this)">Все страны</button>
+        <button class="country-chip" onclick="filterByCountry('США', this)">🇺🇸 США</button>
+        <button class="country-chip" onclick="filterByCountry('Чехия', this)">🇨🇿 Чехия</button>
+        <button class="country-chip" onclick="filterByCountry('Испания', this)">🇪🇸 Испания</button>
+        <button class="country-chip" onclick="filterByCountry('Германия', this)">🇩🇪 Германия</button>
+        <button class="country-chip" onclick="filterByCountry('Великобритания', this)">🇬🇧 Великобритания</button>
+        <button class="country-chip" onclick="filterByCountry('Франция', this)">🇫🇷 Франция</button>
+        <button class="country-chip" onclick="filterByCountry('Бразилия', this)">🇧🇷 Бразилия</button>
+      </div>
+
+      <!-- Заголовок основной сетки -->
+      <div class="feed-section-header" style="margin-top: 16px; margin-bottom: 2px;">
+        <span class="feed-section-title" id="grid-section-title">📦 Полный архив</span>
+      </div>
+    </div>
+
+    <!-- 4. Основная сетка архива 2x2 с бесконечным скроллом -->
     <div id="catalog-grid" class="grid"></div>
-    <div id="scroll-status" class="status-msg">Загрузка релизов...</div>
+    <div id="scroll-status" class="status-msg">Загрузка архива...</div>
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
@@ -914,7 +1206,6 @@
       <button id="btn-clear-history" class="media-clear-btn" onclick="clearHistoryPrompt()">Очистить историю</button>
     </div>
 
-    <!-- Сетка сохраненных перчиков -->
     <div id="media-favs-view">
       <div id="favorites-grid" class="grid"></div>
       <div id="favorites-empty" class="placeholder-view" style="display: none;">
@@ -924,7 +1215,6 @@
       </div>
     </div>
 
-    <!-- Сетка истории просмотров -->
     <div id="media-history-view" style="display: none;">
       <div id="history-grid" class="grid"></div>
       <div id="history-empty" class="placeholder-view" style="display: none;">
@@ -1031,9 +1321,11 @@
     let isLoading = false;
     let hasMore = true;
     let currentSearch = '';
+    let currentCountry = '';
     let debounceTimer = null;
     let activeMovie = null;
     let rouletteMovie = null;
+    let heroMovie = null;
     let currentTab = 'feed';
     let currentMediaSubTab = 'favs';
 
@@ -1074,6 +1366,7 @@
     const searchInput = document.getElementById('search-input');
     const searchClear = document.getElementById('search-clear');
     const favCounter = document.getElementById('fav-counter');
+    const feedShowcase = document.getElementById('feed-showcase');
 
     function updateFavCounter() {
       if (favorites.length > 0) {
@@ -1124,9 +1417,12 @@
       document.querySelectorAll(`[data-pepper-id="${movieId}"]`).forEach(el => {
         el.classList.toggle('active', isFav(movieId));
       });
+      if (heroMovie && heroMovie.id === movieId) {
+        const heroPep = document.getElementById('hero-pepper-btn');
+        if (heroPep) heroPep.classList.toggle('active', isFav(movieId));
+      }
     }
 
-    // Сохранение в историю просмотров
     function recordHistory(movie) {
       if (!movie || !movie.id) return;
       const idx = watchHistory.findIndex(m => m.id === movie.id);
@@ -1155,7 +1451,6 @@
       }
     }
 
-    // Переключение основных вкладок
     function switchTab(tab) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       currentTab = tab;
@@ -1180,7 +1475,6 @@
       }
     }
 
-    // Переключение подвкладок в "Перчике" (Избранное vs История)
     function switchMediaSubTab(subTab) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       currentMediaSubTab = subTab;
@@ -1240,6 +1534,103 @@
       clearBtn.style.display = 'block';
 
       watchHistory.forEach(m => historyGrid.appendChild(createCardElement(m)));
+    }
+
+    // ====================================================
+    // ЛОГИКА ВИТРИНЫ НОВИНОК (HERO + КАРУСЕЛЬ 20 + СТРАНЫ)
+    // ====================================================
+    async function loadFeedShowcase() {
+      // 1. Загрузка 20 свежих релизов
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=20`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const recents = await res.json();
+        
+        const carousel = document.getElementById('recent-carousel');
+        carousel.innerHTML = '';
+
+        recents.forEach(m => {
+          const card = document.createElement('div');
+          card.className = 'carousel-card';
+          card.onclick = () => showMovieDetails(m);
+
+          card.innerHTML = `
+            <div class="carousel-poster">
+              <span class="card-year">${m.year || ''}</span>
+              <div>
+                <div class="poster-icon" style="font-size:24px;">🎬</div>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <div class="carousel-title">${m.title || 'Фильм'}</div>
+              <div class="carousel-meta">${m.country_flag || ''} ${m.studio || 'The Sinners'}</div>
+            </div>
+          `;
+          carousel.appendChild(card);
+        });
+
+        // 2. Назначаем Hero-фильм дня (берем один из топа)
+        if (recents.length > 0) {
+          // Выбираем фильм по номеру дня года, чтобы каждый день был стабильно свой релиз
+          const now = new Date();
+          const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+          heroMovie = recents[dayOfYear % recents.length];
+          renderHeroBanner(heroMovie);
+        }
+      } catch (e) {
+        console.error('Ошибка загрузки витрины', e);
+      }
+    }
+
+    function renderHeroBanner(m) {
+      if (!m) return;
+      const banner = document.getElementById('hero-banner');
+      document.getElementById('hero-title').innerText = m.title || 'Фильм дня';
+
+      const meta = document.getElementById('hero-meta');
+      meta.innerHTML = `
+        ${m.year ? `<span class="hero-meta-item">📅 ${m.year}</span>` : ''}
+        ${m.duration ? `<span class="hero-meta-item">⏱ ${m.duration}</span>` : ''}
+        ${m.country ? `<span class="hero-meta-item">${m.country_flag || ''} ${m.country}</span>` : ''}
+        ${m.studio ? `<span class="hero-meta-item">🏢 ${m.studio}</span>` : ''}
+      `;
+
+      const pep = document.getElementById('hero-pepper-btn');
+      pep.classList.toggle('active', isFav(m.id));
+
+      banner.style.display = 'block';
+    }
+
+    function openHeroDetails(e) {
+      if (e) e.stopPropagation();
+      if (heroMovie) showMovieDetails(heroMovie);
+    }
+
+    function openHeroPost(e) {
+      if (e) e.stopPropagation();
+      if (heroMovie) openChannelPost(heroMovie);
+    }
+
+    function toggleHeroFavorite(e) {
+      if (e) e.stopPropagation();
+      if (heroMovie) toggleFavorite(heroMovie);
+    }
+
+    // Фильтр по странам
+    function filterByCountry(country, btn) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      currentCountry = country;
+
+      document.querySelectorAll('.country-chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const titleEl = document.getElementById('grid-section-title');
+      if (titleEl) {
+        titleEl.innerText = country ? `🌍 Фильмы: ${country}` : '📦 Полный архив';
+      }
+
+      fetchMovies(true);
     }
 
     // ====================================================
@@ -1643,7 +2034,7 @@
     }
 
     // ====================================================
-    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ
+    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ (АРХИВ)
     // ====================================================
     async function fetchMovies(isReset = false) {
       if (isLoading || (!hasMore && !isReset)) return;
@@ -1658,9 +2049,16 @@
 
       let endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
+      // Фильтр поиска
       if (currentSearch.trim()) {
         const query = encodeURIComponent(`*${currentSearch.trim()}*`);
         endpoint += `&or=(title.ilike.${query},studio.ilike.${query},actors.ilike.${query})`;
+      }
+
+      // Фильтр по стране
+      if (currentCountry) {
+        const cQuery = encodeURIComponent(`*${currentCountry}*`);
+        endpoint += `&country=ilike.${cQuery}`;
       }
 
       try {
@@ -1726,9 +2124,14 @@
       return card;
     }
 
+    // Слушатель поиска: при вводе текста скрываем витрину, оставляя только результаты
     searchInput.addEventListener('input', (e) => {
       const val = e.target.value;
       searchClear.style.display = val ? 'block' : 'none';
+
+      if (feedShowcase) {
+        feedShowcase.style.display = val.trim() ? 'none' : 'block';
+      }
 
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
@@ -1742,6 +2145,7 @@
       searchInput.value = '';
       currentSearch = '';
       searchClear.style.display = 'none';
+      if (feedShowcase) feedShowcase.style.display = 'block';
       fetchMovies(true);
     }
 
@@ -1790,7 +2194,6 @@
       }
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
-      // Фиксируем просмотр в истории
       recordHistory(movie);
 
       if (tg?.openTelegramLink) {
@@ -1800,7 +2203,9 @@
       }
     }
 
+    // Инициализация приложения
     updateFavCounter();
+    loadFeedShowcase();
     fetchMovies();
   </script>
 </body>
