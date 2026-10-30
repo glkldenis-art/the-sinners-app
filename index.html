@@ -382,7 +382,7 @@
       display: none;
     }
 
-    /* Шторка подробностей */
+    /* 1. Шторка подробностей */
     .overlay {
       position: fixed;
       inset: 0;
@@ -497,7 +497,7 @@
       border-color: var(--accent);
     }
 
-    /* Модальное окно РУЛЕТКИ (по центру экрана) */
+    /* 2. Модальное окно РУЛЕТКИ (по центру экрана) */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -610,7 +610,7 @@
 </head>
 <body>
 
-  <!-- Поиск -->
+  <!-- Шапка с поиском -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
@@ -702,7 +702,7 @@
     </div>
   </div>
 
-  <!-- Модальное окно РУЛЕТКИ -->
+  <!-- Окно РУЛЕТКИ -->
   <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
@@ -1073,7 +1073,7 @@
       return card;
     }
 
-    // Слушатель поиска
+    // Поиск
     searchInput.addEventListener('input', (e) => {
       const val = e.target.value;
       searchClear.style.display = val ? 'block' : 'none';
