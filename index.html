@@ -9,12 +9,15 @@
 
   <style>
     :root {
-      --bg: #0d0d0f;
-      --card-bg: #16161b;
+      --bg: #09090b;
+      --card-bg: #141418;
+      --card-bg-elevated: #1a1a22;
       --accent: #e50914;
+      --accent-glow: rgba(229, 9, 20, 0.35);
       --text: #ffffff;
-      --subtext: #8e8e93;
+      --subtext: #8e8e98;
       --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(229, 9, 20, 0.5);
       --bottom-bar-h: 62px;
     }
 
@@ -29,19 +32,21 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       padding: 12px;
       padding-top: 0;
-      padding-bottom: calc(var(--bottom-bar-h) + 25px);
+      padding-bottom: calc(var(--bottom-bar-h) + 38px);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* Шапка с поиском */
+    /* Прилипающая шапка с размытием */
     .sticky-header {
       position: sticky;
       top: 0;
-      background: rgba(13, 13, 15, 0.96);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(9, 9, 11, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 50;
       padding: 12px 0 10px 0;
       border-bottom: 1px solid var(--border);
@@ -56,20 +61,23 @@
     }
 
     .header-top h1 {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 900;
-      letter-spacing: -0.5px;
-      color: #fff;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .badge {
-      background: var(--card-bg);
+      background: var(--card-bg-elevated);
       border: 1px solid var(--border);
       color: var(--subtext);
       font-size: 11px;
-      font-weight: 500;
-      padding: 4px 8px;
-      border-radius: 8px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.2px;
     }
 
     .search-box {
@@ -80,7 +88,7 @@
 
     .search-icon {
       position: absolute;
-      left: 12px;
+      left: 14px;
       font-size: 14px;
       opacity: 0.5;
     }
@@ -89,130 +97,144 @@
       width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 36px 10px 34px;
+      border-radius: 14px;
+      padding: 11px 36px 11px 38px;
       color: #fff;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     .search-input:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 14px var(--accent-glow), inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     .search-input::placeholder {
-      color: #666;
+      color: #61616c;
     }
 
     .search-clear {
       position: absolute;
-      right: 10px;
-      background: none;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.08);
       border: none;
-      color: #888;
-      font-size: 14px;
-      padding: 4px;
+      color: #aaa;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
       display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
       cursor: pointer;
     }
 
     /* =========================================
-       СТИЛИ ГЛАВНОЙ ВИТРИНЫ (НОВИНКИ)
+       1. ГЛАВНАЯ ВИТРИНА (НОВИНКИ)
        ========================================= */
     .hero-banner {
-      background: linear-gradient(145deg, #2a141b 0%, #15151c 60%, #121216 100%);
-      border: 1px solid rgba(229, 9, 20, 0.4);
-      box-shadow: 0 4px 25px rgba(229, 9, 20, 0.2);
-      border-radius: 16px;
-      padding: 16px;
+      background: radial-gradient(circle at 85% 20%, rgba(229, 9, 20, 0.28) 0%, transparent 60%),
+                  linear-gradient(145deg, #221217 0%, #141318 55%, #0e0e12 100%);
+      border: 1px solid rgba(229, 9, 20, 0.38);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(229, 9, 20, 0.18);
+      border-radius: 18px;
+      padding: 18px 16px;
       margin-top: 6px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.15s ease;
+      transition: transform 0.15s ease, border-color 0.2s;
     }
 
     .hero-banner:active {
-      transform: scale(0.98);
+      transform: scale(0.985);
+      border-color: var(--accent);
     }
 
     .hero-badge-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .hero-badge {
-      background: var(--accent);
+      background: linear-gradient(135deg, #e50914, #ff3344);
       color: #fff;
       font-size: 10px;
       font-weight: 900;
-      padding: 4px 8px;
-      border-radius: 6px;
-      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
+      box-shadow: 0 2px 10px rgba(229, 9, 20, 0.4);
     }
 
     .hero-pepper {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 16px;
       transition: all 0.2s;
     }
 
     .hero-pepper.active {
       background: rgba(229, 9, 20, 0.4);
       border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(229, 9, 20, 0.6);
+      transform: scale(1.08);
     }
 
     .hero-title {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 900;
       line-height: 1.25;
       color: #fff;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      letter-spacing: -0.3px;
     }
 
     .hero-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .hero-meta-item {
       font-size: 11px;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 3px 7px;
-      border-radius: 6px;
-      color: #ccc;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 4px 9px;
+      border-radius: 8px;
+      color: #d1d1db;
     }
 
     .hero-actions {
       display: flex;
-      gap: 8px;
+      gap: 10px;
     }
 
     .hero-btn-watch {
       flex: 1;
-      background: var(--accent);
+      background: linear-gradient(135deg, #e50914 0%, #c40812 100%);
       color: #fff;
       border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
+      border-radius: 12px;
+      padding: 12px 16px;
       font-size: 13px;
       font-weight: 800;
       display: flex;
@@ -220,30 +242,36 @@
       justify-content: center;
       gap: 6px;
       cursor: pointer;
+      box-shadow: 0 4px 16px rgba(229, 9, 20, 0.4);
+      transition: opacity 0.15s;
+    }
+
+    .hero-btn-watch:active {
+      opacity: 0.88;
     }
 
     .hero-btn-details {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.07);
       border: 1px solid var(--border);
       color: #fff;
-      border-radius: 10px;
-      padding: 10px 14px;
+      border-radius: 12px;
+      padding: 12px 16px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    /* Заголовки разделов в Новинках */
+    /* Заголовки разделов витрины */
     .feed-section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       padding: 0 2px;
     }
 
     .feed-section-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       color: #fff;
       letter-spacing: -0.2px;
@@ -251,19 +279,21 @@
 
     .feed-section-badge {
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--accent);
-      background: rgba(229, 9, 20, 0.15);
-      padding: 2px 6px;
-      border-radius: 6px;
+      background: rgba(229, 9, 20, 0.12);
+      border: 1px solid rgba(229, 9, 20, 0.25);
+      padding: 2px 8px;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
     }
 
     /* Карусель 20 новинок */
     .carousel-scroll {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       overflow-x: auto;
-      padding-bottom: 6px;
+      padding-bottom: 10px;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
@@ -273,41 +303,44 @@
     }
 
     .carousel-card {
-      width: 124px;
+      width: 128px;
       flex-shrink: 0;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       cursor: pointer;
       position: relative;
-      transition: transform 0.15s ease;
+      transition: transform 0.15s ease, border-color 0.2s;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
     }
 
     .carousel-card:active {
       transform: scale(0.96);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .carousel-poster {
       width: 100%;
       aspect-ratio: 2 / 3;
-      background: linear-gradient(145deg, #1d1d24, #101014);
+      background: radial-gradient(circle at 50% 30%, #201e29 0%, #121117 100%);
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 8px;
       text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .carousel-info {
-      padding: 6px 8px 8px 8px;
+      padding: 8px 9px 10px 9px;
     }
 
     .carousel-title {
       font-size: 11px;
       font-weight: 700;
-      line-height: 1.25;
+      line-height: 1.3;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -317,8 +350,9 @@
 
     .carousel-meta {
       font-size: 10px;
+      font-weight: 600;
       color: var(--subtext);
-      margin-top: 3px;
+      margin-top: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -327,9 +361,9 @@
     /* Чипсы стран */
     .country-chips-scroll {
       display: flex;
-      gap: 6px;
+      gap: 7px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 6px;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
@@ -344,28 +378,30 @@
       color: var(--subtext);
       font-size: 12px;
       font-weight: 700;
-      padding: 7px 12px;
+      padding: 8px 14px;
       border-radius: 20px;
       white-space: nowrap;
       flex-shrink: 0;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .country-chip.active {
-      background: var(--accent);
+      background: linear-gradient(135deg, #e50914 0%, #c40812 100%);
       color: #fff;
       border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+      box-shadow: 0 2px 14px rgba(229, 9, 20, 0.45);
+      transform: scale(1.02);
     }
 
     /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
-      gap: 6px;
+      gap: 7px;
       overflow-x: auto;
       padding: 10px 2px 14px 2px;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
 
     .alphabet-scroll::-webkit-scrollbar {
@@ -373,27 +409,484 @@
     }
 
     .alpha-btn {
-      min-width: 34px;
-      height: 34px;
-      border-radius: 10px;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 11px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: #aaa;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .alpha-btn.active {
-      background: var(--accent);
+      background: linear-gradient(135deg, #e50914 0%, #c40812 100%);
       color: #fff;
       border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+      box-shadow: 0 0 14px var(--accent-glow);
+      transform: scale(1.04);
+    }
+
+    /* =========================================
+       2. КАРТОЧКИ ФИЛЬМОВ (ОБНОВЛЁННЫЕ ПОСТЕРЫ)
+       ========================================= */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, border-color 0.2s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    .card:active {
+      transform: scale(0.97);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .poster-box {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      background: radial-gradient(circle at 50% 25%, #251b22 0%, #15131b 60%, #0d0c10 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    .poster-watermark {
+      position: absolute;
+      font-size: 84px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.03);
+      letter-spacing: -4px;
+      pointer-events: none;
+      user-select: none;
+      transform: rotate(-10deg);
+    }
+
+    .card-year {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #e4e4e7;
+    }
+
+    .card-pepper {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .card-pepper.active {
+      background: rgba(229, 9, 20, 0.38);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+      transform: scale(1.08);
+    }
+
+    .poster-icon {
+      font-size: 32px;
+      opacity: 0.35;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+    }
+
+    .poster-title-preview {
+      font-size: 11px;
+      font-weight: 700;
+      color: #a1a1aa;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      padding: 0 4px;
+    }
+
+    .card-info {
+      padding: 9px 10px 11px 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .card-meta {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--subtext);
+      margin-top: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* =========================================
+       3. ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK)
+       ========================================= */
+    .bottom-nav {
+      position: fixed;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      height: var(--bottom-bar-h);
+      background: rgba(20, 20, 26, 0.86);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      z-index: 80;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #828290;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 6px 12px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.18s, transform 0.15s;
+    }
+
+    .nav-btn .icon {
+      font-size: 19px;
+      transition: transform 0.18s;
+    }
+
+    .nav-btn.active {
+      color: #ffffff;
+    }
+
+    .nav-btn.active .icon {
+      filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.75));
+      transform: translateY(-1px) scale(1.08);
+    }
+
+    .nav-btn:active {
+      transform: scale(0.9);
+    }
+
+    .nav-btn-icon-only .icon {
+      font-size: 22px;
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: 3px;
+      right: 7px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 10px;
+      font-weight: 900;
+      display: none;
+      box-shadow: 0 2px 6px rgba(229, 9, 20, 0.5);
+    }
+
+    /* =========================================
+       4. ШТОРКА ФИЛЬМА И МОДАЛКА РУЛЕТКИ
+       ========================================= */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet {
+      width: 100%;
+      background: linear-gradient(180deg, #1b1b22 0%, #131318 100%);
+      border-radius: 24px 24px 0 0;
+      padding: 22px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.2, 0.85, 0.2, 1);
+      max-height: 86vh;
+      overflow-y: auto;
+    }
+
+    .overlay.active .sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 42px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      margin: 0 auto 18px auto;
+    }
+
+    .sheet-title {
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .sheet-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .sheet-meta-item {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 8px;
+      color: #d1d1db;
+    }
+
+    .sheet-actors {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #bbb;
+      margin-bottom: 16px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .sheet-actors span {
+      color: var(--subtext);
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 700;
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn-watch {
+      flex: 1;
+      background: linear-gradient(135deg, #e50914 0%, #b80710 100%);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.45);
+      transition: opacity 0.15s;
+    }
+
+    .btn-watch:active {
+      opacity: 0.88;
+    }
+
+    .btn-sheet-pepper {
+      width: 52px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-sheet-pepper.active {
+      background: rgba(229, 9, 20, 0.35);
+      border-color: var(--accent);
+      box-shadow: 0 0 14px rgba(229, 9, 20, 0.5);
+    }
+
+    /* Модальное окно РУЛЕТКИ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.86);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-window {
+      width: 100%;
+      max-width: 360px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: radial-gradient(circle at 50% 0%, #261219 0%, #15141c 65%, #101014 100%);
+      border: 1px solid rgba(229, 9, 20, 0.45);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 9, 20, 0.22);
+      border-radius: 24px;
+      padding: 24px 20px;
+      position: relative;
+      transform: scale(0.92);
+      transition: transform 0.26s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    }
+
+    .modal-overlay.active .modal-window {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #aaa;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .modal-meta {
+      font-size: 12px;
+      color: #bbb;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 12px;
+      border-radius: 12px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-reroll {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 14px;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
     }
 
     /* VIP Студии & Актёры */
@@ -543,343 +1036,6 @@
       font-weight: 600;
     }
 
-    /* Сетка фильмов */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.15s ease;
-    }
-
-    .card:active {
-      transform: scale(0.97);
-    }
-
-    .poster-box {
-      width: 100%;
-      aspect-ratio: 2 / 3;
-      background: linear-gradient(145deg, #1d1d24, #101014);
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .card-year {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 600;
-    }
-
-    .card-pepper {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .card-pepper.active {
-      background: rgba(229, 9, 20, 0.3);
-      border-color: var(--accent);
-    }
-
-    .poster-icon {
-      font-size: 30px;
-      opacity: 0.3;
-      margin-bottom: 6px;
-    }
-
-    .poster-title-preview {
-      font-size: 11px;
-      font-weight: 600;
-      color: #aaa;
-      line-height: 1.25;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-info {
-      padding: 8px 10px 10px 10px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-meta {
-      font-size: 11px;
-      color: var(--subtext);
-      margin-top: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .tab-view {
-      display: none;
-    }
-
-    .tab-view.active {
-      display: block;
-    }
-
-    .placeholder-view {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--subtext);
-    }
-
-    .placeholder-view .icon {
-      font-size: 44px;
-      margin-bottom: 12px;
-      opacity: 0.7;
-    }
-
-    /* Переключатель в "Перчике" */
-    .media-switcher {
-      display: flex;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 4px;
-      margin-top: 6px;
-      margin-bottom: 12px;
-      gap: 6px;
-    }
-
-    .media-tab-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--subtext);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 9px 12px;
-      border-radius: 9px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .media-tab-btn.active {
-      background: rgba(229, 9, 20, 0.22);
-      color: #fff;
-      border: 1px solid rgba(229, 9, 20, 0.45);
-      box-shadow: 0 0 12px rgba(229, 9, 20, 0.2);
-    }
-
-    .media-header-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      padding: 0 4px;
-    }
-
-    .media-clear-btn {
-      background: none;
-      border: none;
-      color: var(--subtext);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 4px 6px;
-      opacity: 0.8;
-      display: none;
-    }
-
-    .media-clear-btn:active {
-      color: var(--accent);
-    }
-
-    /* Нижняя навигация */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: var(--bottom-bar-h);
-      background: rgba(18, 18, 22, 0.94);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      border-top: 1px solid var(--border);
-      z-index: 80;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    .nav-btn {
-      background: none;
-      border: none;
-      color: #888;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      padding: 6px 12px;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .nav-btn .icon {
-      font-size: 18px;
-    }
-
-    .nav-btn.active {
-      color: #fff;
-    }
-
-    .nav-btn.active .icon {
-      filter: drop-shadow(0 0 6px rgba(229, 9, 20, 0.6));
-    }
-
-    .nav-btn-icon-only .icon {
-      font-size: 22px;
-    }
-
-    .nav-badge {
-      position: absolute;
-      top: 4px;
-      right: 8px;
-      background: var(--accent);
-      color: #fff;
-      font-size: 9px;
-      padding: 1px 4px;
-      border-radius: 6px;
-      font-weight: 800;
-      display: none;
-    }
-
-    /* Шторка подробностей */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.78);
-      backdrop-filter: blur(5px);
-      z-index: 100;
-      display: flex;
-      align-items: flex-end;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    .overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .sheet {
-      width: 100%;
-      background: #18181d;
-      border-radius: 22px 22px 0 0;
-      padding: 20px;
-      border-top: 1px solid var(--border);
-      transform: translateY(100%);
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    .overlay.active .sheet {
-      transform: translateY(0);
-    }
-
-    .sheet-handle {
-      width: 38px;
-      height: 4px;
-      background: #444;
-      border-radius: 2px;
-      margin: 0 auto 16px auto;
-    }
-
-    .sheet-title {
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.3;
-      margin-bottom: 8px;
-    }
-
-    .sheet-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .sheet-meta-item {
-      background: rgba(255, 255, 255, 0.05);
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      color: #ccc;
-    }
-
-    .sheet-actors {
-      font-size: 12px;
-      line-height: 1.5;
-      color: #bbb;
-      margin-bottom: 16px;
-      background: rgba(0, 0, 0, 0.25);
-      padding: 10px;
-      border-radius: 8px;
-    }
-
-    .sheet-actors span {
-      color: var(--subtext);
-      display: block;
-      margin-bottom: 2px;
-    }
-
     /* Франшизы */
     .franchise-section {
       margin-bottom: 18px;
@@ -948,143 +1104,83 @@
       color: var(--subtext);
     }
 
-    .sheet-actions {
-      display: flex;
-      gap: 10px;
+    .tab-view {
+      display: none;
     }
 
-    .btn-watch {
-      flex: 1;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
+    .tab-view.active {
+      display: block;
     }
 
-    .btn-sheet-pepper {
-      width: 50px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+    .placeholder-view {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--subtext);
     }
 
-    .btn-sheet-pepper.active {
-      background: rgba(229, 9, 20, 0.35);
-      border-color: var(--accent);
-    }
-
-    /* Модальное окно РУЛЕТКИ */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 120;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-window {
-      width: 100%;
-      max-width: 360px;
-      max-height: 85vh;
-      overflow-y: auto;
-      background: #191920;
-      border: 1px solid rgba(229, 9, 20, 0.4);
-      box-shadow: 0 0 30px rgba(229, 9, 20, 0.25);
-      border-radius: 20px;
-      padding: 22px 18px;
-      position: relative;
-      transform: scale(0.9);
-      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .modal-overlay.active .modal-window {
-      transform: scale(1);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: rgba(255, 255, 255, 0.08);
-      border: none;
-      color: #aaa;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .modal-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-    }
-
-    .modal-title {
-      font-size: 17px;
-      font-weight: 800;
-      line-height: 1.3;
+    .placeholder-view .icon {
+      font-size: 44px;
       margin-bottom: 12px;
+      opacity: 0.7;
     }
 
-    .modal-meta {
-      font-size: 12px;
-      color: #bbb;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 10px;
-      border-radius: 10px;
-      line-height: 1.6;
-      margin-bottom: 14px;
-    }
-
-    .modal-buttons {
+    .media-switcher {
       display: flex;
-      gap: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 4px;
+      margin-top: 6px;
+      margin-bottom: 14px;
+      gap: 6px;
     }
 
-    .btn-reroll {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border);
-      color: #fff;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 14px;
+    .media-tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--subtext);
+      font-size: 13px;
       font-weight: 700;
+      padding: 10px 12px;
+      border-radius: 11px;
+      cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .media-tab-btn.active {
+      background: rgba(229, 9, 20, 0.22);
+      color: #fff;
+      border: 1px solid rgba(229, 9, 20, 0.45);
+      box-shadow: 0 0 12px rgba(229, 9, 20, 0.2);
+    }
+
+    .media-header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding: 0 4px;
+    }
+
+    .media-clear-btn {
+      background: none;
+      border: none;
+      color: var(--subtext);
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
+      padding: 4px 6px;
+      opacity: 0.8;
+      display: none;
+    }
+
+    .media-clear-btn:active {
+      color: var(--accent);
     }
 
     .status-msg {
@@ -1097,7 +1193,7 @@
 </head>
 <body>
 
-  <!-- Поиск -->
+  <!-- Шапка с живым поиском -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
@@ -1119,7 +1215,7 @@
   <!-- Вкладка: НОВИНКИ -->
   <div id="tab-feed" class="tab-view active">
     
-    <!-- Витринный блок (скрывается при активном текстовом поиске) -->
+    <!-- Витринный блок -->
     <div id="feed-showcase">
       
       <!-- 1. Hero-Баннер: Фильм дня -->
@@ -1225,7 +1321,7 @@
     </div>
   </div>
 
-  <!-- Нижняя навигация -->
+  <!-- ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK) -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="icon">🎬</span>
@@ -1331,7 +1427,6 @@
 
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
     
-    // Хранилища
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
     let watchHistory = JSON.parse(localStorage.getItem('sinners_history') || '[]');
 
@@ -1537,10 +1632,9 @@
     }
 
     // ====================================================
-    // ЛОГИКА ВИТРИНЫ НОВИНОК (HERO + КАРУСЕЛЬ 20 + СТРАНЫ)
+    // ВИТРИНА НОВИНОК (HERO + КАРУСЕЛЬ 20 + СТРАНЫ)
     // ====================================================
     async function loadFeedShowcase() {
-      // 1. Загрузка 20 свежих релизов
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=20`, {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
@@ -1555,24 +1649,25 @@
           card.className = 'carousel-card';
           card.onclick = () => showMovieDetails(m);
 
+          const mono = m.studio ? getMonogram(m.studio) : 'TS';
+
           card.innerHTML = `
             <div class="carousel-poster">
               <span class="card-year">${m.year || ''}</span>
+              <div class="poster-watermark" style="font-size: 60px;">${mono}</div>
               <div>
                 <div class="poster-icon" style="font-size:24px;">🎬</div>
               </div>
             </div>
             <div class="carousel-info">
               <div class="carousel-title">${m.title || 'Фильм'}</div>
-              <div class="carousel-meta">${m.country_flag || ''} ${m.studio || 'The Sinners'}</div>
+              <div class="carousel-meta">${m.country_flag ? m.country_flag + ' ' : ''}${m.studio || 'The Sinners'}</div>
             </div>
           `;
           carousel.appendChild(card);
         });
 
-        // 2. Назначаем Hero-фильм дня (берем один из топа)
         if (recents.length > 0) {
-          // Выбираем фильм по номеру дня года, чтобы каждый день был стабильно свой релиз
           const now = new Date();
           const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
           heroMovie = recents[dayOfYear % recents.length];
@@ -1617,7 +1712,6 @@
       if (heroMovie) toggleFavorite(heroMovie);
     }
 
-    // Фильтр по странам
     function filterByCountry(country, btn) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       currentCountry = country;
@@ -1715,7 +1809,6 @@
           }
           statusEl.innerText = `Найдено студий: ${studios.length}`;
 
-          // VIP ТОП СТУДИЯ
           const topStudio = studios[0];
           const topMono = getMonogram(topStudio.name);
           const topBanner = document.createElement('div');
@@ -1732,7 +1825,6 @@
           `;
           wrap.appendChild(topBanner);
 
-          // СЕТКА ОСТАЛЬНЫХ СТУДИЙ
           if (studios.length > 1) {
             const secTitle = document.createElement('div');
             secTitle.className = 'section-subtitle';
@@ -1820,7 +1912,6 @@
           }
           statusEl.innerText = `Найдено актёров: ${actors.length}`;
 
-          // VIP ТОП АКТЁР
           const topActor = actors[0];
           const topMono = getMonogram(topActor.name);
           const topBanner = document.createElement('div');
@@ -1837,7 +1928,6 @@
           `;
           wrap.appendChild(topBanner);
 
-          // СЕТКА ОСТАЛЬНЫХ АКТЁРОВ
           if (actors.length > 1) {
             const secTitle = document.createElement('div');
             secTitle.className = 'section-subtitle';
@@ -1885,7 +1975,8 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
       searchInput.value = query;
       currentSearch = query;
-      searchClear.style.display = 'block';
+      searchClear.style.display = 'flex';
+      if (feedShowcase) feedShowcase.style.display = 'none';
       switchTab('feed');
       fetchMovies(true);
     }
@@ -2049,13 +2140,11 @@
 
       let endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
-      // Фильтр поиска
       if (currentSearch.trim()) {
         const query = encodeURIComponent(`*${currentSearch.trim()}*`);
         endpoint += `&or=(title.ilike.${query},studio.ilike.${query},actors.ilike.${query})`;
       }
 
-      // Фильтр по стране
       if (currentCountry) {
         const cQuery = encodeURIComponent(`*${currentCountry}*`);
         endpoint += `&country=ilike.${cQuery}`;
@@ -2102,6 +2191,7 @@
       card.onclick = () => showMovieDetails(m);
 
       const favClass = isFav(m.id) ? 'active' : '';
+      const mono = m.studio ? getMonogram(m.studio) : 'TS';
 
       card.innerHTML = `
         <div class="poster-box">
@@ -2109,6 +2199,7 @@
             🌶️
           </div>
           <span class="card-year">${m.year || ''}</span>
+          <div class="poster-watermark">${mono}</div>
           <div>
             <div class="poster-icon">🎬</div>
             <div class="poster-title-preview">${m.title || 'Фильм'}</div>
@@ -2124,10 +2215,9 @@
       return card;
     }
 
-    // Слушатель поиска: при вводе текста скрываем витрину, оставляя только результаты
     searchInput.addEventListener('input', (e) => {
       const val = e.target.value;
-      searchClear.style.display = val ? 'block' : 'none';
+      searchClear.style.display = val ? 'flex' : 'none';
 
       if (feedShowcase) {
         feedShowcase.style.display = val.trim() ? 'none' : 'block';
@@ -2203,7 +2293,6 @@
       }
     }
 
-    // Инициализация приложения
     updateFavCounter();
     loadFeedShowcase();
     fetchMovies();
