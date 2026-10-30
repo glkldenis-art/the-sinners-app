@@ -152,12 +152,14 @@
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
-    /* Студии */
-    .studios-wrap {
+    /* =========================================
+       СТУДИИ & АКТЁРЫ (ЕДИНЫЙ VIP-ДИЗАЙН)
+       ========================================= */
+    .studios-wrap, .actors-wrap {
       margin-top: 6px;
     }
 
-    .studio-top-banner {
+    .vip-banner {
       background: linear-gradient(135deg, #24161c 0%, #15151c 100%);
       border: 1px solid rgba(229, 9, 20, 0.45);
       border-radius: 16px;
@@ -173,11 +175,11 @@
       transition: transform 0.15s ease;
     }
 
-    .studio-top-banner:active {
+    .vip-banner:active {
       transform: scale(0.98);
     }
 
-    .studio-top-badge {
+    .vip-badge {
       display: inline-flex;
       align-items: center;
       background: var(--accent);
@@ -190,7 +192,7 @@
       letter-spacing: 0.5px;
     }
 
-    .studio-top-title {
+    .vip-title {
       font-size: 18px;
       font-weight: 900;
       color: #fff;
@@ -198,20 +200,20 @@
       margin-bottom: 4px;
     }
 
-    .studio-top-desc {
+    .vip-desc {
       font-size: 11px;
       color: var(--subtext);
       line-height: 1.3;
     }
 
-    .studio-top-count {
+    .vip-count {
       font-size: 11px;
       color: #f59e0b;
       font-weight: 700;
       margin-top: 6px;
     }
 
-    .studio-top-emblem {
+    .vip-avatar {
       width: 58px;
       height: 58px;
       border-radius: 50%;
@@ -228,7 +230,7 @@
       margin-left: 12px;
     }
 
-    .studios-section-title {
+    .section-subtitle {
       font-size: 11px;
       font-weight: 700;
       color: var(--subtext);
@@ -238,13 +240,13 @@
       padding-left: 2px;
     }
 
-    .studios-grid {
+    .catalog-tiles-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
-    .studio-tile {
+    .catalog-tile {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -258,14 +260,14 @@
       transition: transform 0.15s ease, background 0.15s;
     }
 
-    .studio-tile:active {
+    .catalog-tile:active {
       transform: scale(0.96);
       background: rgba(255, 255, 255, 0.05);
     }
 
-    .studio-emblem {
-      width: 46px;
-      height: 46px;
+    .tile-avatar {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -277,7 +279,7 @@
       border-style: solid;
     }
 
-    .studio-tile-title {
+    .tile-title {
       font-size: 13px;
       font-weight: 700;
       color: #fff;
@@ -289,7 +291,7 @@
       overflow: hidden;
     }
 
-    .studio-tile-badge {
+    .tile-badge {
       font-size: 10px;
       color: var(--subtext);
       background: rgba(255, 255, 255, 0.05);
@@ -297,37 +299,6 @@
       padding: 2px 7px;
       border-radius: 6px;
       font-weight: 600;
-    }
-
-    /* Актёры */
-    .alpha-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .alpha-item {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .alpha-item:active {
-      background: rgba(255, 255, 255, 0.08);
-      transform: scale(0.99);
-    }
-
-    .alpha-item-icon {
-      margin-right: 10px;
-      opacity: 0.7;
     }
 
     /* Сетка фильмов */
@@ -606,7 +577,7 @@
       margin-bottom: 2px;
     }
 
-    /* БЛОК СВЯЗАННЫХ ЧАСТЕЙ (ФРАНШИЗА) */
+    /* Франшизы */
     .franchise-section {
       margin-bottom: 18px;
     }
@@ -855,10 +826,10 @@
     <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
   </div>
 
-  <!-- Вкладка: АКТЁРЫ -->
+  <!-- Вкладка: АКТЁРЫ (VIP-Баннер + Сетка аватаров) -->
   <div id="tab-actors" class="tab-view">
     <div class="alphabet-scroll" id="actors-alphabet"></div>
-    <div class="alpha-list" id="actors-list"></div>
+    <div class="actors-wrap" id="actors-wrap"></div>
     <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
   </div>
 
@@ -895,7 +866,7 @@
     </button>
   </nav>
 
-  <!-- Шторка подробностей фильма -->
+  <!-- Шторка фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -903,7 +874,6 @@
       <div class="sheet-meta-row" id="sheet-meta"></div>
       <div class="sheet-actors" id="sheet-actors"></div>
       
-      <!-- Блок связанных частей франшизы -->
       <div id="sheet-franchise" class="franchise-section" style="display: none;">
         <div class="franchise-title">🍿 Другие части серии:</div>
         <div class="franchise-scroll" id="sheet-franchise-list"></div>
@@ -920,7 +890,7 @@
     </div>
   </div>
 
-  <!-- Модальное окно РУЛЕТКИ -->
+  <!-- Окно РУЛЕТКИ -->
   <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
@@ -932,7 +902,6 @@
         Подождите, крутим барабан...
       </div>
 
-      <!-- Блок связанных частей в рулетке -->
       <div id="roulette-franchise" class="franchise-section" style="display: none;">
         <div class="franchise-title">🍿 Другие части этой серии:</div>
         <div class="franchise-scroll" id="roulette-franchise-list"></div>
@@ -978,7 +947,8 @@
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
 
-    const STUDIO_PALETTE = [
+    // Цветовая палитра монограмм
+    const BRAND_PALETTE = [
       { bg: '#251217', color: '#ff4d5a', border: '#e50914' },
       { bg: '#0e1d2b', color: '#38bdf8', border: '#0284c7' },
       { bg: '#221a0d', color: '#fbbf24', border: '#d97706' },
@@ -987,13 +957,13 @@
       { bg: '#261221', color: '#f472b6', border: '#db2777' }
     ];
 
-    function getStudioTheme(name) {
+    function getThemeForName(name) {
       let hash = 0;
       for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      return STUDIO_PALETTE[Math.abs(hash) % STUDIO_PALETTE.length];
+      return BRAND_PALETTE[Math.abs(hash) % BRAND_PALETTE.length];
     }
 
-    function getStudioMonogram(name) {
+    function getMonogram(name) {
       const parts = name.split(/\s+/).filter(Boolean);
       if (parts.length >= 2) {
         return (parts[0][0] + parts[1][0]).toUpperCase();
@@ -1091,7 +1061,7 @@
     }
 
     // ====================================================
-    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ + АКТЁРЫ)
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ + АКТЁРЫ В ЕДИНОМ СТИЛЕ)
     // ====================================================
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
@@ -1172,57 +1142,59 @@
           }
           statusEl.innerText = `Найдено студий: ${studios.length}`;
 
-          // ТОП СТУДИЯ (Флагманский VIP-Баннер)
+          // VIP ТОП СТУДИЯ
           const topStudio = studios[0];
-          const topMono = getStudioMonogram(topStudio.name);
+          const topMono = getMonogram(topStudio.name);
           const topBanner = document.createElement('div');
-          topBanner.className = 'studio-top-banner';
+          topBanner.className = 'vip-banner';
           topBanner.onclick = () => filterFeedByQuery(topStudio.name);
           topBanner.innerHTML = `
             <div>
-              <div class="studio-top-badge">★ ТОП СТУДИЯ</div>
-              <div class="studio-top-title">${topStudio.name}</div>
-              <div class="studio-top-desc">Флагманская коллекция студии</div>
-              <div class="studio-top-count">${topStudio.count} ${getWordForm(topStudio.count, ['релиз', 'релиза', 'релизов'])} в каталоге</div>
+              <div class="vip-badge">★ ТОП СТУДИЯ</div>
+              <div class="vip-title">${topStudio.name}</div>
+              <div class="vip-desc">Флагманская коллекция студии</div>
+              <div class="vip-count">${topStudio.count} ${getWordForm(topStudio.count, ['релиз', 'релиза', 'релизов'])} в каталоге</div>
             </div>
-            <div class="studio-top-emblem">${topMono}</div>
+            <div class="vip-avatar">${topMono}</div>
           `;
           wrap.appendChild(topBanner);
 
-          // ОСТАЛЬНЫЕ СТУДИИ (Сетка 2x2)
+          // СЕТКА ОСТАЛЬНЫХ СТУДИЙ
           if (studios.length > 1) {
             const secTitle = document.createElement('div');
-            secTitle.className = 'studios-section-title';
+            secTitle.className = 'section-subtitle';
             secTitle.innerText = `Остальные студии на букву ${letter}:`;
             wrap.appendChild(secTitle);
 
-            const grid = document.createElement('div');
-            grid.className = 'studios-grid';
+            const gridEl = document.createElement('div');
+            gridEl.className = 'catalog-tiles-grid';
 
             for (let i = 1; i < studios.length; i++) {
               const st = studios[i];
-              const theme = getStudioTheme(st.name);
-              const mono = getStudioMonogram(st.name);
+              const theme = getThemeForName(st.name);
+              const mono = getMonogram(st.name);
 
               const tile = document.createElement('div');
-              tile.className = 'studio-tile';
+              tile.className = 'catalog-tile';
               tile.onclick = () => filterFeedByQuery(st.name);
-
               tile.innerHTML = `
-                <div class="studio-emblem" style="background:${theme.bg}; color:${theme.color}; border-color:${theme.border};">
+                <div class="tile-avatar" style="background:${theme.bg}; color:${theme.color}; border-color:${theme.border};">
                   ${mono}
                 </div>
-                <div class="studio-tile-title">${st.name}</div>
-                <div class="studio-tile-badge">${st.count} ${getWordForm(st.count, ['фильм', 'фильма', 'фильмов'])}</div>
+                <div class="tile-title">${st.name}</div>
+                <div class="tile-badge">${st.count} ${getWordForm(st.count, ['фильм', 'фильма', 'фильмов'])}</div>
               `;
-              grid.appendChild(tile);
+              gridEl.appendChild(tile);
             }
-            wrap.appendChild(grid);
+            wrap.appendChild(gridEl);
           }
 
         } else if (type === 'actors') {
-          const listEl = document.getElementById('actors-list');
-          listEl.innerHTML = '';
+          // ==============================
+          // КАТАЛОГ АКТЁРОВ: ТОП + СЕТКА
+          // ==============================
+          const wrap = document.getElementById('actors-wrap');
+          wrap.innerHTML = '';
 
           const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&actors=not.is.null&actors=ilike.*${letter}*&limit=1000`;
           const res = await fetch(endpoint, {
@@ -1231,11 +1203,12 @@
           const data = await res.json();
 
           const actorsMap = new Map();
+          const actorCounts = {};
 
           data.forEach(d => {
             if (!d.actors) return;
             const cleanStr = d.actors.replace(/#/g, ',');
-            const parts = cleanStr.split(/[,;\n]/);
+            const parts = cleanStr.split(/[,;\n\r/]/);
 
             parts.forEach(p => {
               let name = p.trim().replace(/^[\s,._-]+|[\s,._-]+$/g, '');
@@ -1252,12 +1225,24 @@
 
               if (isMatch) {
                 const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
-                if (!actorsMap.has(key)) actorsMap.set(key, name);
+                if (!actorsMap.has(key)) {
+                  actorsMap.set(key, name);
+                } else {
+                  const existing = actorsMap.get(key);
+                  if (name.includes(' ') && !existing.includes(' ')) {
+                    actorsMap.set(key, name);
+                  }
+                }
+                const canonicalName = actorsMap.get(key);
+                actorCounts[canonicalName] = (actorCounts[canonicalName] || 0) + 1;
               }
             });
           });
 
-          const actors = Array.from(actorsMap.values()).sort((a, b) => a.localeCompare(b));
+          const actors = Array.from(actorsMap.values()).map(ac => ({
+            name: ac,
+            count: actorCounts[ac] || 1
+          })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
           if (actors.length === 0) {
             statusEl.innerText = `На букву ${letter} актёров не найдено`;
@@ -1265,13 +1250,52 @@
           }
           statusEl.innerText = `Найдено актёров: ${actors.length}`;
 
-          actors.forEach(ac => {
-            const item = document.createElement('div');
-            item.className = 'alpha-item';
-            item.innerHTML = `<span><span class="alpha-item-icon">⭐</span>${ac}</span><span>›</span>`;
-            item.onclick = () => filterFeedByQuery(ac);
-            listEl.appendChild(item);
-          });
+          // 1. VIP ТОП АКТЁР
+          const topActor = actors[0];
+          const topMono = getMonogram(topActor.name);
+          const topBanner = document.createElement('div');
+          topBanner.className = 'vip-banner';
+          topBanner.onclick = () => filterFeedByQuery(topActor.name);
+          topBanner.innerHTML = `
+            <div>
+              <div class="vip-badge">★ ГЛАВНАЯ ЗВЕЗДА</div>
+              <div class="vip-title">${topActor.name}</div>
+              <div class="vip-desc">Лидер по числу релизов на букву ${letter}</div>
+              <div class="vip-count">${topActor.count} ${getWordForm(topActor.count, ['фильм', 'фильма', 'фильмов'])} в архиве</div>
+            </div>
+            <div class="vip-avatar">${topMono}</div>
+          `;
+          wrap.appendChild(topBanner);
+
+          // 2. СЕТКА ОСТАЛЬНЫХ АКТЁРОВ (2 в ряд)
+          if (actors.length > 1) {
+            const secTitle = document.createElement('div');
+            secTitle.className = 'section-subtitle';
+            secTitle.innerText = `Остальные актёры на букву ${letter}:`;
+            wrap.appendChild(secTitle);
+
+            const gridEl = document.createElement('div');
+            gridEl.className = 'catalog-tiles-grid';
+
+            for (let i = 1; i < actors.length; i++) {
+              const ac = actors[i];
+              const theme = getThemeForName(ac.name);
+              const mono = getMonogram(ac.name);
+
+              const tile = document.createElement('div');
+              tile.className = 'catalog-tile';
+              tile.onclick = () => filterFeedByQuery(ac.name);
+              tile.innerHTML = `
+                <div class="tile-avatar" style="background:${theme.bg}; color:${theme.color}; border-color:${theme.border};">
+                  ${mono}
+                </div>
+                <div class="tile-title">${ac.name}</div>
+                <div class="tile-badge">${ac.count} ${getWordForm(ac.count, ['фильм', 'фильма', 'фильмов'])}</div>
+              `;
+              gridEl.appendChild(tile);
+            }
+            wrap.appendChild(gridEl);
+          }
         }
       } catch (err) {
         statusEl.innerText = 'Ошибка загрузки данных';
@@ -1303,7 +1327,6 @@
       if (!title) return null;
       let t = title.trim().replace(/\s*\(\d{4}\)$/, '').trim();
 
-      // 1. Суффиксы: 1, 2, Part 2, Vol. 1, римские цифры
       const patterns = [
         /[:\s-]+(?:part|vol|volume|ep|episode)\.?\s*([0-9ivx]+)$/i,
         /[:\s-]+([0-9]+)$/i,
@@ -1319,7 +1342,6 @@
         }
       }
 
-      // 2. Разделители типа "Название Франшизы – Название Части"
       const delims = [' – ', ' - ', ' — ', ': '];
       for (let d of delims) {
         if (t.includes(d)) {
@@ -1330,7 +1352,6 @@
         }
       }
 
-      // 3. Начало названия (если первая часть без цифры 1)
       if (t.length >= 4) {
         return { query: `title=ilike.${encodeURIComponent(t)}%20*`, root: t };
       }
@@ -1575,7 +1596,6 @@
       document.getElementById('sheet-fav-btn').classList.toggle('active', isFav(m.id));
       document.getElementById('sheet-overlay').classList.add('active');
 
-      // Фоновый поиск других частей франшизы
       loadFranchiseParts(m, 'sheet');
     }
 
