@@ -35,6 +35,7 @@
       padding-bottom: calc(var(--bottom-bar-h) + 25px);
     }
 
+    /* Верхняя фиксированная шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -116,6 +117,7 @@
       cursor: pointer;
     }
 
+    /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
       gap: 6px;
@@ -152,6 +154,158 @@
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
+    /* =========================================
+       СТИЛИ ВКЛАДКИ «СТУДИИ» (ВАРИАНТ 3: ТОП + СЕТКА)
+       ========================================= */
+    .studios-wrap {
+      margin-top: 6px;
+    }
+
+    /* VIP Баннер топовой студии */
+    .studio-top-banner {
+      background: linear-gradient(135deg, #24161c 0%, #15151c 100%);
+      border: 1px solid rgba(229, 9, 20, 0.45);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.15);
+      transition: transform 0.15s ease;
+    }
+
+    .studio-top-banner:active {
+      transform: scale(0.98);
+    }
+
+    .studio-top-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .studio-top-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .studio-top-desc {
+      font-size: 11px;
+      color: var(--subtext);
+      line-height: 1.3;
+    }
+
+    .studio-top-count {
+      font-size: 11px;
+      color: #f59e0b;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .studio-top-emblem {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #2b1722;
+      border: 2px solid var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 900;
+      flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(229, 9, 20, 0.35);
+      margin-left: 12px;
+    }
+
+    .studios-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      padding-left: 2px;
+    }
+
+    /* Сетка остальных студий (2 в ряд) */
+    .studios-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .studio-tile {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 10px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, background 0.15s;
+    }
+
+    .studio-tile:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .studio-emblem {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      border-width: 1.5px;
+      border-style: solid;
+    }
+
+    .studio-tile-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .studio-tile-badge {
+      font-size: 10px;
+      color: var(--subtext);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    /* Список актёров */
     .alpha-list {
       display: flex;
       flex-direction: column;
@@ -182,6 +336,7 @@
       opacity: 0.7;
     }
 
+    /* Сетка фильмов */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -620,24 +775,28 @@
     </div>
   </div>
 
+  <!-- Вкладка: НОВИНКИ -->
   <div id="tab-feed" class="tab-view active">
     <div id="catalog-grid" class="grid"></div>
     <div id="scroll-status" class="status-msg">Загрузка релизов...</div>
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
+  <!-- Вкладка: СТУДИИ (Вариант 3: ТОП + Сетка) -->
   <div id="tab-studios" class="tab-view">
     <div class="alphabet-scroll" id="studios-alphabet"></div>
-    <div class="alpha-list" id="studios-list"></div>
+    <div class="studios-wrap" id="studios-wrap"></div>
     <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
   </div>
 
+  <!-- Вкладка: АКТЁРЫ -->
   <div id="tab-actors" class="tab-view">
     <div class="alphabet-scroll" id="actors-alphabet"></div>
     <div class="alpha-list" id="actors-list"></div>
     <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
   </div>
 
+  <!-- Вкладка: ИЗБРАННОЕ -->
   <div id="tab-favorites" class="tab-view">
     <div id="favorites-grid" class="grid"></div>
     <div id="favorites-empty" class="placeholder-view" style="display: none;">
@@ -647,6 +806,7 @@
     </div>
   </div>
 
+  <!-- Нижняя навигация -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="icon">🎬</span>
@@ -669,6 +829,7 @@
     </button>
   </nav>
 
+  <!-- Шторка фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -687,6 +848,7 @@
     </div>
   </div>
 
+  <!-- Модальное окно РУЛЕТКИ -->
   <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
@@ -737,6 +899,30 @@
 
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
+
+    // Цветовая палитра для монограмм студий
+    const STUDIO_PALETTE = [
+      { bg: '#251217', color: '#ff4d5a', border: '#e50914' },
+      { bg: '#0e1d2b', color: '#38bdf8', border: '#0284c7' },
+      { bg: '#221a0d', color: '#fbbf24', border: '#d97706' },
+      { bg: '#1c1328', color: '#c084fc', border: '#9333ea' },
+      { bg: '#0d2218', color: '#34d399', border: '#059669' },
+      { bg: '#261221', color: '#f472b6', border: '#db2777' }
+    ];
+
+    function getStudioTheme(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      return STUDIO_PALETTE[Math.abs(hash) % STUDIO_PALETTE.length];
+    }
+
+    function getStudioMonogram(name) {
+      const parts = name.split(/\s+/).filter(Boolean);
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return name.substring(0, 2).toUpperCase();
+    }
 
     const grid = document.getElementById('catalog-grid');
     const favoritesGrid = document.getElementById('favorites-grid');
@@ -827,7 +1013,9 @@
       favorites.forEach(m => favoritesGrid.appendChild(createCardElement(m)));
     }
 
-    // Алфавитный указатель
+    // ====================================================
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ: ВАРИАНТ 3 + АКТЁРЫ)
+    // ====================================================
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
       if (container.children.length > 0) return;
@@ -851,27 +1039,25 @@
     }
 
     async function loadAlphabetData(type, letter) {
-      const listEl = document.getElementById(`${type}-list`);
       const statusEl = document.getElementById(`${type}-status`);
-      listEl.innerHTML = '';
       statusEl.innerText = `Ищем на букву ${letter}...`;
 
       try {
         if (type === 'studios') {
-          // Ищем студии, где есть эта буква
+          const wrap = document.getElementById('studios-wrap');
+          wrap.innerHTML = '';
+
           const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=studio&studio=not.is.null&studio=ilike.*${letter}*&limit=1000`;
-          
           const res = await fetch(endpoint, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
           const data = await res.json();
           
-          // Дедупликация и разделение "BARE, Staxus"
           const studiosMap = new Map();
+          const studioCounts = {};
 
           data.forEach(d => {
             if (!d.studio) return;
-            // Делим по запятой или слэшу
             const parts = d.studio.split(/[,/]/);
             parts.forEach(p => {
               const name = p.trim();
@@ -883,23 +1069,26 @@
                 : (firstChar === letter.toUpperCase());
 
               if (isMatch) {
-                // Ключ без пробелов и дефисов для схлопывания BabeTwinks и Babe Twinks
                 const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
-                
                 if (!studiosMap.has(key)) {
                   studiosMap.set(key, name);
                 } else {
-                  // Выбираем вариант с пробелом, если попался
                   const existing = studiosMap.get(key);
                   if (name.includes(' ') && !existing.includes(' ')) {
                     studiosMap.set(key, name);
                   }
                 }
+                const canonicalName = studiosMap.get(key);
+                studioCounts[canonicalName] = (studioCounts[canonicalName] || 0) + 1;
               }
             });
           });
 
-          const studios = Array.from(studiosMap.values()).sort((a, b) => a.localeCompare(b));
+          // Сортировка: по количеству релизов, затем по алфавиту
+          const studios = Array.from(studiosMap.values()).map(st => ({
+            name: st,
+            count: studioCounts[st] || 1
+          })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
           if (studios.length === 0) {
             statusEl.innerText = `На букву ${letter} студий не найдено`;
@@ -907,18 +1096,59 @@
           }
           statusEl.innerText = `Найдено студий: ${studios.length}`;
 
-          studios.forEach(st => {
-            const item = document.createElement('div');
-            item.className = 'alpha-item';
-            item.innerHTML = `<span><span class="alpha-item-icon">🏢</span>${st}</span><span>›</span>`;
-            item.onclick = () => filterFeedByQuery(st);
-            listEl.appendChild(item);
-          });
+          // 1. ТОП СТУДИЯ (Флагманский VIP-Баннер)
+          const topStudio = studios[0];
+          const topMono = getStudioMonogram(topStudio.name);
+          const topBanner = document.createElement('div');
+          topBanner.className = 'studio-top-banner';
+          topBanner.onclick = () => filterFeedByQuery(topStudio.name);
+          topBanner.innerHTML = `
+            <div>
+              <div class="studio-top-badge">★ ТОП СТУДИЯ</div>
+              <div class="studio-top-title">${topStudio.name}</div>
+              <div class="studio-top-desc">Флагманская коллекция студии</div>
+              <div class="studio-top-count">${topStudio.count} ${getWordForm(topStudio.count, ['релиз', 'релиза', 'релизов'])} в каталоге</div>
+            </div>
+            <div class="studio-top-emblem">${topMono}</div>
+          `;
+          wrap.appendChild(topBanner);
+
+          // 2. ОСТАЛЬНЫЕ СТУДИИ (Сетка 2x2)
+          if (studios.length > 1) {
+            const secTitle = document.createElement('div');
+            secTitle.className = 'studios-section-title';
+            secTitle.innerText = `Остальные студии на букву ${letter}:`;
+            wrap.appendChild(secTitle);
+
+            const grid = document.createElement('div');
+            grid.className = 'studios-grid';
+
+            for (let i = 1; i < studios.length; i++) {
+              const st = studios[i];
+              const theme = getStudioTheme(st.name);
+              const mono = getStudioMonogram(st.name);
+
+              const tile = document.createElement('div');
+              tile.className = 'studio-tile';
+              tile.onclick = () => filterFeedByQuery(st.name);
+
+              tile.innerHTML = `
+                <div class="studio-emblem" style="background:${theme.bg}; color:${theme.color}; border-color:${theme.border};">
+                  ${mono}
+                </div>
+                <div class="studio-tile-title">${st.name}</div>
+                <div class="studio-tile-badge">${st.count} ${getWordForm(st.count, ['фильм', 'фильма', 'фильмов'])}</div>
+              `;
+              grid.appendChild(tile);
+            }
+            wrap.appendChild(grid);
+          }
 
         } else if (type === 'actors') {
-          // Ищем записи с актёрами
-          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&actors=not.is.null&actors=ilike.*${letter}*&limit=1000`;
+          const listEl = document.getElementById('actors-list');
+          listEl.innerHTML = '';
 
+          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&actors=not.is.null&actors=ilike.*${letter}*&limit=1000`;
           const res = await fetch(endpoint, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
@@ -928,8 +1158,6 @@
 
           data.forEach(d => {
             if (!d.actors) return;
-
-            // Поддерживаем и "Zach Taylor, Sean Ford", и "#JacobRyan #MickeyTaylor"
             const cleanStr = d.actors.replace(/#/g, ',');
             const parts = cleanStr.split(/[,;\n]/);
 
@@ -937,7 +1165,6 @@
               let name = p.trim().replace(/^[\s,._-]+|[\s,._-]+$/g, '');
               if (!name || name.length < 2) return;
 
-              // Разделяем CamelCase "JacobRyan" -> "Jacob Ryan"
               if (!name.includes(' ') && /[a-z][A-Z]/.test(name)) {
                 name = name.replace(/([a-z])([A-Z])/g, '$1 $2');
               }
@@ -949,9 +1176,7 @@
 
               if (isMatch) {
                 const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
-                if (!actorsMap.has(key)) {
-                  actorsMap.set(key, name);
-                }
+                if (!actorsMap.has(key)) actorsMap.set(key, name);
               }
             });
           });
@@ -977,6 +1202,15 @@
       }
     }
 
+    function getWordForm(num, words) {
+      num = Math.abs(num) % 100;
+      const n1 = num % 10;
+      if (num > 10 && num < 20) return words[2];
+      if (n1 > 1 && n1 < 5) return words[1];
+      if (n1 === 1) return words[0];
+      return words[2];
+    }
+
     function filterFeedByQuery(query) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
       searchInput.value = query;
@@ -986,7 +1220,9 @@
       fetchMovies(true);
     }
 
-    // Рулетка
+    // ====================================================
+    // РУЛЕТКА
+    // ====================================================
     async function spinRoulette() {
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
       if (tg?.BackButton) tg.BackButton.show();
@@ -1030,7 +1266,9 @@
       if (tg?.BackButton) tg.BackButton.hide();
     }
 
-    // Загрузка новинок
+    // ====================================================
+    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ
+    // ====================================================
     async function fetchMovies(isReset = false) {
       if (isLoading || (!hasMore && !isReset)) return;
       isLoading = true;
