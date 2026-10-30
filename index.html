@@ -35,7 +35,6 @@
       padding-bottom: calc(var(--bottom-bar-h) + 25px);
     }
 
-    /* Верхняя закрепленная шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -117,7 +116,6 @@
       cursor: pointer;
     }
 
-    /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
       gap: 6px;
@@ -154,7 +152,6 @@
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
-    /* Список студий / актёров */
     .alpha-list {
       display: flex;
       flex-direction: column;
@@ -185,7 +182,6 @@
       opacity: 0.7;
     }
 
-    /* Сетка фильмов */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -298,7 +294,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Экраны */
     .tab-view {
       display: none;
     }
@@ -319,7 +314,6 @@
       opacity: 0.7;
     }
 
-    /* Нижняя навигация */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -382,7 +376,6 @@
       display: none;
     }
 
-    /* 1. Шторка подробностей */
     .overlay {
       position: fixed;
       inset: 0;
@@ -497,7 +490,6 @@
       border-color: var(--accent);
     }
 
-    /* 2. Модальное окно РУЛЕТКИ (по центру экрана) */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -610,7 +602,6 @@
 </head>
 <body>
 
-  <!-- Шапка с поиском -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
@@ -629,28 +620,24 @@
     </div>
   </div>
 
-  <!-- Вкладка: НОВИНКИ -->
   <div id="tab-feed" class="tab-view active">
     <div id="catalog-grid" class="grid"></div>
     <div id="scroll-status" class="status-msg">Загрузка релизов...</div>
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
-  <!-- Вкладка: СТУДИИ -->
   <div id="tab-studios" class="tab-view">
     <div class="alphabet-scroll" id="studios-alphabet"></div>
     <div class="alpha-list" id="studios-list"></div>
     <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
   </div>
 
-  <!-- Вкладка: АКТЁРЫ -->
   <div id="tab-actors" class="tab-view">
     <div class="alphabet-scroll" id="actors-alphabet"></div>
     <div class="alpha-list" id="actors-list"></div>
     <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
   </div>
 
-  <!-- Вкладка: ИЗБРАННОЕ -->
   <div id="tab-favorites" class="tab-view">
     <div id="favorites-grid" class="grid"></div>
     <div id="favorites-empty" class="placeholder-view" style="display: none;">
@@ -660,7 +647,6 @@
     </div>
   </div>
 
-  <!-- Нижняя панель -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="icon">🎬</span>
@@ -683,7 +669,6 @@
     </button>
   </nav>
 
-  <!-- Шторка фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -702,7 +687,6 @@
     </div>
   </div>
 
-  <!-- Окно РУЛЕТКИ -->
   <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
@@ -874,14 +858,48 @@
 
       try {
         if (type === 'studios') {
-          const filter = letter === '#' ? 'studio=not.ilike.*' : `studio=ilike.${letter}*`;
-          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=studio&${filter}&limit=600`;
+          // Ищем студии, где есть эта буква
+          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=studio&studio=not.is.null&studio=ilike.*${letter}*&limit=1000`;
           
           const res = await fetch(endpoint, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
           const data = await res.json();
-          const studios = Array.from(new Set(data.map(d => d.studio?.trim()).filter(Boolean))).sort();
+          
+          // Дедупликация и разделение "BARE, Staxus"
+          const studiosMap = new Map();
+
+          data.forEach(d => {
+            if (!d.studio) return;
+            // Делим по запятой или слэшу
+            const parts = d.studio.split(/[,/]/);
+            parts.forEach(p => {
+              const name = p.trim();
+              if (!name) return;
+
+              const firstChar = name.charAt(0).toUpperCase();
+              const isMatch = (letter === '#') 
+                ? !/[A-Z]/i.test(firstChar) 
+                : (firstChar === letter.toUpperCase());
+
+              if (isMatch) {
+                // Ключ без пробелов и дефисов для схлопывания BabeTwinks и Babe Twinks
+                const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
+                
+                if (!studiosMap.has(key)) {
+                  studiosMap.set(key, name);
+                } else {
+                  // Выбираем вариант с пробелом, если попался
+                  const existing = studiosMap.get(key);
+                  if (name.includes(' ') && !existing.includes(' ')) {
+                    studiosMap.set(key, name);
+                  }
+                }
+              }
+            });
+          });
+
+          const studios = Array.from(studiosMap.values()).sort((a, b) => a.localeCompare(b));
 
           if (studios.length === 0) {
             statusEl.innerText = `На букву ${letter} студий не найдено`;
@@ -898,26 +916,47 @@
           });
 
         } else if (type === 'actors') {
-          const filter = `actors=ilike.*%23${letter}*`;
-          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&${filter}&limit=600`;
+          // Ищем записи с актёрами
+          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&actors=not.is.null&actors=ilike.*${letter}*&limit=1000`;
 
           const res = await fetch(endpoint, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
           const data = await res.json();
 
-          const actorsSet = new Set();
-          const regex = new RegExp(`#(${letter}[a-zA-Z0-9_]+)`, 'gi');
+          const actorsMap = new Map();
 
           data.forEach(d => {
             if (!d.actors) return;
-            let match;
-            while ((match = regex.exec(d.actors)) !== null) {
-              actorsSet.add(match[1]);
-            }
+
+            // Поддерживаем и "Zach Taylor, Sean Ford", и "#JacobRyan #MickeyTaylor"
+            const cleanStr = d.actors.replace(/#/g, ',');
+            const parts = cleanStr.split(/[,;\n]/);
+
+            parts.forEach(p => {
+              let name = p.trim().replace(/^[\s,._-]+|[\s,._-]+$/g, '');
+              if (!name || name.length < 2) return;
+
+              // Разделяем CamelCase "JacobRyan" -> "Jacob Ryan"
+              if (!name.includes(' ') && /[a-z][A-Z]/.test(name)) {
+                name = name.replace(/([a-z])([A-Z])/g, '$1 $2');
+              }
+
+              const firstChar = name.charAt(0).toUpperCase();
+              const isMatch = (letter === '#') 
+                ? !/[A-Z]/i.test(firstChar) 
+                : (firstChar === letter.toUpperCase());
+
+              if (isMatch) {
+                const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
+                if (!actorsMap.has(key)) {
+                  actorsMap.set(key, name);
+                }
+              }
+            });
           });
 
-          const actors = Array.from(actorsSet).sort();
+          const actors = Array.from(actorsMap.values()).sort((a, b) => a.localeCompare(b));
 
           if (actors.length === 0) {
             statusEl.innerText = `На букву ${letter} актёров не найдено`;
@@ -1073,7 +1112,6 @@
       return card;
     }
 
-    // Поиск
     searchInput.addEventListener('input', (e) => {
       const val = e.target.value;
       searchClear.style.display = val ? 'block' : 'none';
@@ -1093,7 +1131,6 @@
       fetchMovies(true);
     }
 
-    // Скролл
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !isLoading && hasMore && currentTab === 'feed') {
         fetchMovies();
@@ -1102,7 +1139,6 @@
 
     observer.observe(document.getElementById('scroll-sentinel'));
 
-    // Шторка
     function showMovieDetails(m) {
       activeMovie = m;
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
