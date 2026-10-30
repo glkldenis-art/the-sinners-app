@@ -35,7 +35,6 @@
       padding-bottom: calc(var(--bottom-bar-h) + 25px);
     }
 
-    /* Верхняя фиксированная шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -117,7 +116,6 @@
       cursor: pointer;
     }
 
-    /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
       gap: 6px;
@@ -154,14 +152,11 @@
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
-    /* =========================================
-       СТИЛИ ВКЛАДКИ «СТУДИИ» (ВАРИАНТ 3: ТОП + СЕТКА)
-       ========================================= */
+    /* Студии */
     .studios-wrap {
       margin-top: 6px;
     }
 
-    /* VIP Баннер топовой студии */
     .studio-top-banner {
       background: linear-gradient(135deg, #24161c 0%, #15151c 100%);
       border: 1px solid rgba(229, 9, 20, 0.45);
@@ -243,7 +238,6 @@
       padding-left: 2px;
     }
 
-    /* Сетка остальных студий (2 в ряд) */
     .studios-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -305,7 +299,7 @@
       font-weight: 600;
     }
 
-    /* Список актёров */
+    /* Актёры */
     .alpha-list {
       display: flex;
       flex-direction: column;
@@ -531,6 +525,7 @@
       display: none;
     }
 
+    /* Шторка подробностей */
     .overlay {
       position: fixed;
       inset: 0;
@@ -599,7 +594,7 @@
       font-size: 12px;
       line-height: 1.5;
       color: #bbb;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       background: rgba(0, 0, 0, 0.25);
       padding: 10px;
       border-radius: 8px;
@@ -609,6 +604,74 @@
       color: var(--subtext);
       display: block;
       margin-bottom: 2px;
+    }
+
+    /* БЛОК СВЯЗАННЫХ ЧАСТЕЙ (ФРАНШИЗА) */
+    .franchise-section {
+      margin-bottom: 18px;
+    }
+
+    .franchise-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .franchise-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .franchise-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .franchise-chip {
+      min-width: 130px;
+      max-width: 180px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .franchise-chip:active {
+      background: rgba(229, 9, 20, 0.18);
+      border-color: var(--accent);
+      transform: scale(0.97);
+    }
+
+    .franchise-chip-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .franchise-chip-meta {
+      font-size: 10px;
+      color: var(--subtext);
     }
 
     .sheet-actions {
@@ -645,6 +708,7 @@
       border-color: var(--accent);
     }
 
+    /* Модальное окно РУЛЕТКИ */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -668,6 +732,8 @@
     .modal-window {
       width: 100%;
       max-width: 360px;
+      max-height: 85vh;
+      overflow-y: auto;
       background: #191920;
       border: 1px solid rgba(229, 9, 20, 0.4);
       box-shadow: 0 0 30px rgba(229, 9, 20, 0.25);
@@ -725,7 +791,7 @@
       padding: 10px;
       border-radius: 10px;
       line-height: 1.6;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .modal-buttons {
@@ -782,7 +848,7 @@
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
-  <!-- Вкладка: СТУДИИ (Вариант 3: ТОП + Сетка) -->
+  <!-- Вкладка: СТУДИИ -->
   <div id="tab-studios" class="tab-view">
     <div class="alphabet-scroll" id="studios-alphabet"></div>
     <div class="studios-wrap" id="studios-wrap"></div>
@@ -829,7 +895,7 @@
     </button>
   </nav>
 
-  <!-- Шторка фильма -->
+  <!-- Шторка подробностей фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -837,6 +903,12 @@
       <div class="sheet-meta-row" id="sheet-meta"></div>
       <div class="sheet-actors" id="sheet-actors"></div>
       
+      <!-- Блок связанных частей франшизы -->
+      <div id="sheet-franchise" class="franchise-section" style="display: none;">
+        <div class="franchise-title">🍿 Другие части серии:</div>
+        <div class="franchise-scroll" id="sheet-franchise-list"></div>
+      </div>
+
       <div class="sheet-actions">
         <button class="btn-watch" onclick="openChannelPost(activeMovie?.telegram_url)">
           Смотреть в канале 🎬
@@ -858,6 +930,12 @@
       
       <div class="modal-meta" id="roulette-meta">
         Подождите, крутим барабан...
+      </div>
+
+      <!-- Блок связанных частей в рулетке -->
+      <div id="roulette-franchise" class="franchise-section" style="display: none;">
+        <div class="franchise-title">🍿 Другие части этой серии:</div>
+        <div class="franchise-scroll" id="roulette-franchise-list"></div>
       </div>
 
       <div class="modal-buttons">
@@ -900,7 +978,6 @@
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
 
-    // Цветовая палитра для монограмм студий
     const STUDIO_PALETTE = [
       { bg: '#251217', color: '#ff4d5a', border: '#e50914' },
       { bg: '#0e1d2b', color: '#38bdf8', border: '#0284c7' },
@@ -1014,7 +1091,7 @@
     }
 
     // ====================================================
-    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ: ВАРИАНТ 3 + АКТЁРЫ)
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ + АКТЁРЫ)
     // ====================================================
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
@@ -1084,7 +1161,6 @@
             });
           });
 
-          // Сортировка: по количеству релизов, затем по алфавиту
           const studios = Array.from(studiosMap.values()).map(st => ({
             name: st,
             count: studioCounts[st] || 1
@@ -1096,7 +1172,7 @@
           }
           statusEl.innerText = `Найдено студий: ${studios.length}`;
 
-          // 1. ТОП СТУДИЯ (Флагманский VIP-Баннер)
+          // ТОП СТУДИЯ (Флагманский VIP-Баннер)
           const topStudio = studios[0];
           const topMono = getStudioMonogram(topStudio.name);
           const topBanner = document.createElement('div');
@@ -1113,7 +1189,7 @@
           `;
           wrap.appendChild(topBanner);
 
-          // 2. ОСТАЛЬНЫЕ СТУДИИ (Сетка 2x2)
+          // ОСТАЛЬНЫЕ СТУДИИ (Сетка 2x2)
           if (studios.length > 1) {
             const secTitle = document.createElement('div');
             secTitle.className = 'studios-section-title';
@@ -1221,8 +1297,115 @@
     }
 
     // ====================================================
+    // ЛОГИКА ФРАНШИЗ И СВЯЗАННЫХ ЧАСТЕЙ
+    // ====================================================
+    function getFranchiseRoot(title) {
+      if (!title) return null;
+      let t = title.trim().replace(/\s*\(\d{4}\)$/, '').trim();
+
+      // 1. Суффиксы: 1, 2, Part 2, Vol. 1, римские цифры
+      const patterns = [
+        /[:\s-]+(?:part|vol|volume|ep|episode)\.?\s*([0-9ivx]+)$/i,
+        /[:\s-]+([0-9]+)$/i,
+        /\s+([ivx]+)$/i
+      ];
+      for (let p of patterns) {
+        const m = t.match(p);
+        if (m) {
+          const root = t.substring(0, m.index).trim();
+          if (root.length >= 3) {
+            return { query: `title=ilike.*${encodeURIComponent(root)}*`, root };
+          }
+        }
+      }
+
+      // 2. Разделители типа "Название Франшизы – Название Части"
+      const delims = [' – ', ' - ', ' — ', ': '];
+      for (let d of delims) {
+        if (t.includes(d)) {
+          const prefix = t.split(d)[0].trim();
+          if (prefix.length >= 3 && prefix !== t) {
+            return { query: `title=ilike.*${encodeURIComponent(prefix)}*`, root: prefix };
+          }
+        }
+      }
+
+      // 3. Начало названия (если первая часть без цифры 1)
+      if (t.length >= 4) {
+        return { query: `title=ilike.${encodeURIComponent(t)}%20*`, root: t };
+      }
+
+      return null;
+    }
+
+    async function loadFranchiseParts(movie, containerType) {
+      const container = document.getElementById(`${containerType}-franchise`);
+      const listEl = document.getElementById(`${containerType}-franchise-list`);
+      if (!container || !listEl) return;
+
+      container.style.display = 'none';
+      listEl.innerHTML = '';
+
+      const fInfo = getFranchiseRoot(movie.title);
+      if (!fInfo) return;
+
+      const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&${fInfo.query}&id=neq.${movie.id}&order=year.asc,title.asc&limit=12`;
+
+      try {
+        const res = await fetch(endpoint, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const parts = await res.json();
+
+        if (!parts || parts.length === 0) return;
+
+        listEl.innerHTML = '';
+        parts.forEach(part => {
+          const chip = document.createElement('div');
+          chip.className = 'franchise-chip';
+          chip.innerHTML = `
+            <div class="franchise-chip-title">${part.title}</div>
+            <div class="franchise-chip-meta">${part.year || ''} ${part.duration ? '• ' + part.duration : ''}</div>
+          `;
+          chip.onclick = (e) => {
+            e.stopPropagation();
+            if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+
+            if (containerType === 'sheet') {
+              showMovieDetails(part);
+            } else {
+              updateRouletteUI(part);
+            }
+          };
+          listEl.appendChild(chip);
+        });
+
+        container.style.display = 'block';
+      } catch (e) {
+        container.style.display = 'none';
+      }
+    }
+
+    // ====================================================
     // РУЛЕТКА
     // ====================================================
+    function updateRouletteUI(movie) {
+      rouletteMovie = movie;
+      const titleEl = document.getElementById('roulette-title');
+      const metaEl = document.getElementById('roulette-meta');
+
+      titleEl.innerText = movie.title || 'Фильм без названия';
+      metaEl.innerHTML = `
+        <div><b>Год:</b> ${movie.year || '—'}</div>
+        <div><b>Студия:</b> ${movie.studio || 'The Sinners'}</div>
+        ${movie.country ? `<div><b>Страна:</b> ${movie.country_flag || ''} ${movie.country}</div>` : ''}
+        ${movie.duration ? `<div><b>Длительность:</b> ${movie.duration}</div>` : ''}
+        ${movie.actors ? `<div style="margin-top:4px;"><b>В ролях:</b> ${movie.actors}</div>` : ''}
+      `;
+
+      loadFranchiseParts(movie, 'roulette');
+    }
+
     async function spinRoulette() {
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
       if (tg?.BackButton) tg.BackButton.show();
@@ -1230,6 +1413,8 @@
       const modal = document.getElementById('roulette-modal');
       const titleEl = document.getElementById('roulette-title');
       const metaEl = document.getElementById('roulette-meta');
+      const fContainer = document.getElementById('roulette-franchise');
+      if (fContainer) fContainer.style.display = 'none';
 
       modal.classList.add('active');
       titleEl.innerText = '🎲 Крутим рулетку...';
@@ -1243,17 +1428,8 @@
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         });
         const [movie] = await res.json();
-        
         if (movie) {
-          rouletteMovie = movie;
-          titleEl.innerText = movie.title || 'Фильм без названия';
-          metaEl.innerHTML = `
-            <div><b>Год:</b> ${movie.year || '—'}</div>
-            <div><b>Студия:</b> ${movie.studio || 'The Sinners'}</div>
-            ${movie.country ? `<div><b>Страна:</b> ${movie.country_flag || ''} ${movie.country}</div>` : ''}
-            ${movie.duration ? `<div><b>Длительность:</b> ${movie.duration}</div>` : ''}
-            ${movie.actors ? `<div style="margin-top:4px;"><b>В ролях:</b> ${movie.actors}</div>` : ''}
-          `;
+          updateRouletteUI(movie);
         }
       } catch (e) {
         titleEl.innerText = 'Упс!';
@@ -1398,6 +1574,9 @@
 
       document.getElementById('sheet-fav-btn').classList.toggle('active', isFav(m.id));
       document.getElementById('sheet-overlay').classList.add('active');
+
+      // Фоновый поиск других частей франшизы
+      loadFranchiseParts(m, 'sheet');
     }
 
     function closeSheet() {
