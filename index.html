@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -69,6 +69,33 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lang-pill {
+      background: var(--card-bg-elevated);
+      border: 1px solid var(--border);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .lang-pill:active {
+      background: rgba(229, 9, 20, 0.25);
+      border-color: var(--accent);
+      transform: scale(0.95);
+    }
+
     .badge {
       background: var(--card-bg-elevated);
       border: 1px solid var(--border);
@@ -131,9 +158,7 @@
       cursor: pointer;
     }
 
-    /* =========================================
-       1. ГЛАВНАЯ ВИТРИНА (НОВИНКИ)
-       ========================================= */
+    /* 1. ГЛАВНАЯ ВИТРИНА (НОВИНКИ) */
     .hero-banner {
       background: radial-gradient(circle at 85% 20%, rgba(229, 9, 20, 0.28) 0%, transparent 60%),
                   linear-gradient(145deg, #221217 0%, #141318 55%, #0e0e12 100%);
@@ -261,7 +286,6 @@
       cursor: pointer;
     }
 
-    /* Заголовки разделов витрины */
     .feed-section-header {
       display: flex;
       align-items: center;
@@ -288,7 +312,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* Карусель 20 новинок */
     .carousel-scroll {
       display: flex;
       gap: 12px;
@@ -358,7 +381,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Чипсы стран */
     .country-chips-scroll {
       display: flex;
       gap: 7px;
@@ -394,7 +416,6 @@
       transform: scale(1.02);
     }
 
-    /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
       gap: 7px;
@@ -433,9 +454,7 @@
       transform: scale(1.04);
     }
 
-    /* =========================================
-       2. КАРТОЧКИ ФИЛЬМОВ (ОБНОВЛЁННЫЕ ПОСТЕРЫ)
-       ========================================= */
+    /* 2. КАРТОЧКИ ФИЛЬМОВ */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -574,9 +593,7 @@
       text-overflow: ellipsis;
     }
 
-    /* =========================================
-       3. ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK)
-       ========================================= */
+    /* 3. ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ */
     .bottom-nav {
       position: fixed;
       bottom: 12px;
@@ -648,9 +665,7 @@
       box-shadow: 0 2px 6px rgba(229, 9, 20, 0.5);
     }
 
-    /* =========================================
-       4. ШТОРКА ФИЛЬМА И МОДАЛКА РУЛЕТКИ
-       ========================================= */
+    /* 4. ШТОРКА ФИЛЬМА И РУЛЕТКА */
     .overlay {
       position: fixed;
       inset: 0;
@@ -781,7 +796,7 @@
       box-shadow: 0 0 14px rgba(229, 9, 20, 0.5);
     }
 
-    /* Модальное окно РУЛЕТКИ */
+    /* Модалка Рулетки */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -887,6 +902,32 @@
       align-items: center;
       gap: 6px;
       cursor: pointer;
+    }
+
+    /* Модалка выбора языка */
+    .lang-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .lang-item.active {
+      background: rgba(229, 9, 20, 0.2);
+      border-color: var(--accent);
+    }
+
+    .lang-item:active {
+      transform: scale(0.98);
     }
 
     /* VIP Студии & Актёры */
@@ -1193,11 +1234,14 @@
 </head>
 <body>
 
-  <!-- Шапка с живым поиском -->
+  <!-- Шапка с живым поиском и переключателем языка -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
-      <div id="status-badge" class="badge">Загрузка...</div>
+      <div class="header-controls">
+        <button id="lang-btn" class="lang-pill" onclick="openLangModal()">🌐 EN</button>
+        <div id="status-badge" class="badge">Loading...</div>
+      </div>
     </div>
     <div class="search-box">
       <span class="search-icon">🔍</span>
@@ -1205,7 +1249,7 @@
         id="search-input" 
         class="search-input" 
         type="text" 
-        placeholder="Поиск по названию или студии..."
+        placeholder="Search by title or studio..."
         autocomplete="off"
       >
       <button id="search-clear" class="search-clear" onclick="clearSearch()">✕</button>
@@ -1221,52 +1265,52 @@
       <!-- 1. Hero-Баннер: Фильм дня -->
       <div id="hero-banner" class="hero-banner" style="display: none;" onclick="openHeroDetails()">
         <div class="hero-badge-row">
-          <span class="hero-badge">🔥 Выбор дня</span>
+          <span class="hero-badge" id="txt-hero-badge">🔥 Daily Pick</span>
           <div id="hero-pepper-btn" class="hero-pepper" onclick="toggleHeroFavorite(event)">🌶️</div>
         </div>
-        <div id="hero-title" class="hero-title">Загрузка фильма дня...</div>
+        <div id="hero-title" class="hero-title">Loading daily pick...</div>
         <div id="hero-meta" class="hero-meta"></div>
         <div class="hero-actions">
           <button class="hero-btn-watch" onclick="openHeroPost(event)">
-            Смотреть в канале 🎬
+            <span id="txt-hero-watch">Watch in Channel 🎬</span>
           </button>
           <button class="hero-btn-details" onclick="openHeroDetails(event)">
-            Инфо ›
+            <span id="txt-hero-details">Details ›</span>
           </button>
         </div>
       </div>
 
       <!-- 2. Горизонтальная карусель: Свежие поступления (20) -->
       <div class="feed-section-header">
-        <span class="feed-section-title">🔥 Свежие релизы</span>
-        <span class="feed-section-badge">Топ 20</span>
+        <span class="feed-section-title" id="txt-recent-title">🔥 Fresh Releases</span>
+        <span class="feed-section-badge" id="txt-recent-badge">Top 20</span>
       </div>
       <div class="carousel-scroll" id="recent-carousel"></div>
 
       <!-- 3. Чипсы каталога по странам -->
       <div class="feed-section-header" style="margin-top: 14px;">
-        <span class="feed-section-title">🌍 Кино по странам</span>
+        <span class="feed-section-title" id="txt-country-title">🌍 Cinema by Country</span>
       </div>
       <div class="country-chips-scroll" id="country-chips">
-        <button class="country-chip active" onclick="filterByCountry('', this)">Все страны</button>
-        <button class="country-chip" onclick="filterByCountry('США', this)">🇺🇸 США</button>
-        <button class="country-chip" onclick="filterByCountry('Чехия', this)">🇨🇿 Чехия</button>
-        <button class="country-chip" onclick="filterByCountry('Испания', this)">🇪🇸 Испания</button>
-        <button class="country-chip" onclick="filterByCountry('Германия', this)">🇩🇪 Германия</button>
-        <button class="country-chip" onclick="filterByCountry('Великобритания', this)">🇬🇧 Великобритания</button>
-        <button class="country-chip" onclick="filterByCountry('Франция', this)">🇫🇷 Франция</button>
-        <button class="country-chip" onclick="filterByCountry('Бразилия', this)">🇧🇷 Бразилия</button>
+        <button class="country-chip active" id="chip-all-countries" onclick="filterByCountry('', this)">All Countries</button>
+        <button class="country-chip" onclick="filterByCountry('США', this)">🇺🇸 USA</button>
+        <button class="country-chip" onclick="filterByCountry('Чехия', this)">🇨🇿 Czechia</button>
+        <button class="country-chip" onclick="filterByCountry('Испания', this)">🇪🇸 Spain</button>
+        <button class="country-chip" onclick="filterByCountry('Германия', this)">🇩🇪 Germany</button>
+        <button class="country-chip" onclick="filterByCountry('Великобритания', this)">🇬🇧 UK</button>
+        <button class="country-chip" onclick="filterByCountry('Франция', this)">🇫🇷 France</button>
+        <button class="country-chip" onclick="filterByCountry('Бразилия', this)">🇧🇷 Brazil</button>
       </div>
 
       <!-- Заголовок основной сетки -->
       <div class="feed-section-header" style="margin-top: 16px; margin-bottom: 2px;">
-        <span class="feed-section-title" id="grid-section-title">📦 Полный архив</span>
+        <span class="feed-section-title" id="grid-section-title">📦 Full Archive</span>
       </div>
     </div>
 
     <!-- 4. Основная сетка архива 2x2 с бесконечным скроллом -->
     <div id="catalog-grid" class="grid"></div>
-    <div id="scroll-status" class="status-msg">Загрузка архива...</div>
+    <div id="scroll-status" class="status-msg">Loading archive...</div>
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
@@ -1274,14 +1318,14 @@
   <div id="tab-studios" class="tab-view">
     <div class="alphabet-scroll" id="studios-alphabet"></div>
     <div class="studios-wrap" id="studios-wrap"></div>
-    <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
+    <div id="studios-status" class="status-msg">Select a letter to browse studios</div>
   </div>
 
   <!-- Вкладка: АКТЁРЫ -->
   <div id="tab-actors" class="tab-view">
     <div class="alphabet-scroll" id="actors-alphabet"></div>
     <div class="actors-wrap" id="actors-wrap"></div>
-    <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
+    <div id="actors-status" class="status-msg">Select a letter to browse actors</div>
   </div>
 
   <!-- Вкладка: ИЗБРАННОЕ И ИСТОРИЯ (ПЕРЧИК) -->
@@ -1289,25 +1333,25 @@
     <div class="media-switcher">
       <button id="btn-subtab-favs" class="media-tab-btn active" onclick="switchMediaSubTab('favs')">
         <span>🌶️</span>
-        <span id="label-subtab-favs">Избранное</span>
+        <span id="label-subtab-favs">Favorites</span>
       </button>
       <button id="btn-subtab-history" class="media-tab-btn" onclick="switchMediaSubTab('history')">
         <span>🕒</span>
-        <span id="label-subtab-history">История</span>
+        <span id="label-subtab-history">History</span>
       </button>
     </div>
 
     <div class="media-header-actions">
-      <span id="media-section-hint" class="section-subtitle" style="margin-bottom:0;">Отложенные фильмы:</span>
-      <button id="btn-clear-history" class="media-clear-btn" onclick="clearHistoryPrompt()">Очистить историю</button>
+      <span id="media-section-hint" class="section-subtitle" style="margin-bottom:0;">Saved movies:</span>
+      <button id="btn-clear-history" class="media-clear-btn" onclick="clearHistoryPrompt()">Clear History</button>
     </div>
 
     <div id="media-favs-view">
       <div id="favorites-grid" class="grid"></div>
       <div id="favorites-empty" class="placeholder-view" style="display: none;">
         <div class="icon">🌶️</div>
-        <h3>Коллекция пуста</h3>
-        <p style="font-size: 13px; margin-top: 6px;">Жми на перчик на карточке фильма или в шторке, чтобы сохранить кино на потом</p>
+        <h3 id="txt-favs-empty-title">Collection is empty</h3>
+        <p id="txt-favs-empty-desc" style="font-size: 13px; margin-top: 6px;">Tap the pepper on any movie to save it for later</p>
       </div>
     </div>
 
@@ -1315,8 +1359,8 @@
       <div id="history-grid" class="grid"></div>
       <div id="history-empty" class="placeholder-view" style="display: none;">
         <div class="icon">🕒</div>
-        <h3>История просмотров чиста</h3>
-        <p style="font-size: 13px; margin-top: 6px;">Здесь появятся релизы, по которым вы переходили к просмотру в канале</p>
+        <h3 id="txt-history-empty-title">Watch history is clean</h3>
+        <p id="txt-history-empty-desc" style="font-size: 13px; margin-top: 6px;">Releases you open in the channel will appear here</p>
       </div>
     </div>
   </div>
@@ -1325,15 +1369,15 @@
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="icon">🎬</span>
-      <span>Новинки</span>
+      <span id="nav-lbl-feed">Feed</span>
     </button>
     <button class="nav-btn" onclick="switchTab('studios')">
       <span class="icon">🏢</span>
-      <span>Студии</span>
+      <span id="nav-lbl-studios">Studios</span>
     </button>
     <button class="nav-btn" onclick="switchTab('actors')">
       <span class="icon">👥</span>
-      <span>Актёры</span>
+      <span id="nav-lbl-actors">Actors</span>
     </button>
     <button class="nav-btn nav-btn-icon-only" onclick="spinRoulette()">
       <span class="icon">🎲</span>
@@ -1353,13 +1397,13 @@
       <div class="sheet-actors" id="sheet-actors"></div>
       
       <div id="sheet-franchise" class="franchise-section" style="display: none;">
-        <div class="franchise-title">🍿 Другие части серии:</div>
+        <div class="franchise-title" id="txt-sheet-franchise">🍿 Other parts of this series:</div>
         <div class="franchise-scroll" id="sheet-franchise-list"></div>
       </div>
 
       <div class="sheet-actions">
         <button class="btn-watch" onclick="openChannelPost(activeMovie)">
-          Смотреть в канале 🎬
+          <span id="txt-sheet-watch">Watch in Channel 🎬</span>
         </button>
         <button id="sheet-fav-btn" class="btn-sheet-pepper" onclick="toggleCurrentFavorite()">
           🌶️
@@ -1373,25 +1417,57 @@
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
       
-      <div class="modal-badge">🎲 Кинорулетка</div>
-      <h2 id="roulette-title" class="modal-title">Выбираем...</h2>
+      <div class="modal-badge" id="txt-roulette-badge">🎲 Cinema Roulette</div>
+      <h2 id="roulette-title" class="modal-title">Selecting...</h2>
       
       <div class="modal-meta" id="roulette-meta">
-        Подождите, крутим барабан...
+        Rolling roulette...
       </div>
 
       <div id="roulette-franchise" class="franchise-section" style="display: none;">
-        <div class="franchise-title">🍿 Другие части этой серии:</div>
+        <div class="franchise-title" id="txt-roulette-franchise">🍿 Other parts of this series:</div>
         <div class="franchise-scroll" id="roulette-franchise-list"></div>
       </div>
 
       <div class="modal-buttons">
         <button class="btn-reroll" onclick="spinRoulette()">
-          <span>🎲</span> Ещё
+          <span id="txt-roulette-again">Roll Again 🎲</span>
         </button>
         <button class="btn-watch" onclick="openChannelPost(rouletteMovie)">
-          Смотреть 🎬
+          <span id="txt-roulette-watch">Watch 🎬</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно выбора языка -->
+  <div id="lang-modal" class="modal-overlay" onclick="closeLangModal()">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:320px;">
+      <button class="modal-close" onclick="closeLangModal()">✕</button>
+      <div class="modal-badge">🌐 Language / Язык</div>
+      <h2 class="modal-title" style="margin-bottom:16px;">Select Language</h2>
+
+      <div id="lang-list">
+        <div class="lang-item" onclick="setLanguage('en')">
+          <span>🇺🇸 English</span>
+          <span style="font-size:11px; opacity:0.6;">EN</span>
+        </div>
+        <div class="lang-item" onclick="setLanguage('es')">
+          <span>🇪🇸 Español</span>
+          <span style="font-size:11px; opacity:0.6;">ES</span>
+        </div>
+        <div class="lang-item" onclick="setLanguage('de')">
+          <span>🇩🇪 Deutsch</span>
+          <span style="font-size:11px; opacity:0.6;">DE</span>
+        </div>
+        <div class="lang-item" onclick="setLanguage('fr')">
+          <span>🇫🇷 Français</span>
+          <span style="font-size:11px; opacity:0.6;">FR</span>
+        </div>
+        <div class="lang-item" onclick="setLanguage('ru')">
+          <span>🇷🇺 Русский</span>
+          <span style="font-size:11px; opacity:0.6;">RU</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1405,10 +1481,415 @@
         tg.BackButton.onClick(() => {
           closeSheet();
           closeRoulette();
+          closeLangModal();
         });
       }
     }
 
+    // ====================================================
+    // СИСТЕМА ЛОКАЛИЗАЦИИ (5 ЯЗЫКОВ)
+    // ====================================================
+    const I18N = {
+      en: {
+        flag: "🇺🇸 EN",
+        searchPlaceholder: "Search by title or studio...",
+        dailyPick: "🔥 Daily Pick",
+        watch: "Watch in Channel 🎬",
+        details: "Details ›",
+        freshReleases: "🔥 Fresh Releases",
+        top20: "Top 20",
+        byCountry: "🌍 Cinema by Country",
+        allCountries: "All Countries",
+        fullArchive: "📦 Full Archive",
+        moviesArchive: "🌍 Movies: ",
+        studiosAlphabetPrompt: "Select a letter to browse studios",
+        studiosSearching: "Searching for letter {letter}...",
+        studiosNone: "No studios found for letter {letter}",
+        studiosFound: "Studios found: {count}",
+        topStudio: "★ TOP STUDIO",
+        studioTagline: "Flagship studio collection",
+        studioReleases: "{count} releases in catalog",
+        otherStudios: "Other studios starting with {letter}:",
+        actorsAlphabetPrompt: "Select a letter to browse actors",
+        actorsSearching: "Searching for letter {letter}...",
+        actorsNone: "No actors found for letter {letter}",
+        actorsFound: "Actors found: {count}",
+        topActor: "★ MAIN STAR",
+        actorTagline: "Leading star for letter {letter}",
+        actorMovies: "{count} movies in archive",
+        otherActors: "Other actors starting with {letter}:",
+        rouletteBadge: "🎲 Cinema Roulette",
+        rouletteSpinning: "Rolling roulette...",
+        rouletteSelecting: "Selecting release from archive...",
+        rouletteAgain: "Roll Again 🎲",
+        sheetStarring: "Starring:",
+        franchiseOther: "🍿 Other parts of this series:",
+        favsTab: "Favorites",
+        historyTab: "History",
+        favsHint: "Saved movies:",
+        historyHint: "Recently watched:",
+        favsEmptyTitle: "Collection is empty",
+        favsEmptyDesc: "Tap the pepper on any movie to save it for later",
+        historyEmptyTitle: "Watch history is clean",
+        historyEmptyDesc: "Releases you open in the channel will appear here",
+        clearHistory: "Clear History",
+        clearHistoryConfirm: "Clear entire watch history?",
+        navFeed: "Feed",
+        navStudios: "Studios",
+        navActors: "Actors",
+        moviesCount: "{count} movies",
+        inCollection: "{count} saved",
+        inHistory: "{count} in history",
+        notFound: "Nothing found 😕",
+        scrollMore: "Scroll for more...",
+        archiveEnd: "Archive fully browsed",
+        netError: "Network error",
+        noLink: "Link is not yet in the database"
+      },
+      es: {
+        flag: "🇪🇸 ES",
+        searchPlaceholder: "Buscar por título o estudio...",
+        dailyPick: "🔥 Elección del día",
+        watch: "Ver en el canal 🎬",
+        details: "Detalles ›",
+        freshReleases: "🔥 Novedades",
+        top20: "Top 20",
+        byCountry: "🌍 Cine por país",
+        allCountries: "Todos los países",
+        fullArchive: "📦 Archivo completo",
+        moviesArchive: "🌍 Películas: ",
+        studiosAlphabetPrompt: "Elige una letra para buscar estudios",
+        studiosSearching: "Buscando letra {letter}...",
+        studiosNone: "No hay estudios con la letra {letter}",
+        studiosFound: "Estudios encontrados: {count}",
+        topStudio: "★ ESTUDIO TOP",
+        studioTagline: "Colección insignia del estudio",
+        studioReleases: "{count} lanzamientos en el catálogo",
+        otherStudios: "Otros estudios con la letra {letter}:",
+        actorsAlphabetPrompt: "Elige una letra para buscar actores",
+        actorsSearching: "Buscando letra {letter}...",
+        actorsNone: "No hay actores con la letra {letter}",
+        actorsFound: "Actores encontrados: {count}",
+        topActor: "★ GRAN ESTRELLA",
+        actorTagline: "Líder de lanzamientos con la letra {letter}",
+        actorMovies: "{count} películas en el archivo",
+        otherActors: "Otros actores con la letra {letter}:",
+        rouletteBadge: "🎲 Ruleta de cine",
+        rouletteSpinning: "Girando ruleta...",
+        rouletteSelecting: "Eligiendo del archivo...",
+        rouletteAgain: "Girar otra vez 🎲",
+        sheetStarring: "Protagonistas:",
+        franchiseOther: "🍿 Más partes de esta saga:",
+        favsTab: "Favoritos",
+        historyTab: "Historial",
+        favsHint: "Películas guardadas:",
+        historyHint: "Visto recientemente:",
+        favsEmptyTitle: "Colección vacía",
+        favsEmptyDesc: "Pulsa el chile en la tarjeta para guardarla",
+        historyEmptyTitle: "Historial vacío",
+        historyEmptyDesc: "Aquí aparecerán las películas que abras en el canal",
+        clearHistory: "Borrar historial",
+        clearHistoryConfirm: "¿Borrar todo el historial?",
+        navFeed: "Novedades",
+        navStudios: "Estudios",
+        navActors: "Actores",
+        moviesCount: "{count} películas",
+        inCollection: "{count} guardadas",
+        inHistory: "{count} en historial",
+        notFound: "No se encontró nada 😕",
+        scrollMore: "Desplaza para cargar más...",
+        archiveEnd: "Archivo visto por completo",
+        netError: "Error de red",
+        noLink: "El enlace aún no está en la base"
+      },
+      de: {
+        flag: "🇩🇪 DE",
+        searchPlaceholder: "Nach Titel oder Studio suchen...",
+        dailyPick: "🔥 Tipp des Tages",
+        watch: "Im Kanal ansehen 🎬",
+        details: "Details ›",
+        freshReleases: "🔥 Neuheiten",
+        top20: "Top 20",
+        byCountry: "🌍 Filme nach Land",
+        allCountries: "Alle Länder",
+        fullArchive: "📦 Gesamtes Archiv",
+        moviesArchive: "🌍 Filme: ",
+        studiosAlphabetPrompt: "Buchstaben wählen für Studios",
+        studiosSearching: "Suche nach {letter}...",
+        studiosNone: "Keine Studios mit {letter} gefunden",
+        studiosFound: "Studios gefunden: {count}",
+        topStudio: "★ TOP STUDIO",
+        studioTagline: "Flaggschiff-Sammlung des Studios",
+        studioReleases: "{count} Releases im Katalog",
+        otherStudios: "Weitere Studios mit {letter}:",
+        actorsAlphabetPrompt: "Buchstaben wählen für Darsteller",
+        actorsSearching: "Suche nach {letter}...",
+        actorsNone: "Keine Darsteller mit {letter} gefunden",
+        actorsFound: "Darsteller gefunden: {count}",
+        topActor: "★ TOP STAR",
+        actorTagline: "Meiste Releases mit Buchstabe {letter}",
+        actorMovies: "{count} Filme im Archiv",
+        otherActors: "Weitere Darsteller mit {letter}:",
+        rouletteBadge: "🎲 Film-Roulette",
+        rouletteSpinning: "Roulette dreht sich...",
+        rouletteSelecting: "Wähle Film aus dem Archiv...",
+        rouletteAgain: "Nochmal 🎲",
+        sheetStarring: "Hauptdarsteller:",
+        franchiseOther: "🍿 Weitere Teile der Reihe:",
+        favsTab: "Favoriten",
+        historyTab: "Verlauf",
+        favsHint: "Gespeicherte Filme:",
+        historyHint: "Kürzlich angesehen:",
+        favsEmptyTitle: "Sammlung ist leer",
+        favsEmptyDesc: "Tippe auf die Chili, um einen Film zu speichern",
+        historyEmptyTitle: "Verlauf ist leer",
+        historyEmptyDesc: "Hier erscheinen Filme, die du im Kanal geöffnet hast",
+        clearHistory: "Verlauf löschen",
+        clearHistoryConfirm: "Gesamten Verlauf löschen?",
+        navFeed: "Neuheiten",
+        navStudios: "Studios",
+        navActors: "Darsteller",
+        moviesCount: "{count} Filme",
+        inCollection: "{count} gespeichert",
+        inHistory: "{count} im Verlauf",
+        notFound: "Nichts gefunden 😕",
+        scrollMore: "Weiter scrollen zum Laden...",
+        archiveEnd: "Archiv komplett durchsucht",
+        netError: "Netzwerkfehler",
+        noLink: "Link ist noch nicht in der Datenbank"
+      },
+      fr: {
+        flag: "🇫🇷 FR",
+        searchPlaceholder: "Rechercher par titre ou studio...",
+        dailyPick: "🔥 Choix du jour",
+        watch: "Regarder sur le canal 🎬",
+        details: "Infos ›",
+        freshReleases: "🔥 Nouveautés",
+        top20: "Top 20",
+        byCountry: "🌍 Cinéma par pays",
+        allCountries: "Tous les pays",
+        fullArchive: "📦 Archives complètes",
+        moviesArchive: "🌍 Films : ",
+        studiosAlphabetPrompt: "Choisissez une lettre pour les studios",
+        studiosSearching: "Recherche pour la lettre {letter}...",
+        studiosNone: "Aucun studio trouvé pour {letter}",
+        studiosFound: "Studios trouvés : {count}",
+        topStudio: "★ TOP STUDIO",
+        studioTagline: "Collection phare du studio",
+        studioReleases: "{count} sorties au catalogue",
+        otherStudios: "Autres studios avec la lettre {letter} :",
+        actorsAlphabetPrompt: "Choisissez une lettre pour les acteurs",
+        actorsSearching: "Recherche pour la lettre {letter}...",
+        actorsNone: "Aucun acteur trouvé pour {letter}",
+        actorsFound: "Acteurs trouvés : {count}",
+        topActor: "★ GRANDE ÉTOILE",
+        actorTagline: "Leader des sorties avec la lettre {letter}",
+        actorMovies: "{count} films dans les archives",
+        otherActors: "Autres acteurs avec la lettre {letter} :",
+        rouletteBadge: "🎲 Ciné-Roulette",
+        rouletteSpinning: "Lancement de la roulette...",
+        rouletteSelecting: "Sélection d'un film...",
+        rouletteAgain: "Relancer 🎲",
+        sheetStarring: "Avec :",
+        franchiseOther: "🍿 Autres parties de cette saga :",
+        favsTab: "Favoris",
+        historyTab: "Historique",
+        favsHint: "Films enregistrés :",
+        historyHint: "Récemment regardés :",
+        favsEmptyTitle: "Collection vide",
+        favsEmptyDesc: "Touchez le piment pour enregistrer un film",
+        historyEmptyTitle: "Historique vide",
+        historyEmptyDesc: "Les films ouverts dans le canal apparaîtront ici",
+        clearHistory: "Effacer l'historique",
+        clearHistoryConfirm: "Effacer tout l'historique ?",
+        navFeed: "Nouveautés",
+        navStudios: "Studios",
+        navActors: "Acteurs",
+        moviesCount: "{count} films",
+        inCollection: "{count} enregistrés",
+        inHistory: "{count} dans l'historique",
+        notFound: "Rien trouvé 😕",
+        scrollMore: "Faites défiler pour charger plus...",
+        archiveEnd: "Archives entièrement consultées",
+        netError: "Erreur réseau",
+        noLink: "Le lien n'est pas encore dans la base"
+      },
+      ru: {
+        flag: "🇷🇺 RU",
+        searchPlaceholder: "Поиск по названию или студии...",
+        dailyPick: "🔥 Выбор дня",
+        watch: "Смотреть в канале 🎬",
+        details: "Инфо ›",
+        freshReleases: "🔥 Свежие релизы",
+        top20: "Топ 20",
+        byCountry: "🌍 Кино по странам",
+        allCountries: "Все страны",
+        fullArchive: "📦 Полный архив",
+        moviesArchive: "🌍 Фильмы: ",
+        studiosAlphabetPrompt: "Выберите букву для поиска студий",
+        studiosSearching: "Ищем на букву {letter}...",
+        studiosNone: "На букву {letter} студий не найдено",
+        studiosFound: "Найдено студий: {count}",
+        topStudio: "★ ТОП СТУДИЯ",
+        studioTagline: "Флагманская коллекция студии",
+        studioReleases: "{count} релизов в каталоге",
+        otherStudios: "Остальные студии на букву {letter}:",
+        actorsAlphabetPrompt: "Выберите букву для поиска актёров",
+        actorsSearching: "Ищем на букву {letter}...",
+        actorsNone: "На букву {letter} актёров не найдено",
+        actorsFound: "Найдено актёров: {count}",
+        topActor: "★ ГЛАВНАЯ ЗВЕЗДА",
+        actorTagline: "Лидер по числу релизов на букву {letter}",
+        actorMovies: "{count} фильмов в архиве",
+        otherActors: "Остальные актёры на букву {letter}:",
+        rouletteBadge: "🎲 Кинорулетка",
+        rouletteSpinning: "Крутим рулетку...",
+        rouletteSelecting: "Выбираем релиз из архива...",
+        rouletteAgain: "Ещё 🎲",
+        sheetStarring: "В главных ролях:",
+        franchiseOther: "🍿 Другие части серии:",
+        favsTab: "Избранное",
+        historyTab: "История",
+        favsHint: "Отложенные фильмы:",
+        historyHint: "Недавно смотрели:",
+        favsEmptyTitle: "Коллекция пуста",
+        favsEmptyDesc: "Жми на перчик на карточке фильма или в шторке, чтобы сохранить кино",
+        historyEmptyTitle: "История просмотров чиста",
+        historyEmptyDesc: "Здесь появятся релизы, по которым вы переходили в канале",
+        clearHistory: "Очистить историю",
+        clearHistoryConfirm: "Очистить всю историю просмотров?",
+        navFeed: "Новинки",
+        navStudios: "Студии",
+        navActors: "Актёры",
+        moviesCount: "{count} фильмов",
+        inCollection: "{count} в коллекции",
+        inHistory: "{count} в истории",
+        notFound: "Ничего не найдено 😕",
+        scrollMore: "Прокрутите для загрузки...",
+        archiveEnd: "Архив просмотрен полностью",
+        netError: "Ошибка сети",
+        noLink: "Ссылка ещё не добавлена в базу"
+      }
+    };
+
+    // Определение языка (хранилище -> Telegram -> Английский по умолчанию)
+    let currentLang = localStorage.getItem('sinners_lang');
+    if (!currentLang) {
+      const tgLang = (window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code || '').toLowerCase();
+      if (tgLang.startsWith('ru')) currentLang = 'ru';
+      else if (tgLang.startsWith('es')) currentLang = 'es';
+      else if (tgLang.startsWith('de')) currentLang = 'de';
+      else if (tgLang.startsWith('fr')) currentLang = 'fr';
+      else currentLang = 'en';
+    }
+
+    function t(key, params = {}) {
+      let str = (I18N[currentLang] && I18N[currentLang][key]) || (I18N['en'] && I18N['en'][key]) || key;
+      for (let p in params) {
+        str = str.replace(`{${p}}`, params[p]);
+      }
+      return str;
+    }
+
+    function applyLanguageUI() {
+      const langBtn = document.getElementById('lang-btn');
+      if (langBtn) langBtn.innerText = I18N[currentLang]?.flag || '🌐 EN';
+
+      const sInput = document.getElementById('search-input');
+      if (sInput) sInput.placeholder = t('searchPlaceholder');
+
+      const heroBadge = document.getElementById('txt-hero-badge');
+      if (heroBadge) heroBadge.innerText = t('dailyPick');
+      const heroWatch = document.getElementById('txt-hero-watch');
+      if (heroWatch) heroWatch.innerText = t('watch');
+      const heroDetails = document.getElementById('txt-hero-details');
+      if (heroDetails) heroDetails.innerText = t('details');
+
+      const recentTitle = document.getElementById('txt-recent-title');
+      if (recentTitle) recentTitle.innerText = t('freshReleases');
+      const recentBadge = document.getElementById('txt-recent-badge');
+      if (recentBadge) recentBadge.innerText = t('top20');
+
+      const countryTitle = document.getElementById('txt-country-title');
+      if (countryTitle) countryTitle.innerText = t('byCountry');
+      const chipAll = document.getElementById('chip-all-countries');
+      if (chipAll) chipAll.innerText = t('allCountries');
+
+      const gridTitle = document.getElementById('grid-section-title');
+      if (gridTitle) {
+        gridTitle.innerText = currentCountry ? `${t('moviesArchive')}${currentCountry}` : t('fullArchive');
+      }
+
+      const navFeed = document.getElementById('nav-lbl-feed');
+      if (navFeed) navFeed.innerText = t('navFeed');
+      const navStudios = document.getElementById('nav-lbl-studios');
+      if (navStudios) navStudios.innerText = t('navStudios');
+      const navActors = document.getElementById('nav-lbl-actors');
+      if (navActors) navActors.innerText = t('navActors');
+
+      const sheetWatch = document.getElementById('txt-sheet-watch');
+      if (sheetWatch) sheetWatch.innerText = t('watch');
+      const sheetFranchise = document.getElementById('txt-sheet-franchise');
+      if (sheetFranchise) sheetFranchise.innerText = t('franchiseOther');
+
+      const rBadge = document.getElementById('txt-roulette-badge');
+      if (rBadge) rBadge.innerText = t('rouletteBadge');
+      const rAgain = document.getElementById('txt-roulette-again');
+      if (rAgain) rAgain.innerText = t('rouletteAgain');
+      const rWatch = document.getElementById('txt-roulette-watch');
+      if (rWatch) rWatch.innerText = t('watch');
+      const rFranchise = document.getElementById('txt-roulette-franchise');
+      if (rFranchise) rFranchise.innerText = t('franchiseOther');
+
+      const clearBtn = document.getElementById('btn-clear-history');
+      if (clearBtn) clearBtn.innerText = t('clearHistory');
+      const favEmptyTitle = document.getElementById('txt-favs-empty-title');
+      if (favEmptyTitle) favEmptyTitle.innerText = t('favsEmptyTitle');
+      const favEmptyDesc = document.getElementById('txt-favs-empty-desc');
+      if (favEmptyDesc) favEmptyDesc.innerText = t('favsEmptyDesc');
+      const histEmptyTitle = document.getElementById('txt-history-empty-title');
+      if (histEmptyTitle) histEmptyTitle.innerText = t('historyEmptyTitle');
+      const histEmptyDesc = document.getElementById('txt-history-empty-desc');
+      if (histEmptyDesc) histEmptyDesc.innerText = t('historyEmptyDesc');
+
+      updateFavCounter();
+
+      document.querySelectorAll('.lang-item').forEach(el => {
+        const isCurrent = el.getAttribute('onclick')?.includes(`'${currentLang}'`);
+        el.classList.toggle('active', isCurrent);
+      });
+    }
+
+    function openLangModal() {
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      if (tg?.BackButton) tg.BackButton.show();
+      document.getElementById('lang-modal').classList.add('active');
+    }
+
+    function closeLangModal() {
+      document.getElementById('lang-modal').classList.remove('active');
+      if (tg?.BackButton) tg.BackButton.hide();
+    }
+
+    function setLanguage(lang) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      currentLang = lang;
+      localStorage.setItem('sinners_lang', lang);
+      applyLanguageUI();
+      closeLangModal();
+
+      if (currentTab === 'studios') {
+        loadAlphabetData('studios', selectedStudioLetter);
+      } else if (currentTab === 'actors') {
+        loadAlphabetData('actors', selectedActorLetter);
+      } else if (currentTab === 'favorites') {
+        switchMediaSubTab(currentMediaSubTab);
+      }
+    }
+
+    // ====================================================
+    // СЕРВЕР И ДАННЫЕ
+    // ====================================================
     const SUPABASE_URL = 'https://otcnrvimrqyppmfjnqpv.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_niMZLppQ5UZwkQWc6Pj29g_910mdIkQ';
 
@@ -1424,6 +1905,8 @@
     let heroMovie = null;
     let currentTab = 'feed';
     let currentMediaSubTab = 'favs';
+    let selectedStudioLetter = 'A';
+    let selectedActorLetter = 'A';
 
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
     
@@ -1472,10 +1955,10 @@
       }
       
       const favLabel = document.getElementById('label-subtab-favs');
-      if (favLabel) favLabel.innerText = `Избранное (${favorites.length})`;
+      if (favLabel) favLabel.innerText = `${t('favsTab')} (${favorites.length})`;
       
       const histLabel = document.getElementById('label-subtab-history');
-      if (histLabel) histLabel.innerText = `История (${watchHistory.length})`;
+      if (histLabel) histLabel.innerText = `${t('historyTab')} (${watchHistory.length})`;
     }
 
     function isFav(id) {
@@ -1537,7 +2020,7 @@
 
     function clearHistoryPrompt() {
       if (watchHistory.length === 0) return;
-      if (confirm('Очистить всю историю просмотров?')) {
+      if (confirm(t('clearHistoryConfirm'))) {
         watchHistory = [];
         localStorage.removeItem('sinners_history');
         updateFavCounter();
@@ -1562,7 +2045,7 @@
       if (tab === 'favorites') {
         switchMediaSubTab(currentMediaSubTab);
       } else if (tab === 'feed') {
-        statusBadge.innerText = `${currentOffset} фильмов`;
+        statusBadge.innerText = t('moviesCount', { count: currentOffset });
       } else if (tab === 'studios') {
         initAlphabet('studios');
       } else if (tab === 'actors') {
@@ -1587,7 +2070,7 @@
         favsView.style.display = 'block';
         histView.style.display = 'none';
         clearBtn.style.display = 'none';
-        hint.innerText = 'Отложенные фильмы:';
+        hint.innerText = t('favsHint');
         renderFavorites();
       } else {
         histBtn.classList.add('active');
@@ -1595,7 +2078,7 @@
         favsView.style.display = 'none';
         histView.style.display = 'block';
         clearBtn.style.display = watchHistory.length > 0 ? 'block' : 'none';
-        hint.innerText = 'Недавно смотрели:';
+        hint.innerText = t('historyHint');
         renderHistory();
       }
     }
@@ -1603,7 +2086,7 @@
     function renderFavorites() {
       favoritesGrid.innerHTML = '';
       const emptyMsg = document.getElementById('favorites-empty');
-      statusBadge.innerText = `${favorites.length} в коллекции`;
+      statusBadge.innerText = t('inCollection', { count: favorites.length });
 
       if (favorites.length === 0) {
         emptyMsg.style.display = 'block';
@@ -1618,7 +2101,7 @@
       historyGrid.innerHTML = '';
       const emptyMsg = document.getElementById('history-empty');
       const clearBtn = document.getElementById('btn-clear-history');
-      statusBadge.innerText = `${watchHistory.length} в истории`;
+      statusBadge.innerText = t('inHistory', { count: watchHistory.length });
 
       if (watchHistory.length === 0) {
         emptyMsg.style.display = 'block';
@@ -1632,7 +2115,7 @@
     }
 
     // ====================================================
-    // ВИТРИНА НОВИНОК (HERO + КАРУСЕЛЬ 20 + СТРАНЫ)
+    // ВИТРИНА НОВИНОК
     // ====================================================
     async function loadFeedShowcase() {
       try {
@@ -1660,7 +2143,7 @@
               </div>
             </div>
             <div class="carousel-info">
-              <div class="carousel-title">${m.title || 'Фильм'}</div>
+              <div class="carousel-title">${m.title || 'Movie'}</div>
               <div class="carousel-meta">${m.country_flag ? m.country_flag + ' ' : ''}${m.studio || 'The Sinners'}</div>
             </div>
           `;
@@ -1674,14 +2157,14 @@
           renderHeroBanner(heroMovie);
         }
       } catch (e) {
-        console.error('Ошибка загрузки витрины', e);
+        console.error('Showcase error', e);
       }
     }
 
     function renderHeroBanner(m) {
       if (!m) return;
       const banner = document.getElementById('hero-banner');
-      document.getElementById('hero-title').innerText = m.title || 'Фильм дня';
+      document.getElementById('hero-title').innerText = m.title || 'Movie';
 
       const meta = document.getElementById('hero-meta');
       meta.innerHTML = `
@@ -1721,14 +2204,14 @@
 
       const titleEl = document.getElementById('grid-section-title');
       if (titleEl) {
-        titleEl.innerText = country ? `🌍 Фильмы: ${country}` : '📦 Полный архив';
+        titleEl.innerText = country ? `${t('moviesArchive')}${country}` : t('fullArchive');
       }
 
       fetchMovies(true);
     }
 
     // ====================================================
-    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ + АКТЁРЫ)
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ
     // ====================================================
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
@@ -1749,12 +2232,14 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       document.querySelectorAll(`#${type}-alphabet .alpha-btn`).forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      if (type === 'studios') selectedStudioLetter = letter;
+      if (type === 'actors') selectedActorLetter = letter;
       loadAlphabetData(type, letter);
     }
 
     async function loadAlphabetData(type, letter) {
       const statusEl = document.getElementById(`${type}-status`);
-      statusEl.innerText = `Ищем на букву ${letter}...`;
+      statusEl.innerText = t(type === 'studios' ? 'studiosSearching' : 'actorsSearching', { letter });
 
       try {
         if (type === 'studios') {
@@ -1804,10 +2289,10 @@
           })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
           if (studios.length === 0) {
-            statusEl.innerText = `На букву ${letter} студий не найдено`;
+            statusEl.innerText = t('studiosNone', { letter });
             return;
           }
-          statusEl.innerText = `Найдено студий: ${studios.length}`;
+          statusEl.innerText = t('studiosFound', { count: studios.length });
 
           const topStudio = studios[0];
           const topMono = getMonogram(topStudio.name);
@@ -1816,10 +2301,10 @@
           topBanner.onclick = () => filterFeedByQuery(topStudio.name);
           topBanner.innerHTML = `
             <div>
-              <div class="vip-badge">★ ТОП СТУДИЯ</div>
+              <div class="vip-badge">${t('topStudio')}</div>
               <div class="vip-title">${topStudio.name}</div>
-              <div class="vip-desc">Флагманская коллекция студии</div>
-              <div class="vip-count">${topStudio.count} ${getWordForm(topStudio.count, ['релиз', 'релиза', 'релизов'])} в каталоге</div>
+              <div class="vip-desc">${t('studioTagline')}</div>
+              <div class="vip-count">${t('studioReleases', { count: topStudio.count })}</div>
             </div>
             <div class="vip-avatar">${topMono}</div>
           `;
@@ -1828,7 +2313,7 @@
           if (studios.length > 1) {
             const secTitle = document.createElement('div');
             secTitle.className = 'section-subtitle';
-            secTitle.innerText = `Остальные студии на букву ${letter}:`;
+            secTitle.innerText = t('otherStudios', { letter });
             wrap.appendChild(secTitle);
 
             const gridEl = document.createElement('div');
@@ -1847,7 +2332,7 @@
                   ${mono}
                 </div>
                 <div class="tile-title">${st.name}</div>
-                <div class="tile-badge">${st.count} ${getWordForm(st.count, ['фильм', 'фильма', 'фильмов'])}</div>
+                <div class="tile-badge">${t('studioReleases', { count: st.count })}</div>
               `;
               gridEl.appendChild(tile);
             }
@@ -1907,10 +2392,10 @@
           })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
           if (actors.length === 0) {
-            statusEl.innerText = `На букву ${letter} актёров не найдено`;
+            statusEl.innerText = t('actorsNone', { letter });
             return;
           }
-          statusEl.innerText = `Найдено актёров: ${actors.length}`;
+          statusEl.innerText = t('actorsFound', { count: actors.length });
 
           const topActor = actors[0];
           const topMono = getMonogram(topActor.name);
@@ -1919,10 +2404,10 @@
           topBanner.onclick = () => filterFeedByQuery(topActor.name);
           topBanner.innerHTML = `
             <div>
-              <div class="vip-badge">★ ГЛАВНАЯ ЗВЕЗДА</div>
+              <div class="vip-badge">${t('topActor')}</div>
               <div class="vip-title">${topActor.name}</div>
-              <div class="vip-desc">Лидер по числу релизов на букву ${letter}</div>
-              <div class="vip-count">${topActor.count} ${getWordForm(topActor.count, ['фильм', 'фильма', 'фильмов'])} в архиве</div>
+              <div class="vip-desc">${t('actorTagline', { letter })}</div>
+              <div class="vip-count">${t('actorMovies', { count: topActor.count })}</div>
             </div>
             <div class="vip-avatar">${topMono}</div>
           `;
@@ -1931,7 +2416,7 @@
           if (actors.length > 1) {
             const secTitle = document.createElement('div');
             secTitle.className = 'section-subtitle';
-            secTitle.innerText = `Остальные актёры на букву ${letter}:`;
+            secTitle.innerText = t('otherActors', { letter });
             wrap.appendChild(secTitle);
 
             const gridEl = document.createElement('div');
@@ -1950,7 +2435,7 @@
                   ${mono}
                 </div>
                 <div class="tile-title">${ac.name}</div>
-                <div class="tile-badge">${ac.count} ${getWordForm(ac.count, ['фильм', 'фильма', 'фильмов'])}</div>
+                <div class="tile-badge">${t('actorMovies', { count: ac.count })}</div>
               `;
               gridEl.appendChild(tile);
             }
@@ -1958,17 +2443,8 @@
           }
         }
       } catch (err) {
-        statusEl.innerText = 'Ошибка загрузки данных';
+        statusEl.innerText = t('netError');
       }
-    }
-
-    function getWordForm(num, words) {
-      num = Math.abs(num) % 100;
-      const n1 = num % 10;
-      if (num > 10 && num < 20) return words[2];
-      if (n1 > 1 && n1 < 5) return words[1];
-      if (n1 === 1) return words[0];
-      return words[2];
     }
 
     function filterFeedByQuery(query) {
@@ -1982,7 +2458,7 @@
     }
 
     // ====================================================
-    // ЛОГИКА ФРАНШИЗ И СВЯЗАННЫХ ЧАСТЕЙ
+    // ЛОГИКА ФРАНШИЗ
     // ====================================================
     function getFranchiseRoot(title) {
       if (!title) return null;
@@ -2076,13 +2552,13 @@
       const titleEl = document.getElementById('roulette-title');
       const metaEl = document.getElementById('roulette-meta');
 
-      titleEl.innerText = movie.title || 'Фильм без названия';
+      titleEl.innerText = movie.title || 'Movie';
       metaEl.innerHTML = `
-        <div><b>Год:</b> ${movie.year || '—'}</div>
-        <div><b>Студия:</b> ${movie.studio || 'The Sinners'}</div>
-        ${movie.country ? `<div><b>Страна:</b> ${movie.country_flag || ''} ${movie.country}</div>` : ''}
-        ${movie.duration ? `<div><b>Длительность:</b> ${movie.duration}</div>` : ''}
-        ${movie.actors ? `<div style="margin-top:4px;"><b>В ролях:</b> ${movie.actors}</div>` : ''}
+        <div><b>Year:</b> ${movie.year || '—'}</div>
+        <div><b>Studio:</b> ${movie.studio || 'The Sinners'}</div>
+        ${movie.country ? `<div><b>Country:</b> ${movie.country_flag || ''} ${movie.country}</div>` : ''}
+        ${movie.duration ? `<div><b>Duration:</b> ${movie.duration}</div>` : ''}
+        ${movie.actors ? `<div style="margin-top:4px;"><b>${t('sheetStarring')}</b> ${movie.actors}</div>` : ''}
       `;
 
       loadFranchiseParts(movie, 'roulette');
@@ -2099,8 +2575,8 @@
       if (fContainer) fContainer.style.display = 'none';
 
       modal.classList.add('active');
-      titleEl.innerText = '🎲 Крутим рулетку...';
-      metaEl.innerHTML = 'Выбираем релиз из архива...';
+      titleEl.innerText = t('rouletteSpinning');
+      metaEl.innerHTML = t('rouletteSelecting');
 
       const randomOffset = Math.floor(Math.random() * 500);
       const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=1&offset=${randomOffset}`;
@@ -2114,8 +2590,8 @@
           updateRouletteUI(movie);
         }
       } catch (e) {
-        titleEl.innerText = 'Упс!';
-        metaEl.innerText = 'Не удалось загрузить фильм, попробуйте ещё раз.';
+        titleEl.innerText = 'Error';
+        metaEl.innerText = t('netError');
       }
     }
 
@@ -2135,7 +2611,7 @@
         currentOffset = 0;
         hasMore = true;
         grid.innerHTML = '';
-        scrollStatus.innerText = 'Поиск...';
+        scrollStatus.innerText = t('loading');
       }
 
       let endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=${PAGE_SIZE}&offset=${currentOffset}`;
@@ -2163,8 +2639,8 @@
         if (movies.length < PAGE_SIZE) hasMore = false;
 
         if (movies.length === 0 && isReset) {
-          scrollStatus.innerText = 'Ничего не найдено 😕';
-          statusBadge.innerText = '0 фильмов';
+          scrollStatus.innerText = t('notFound');
+          statusBadge.innerText = t('moviesCount', { count: 0 });
           isLoading = false;
           return;
         }
@@ -2172,14 +2648,11 @@
         movies.forEach(m => grid.appendChild(createCardElement(m)));
         currentOffset += movies.length;
 
-        statusBadge.innerText = currentSearch 
-          ? `Найдено: ${currentOffset}` 
-          : `${currentOffset} фильмов`;
-
-        scrollStatus.innerText = hasMore ? 'Прокрутите для загрузки...' : 'Архив просмотрен полностью';
+        statusBadge.innerText = t('moviesCount', { count: currentOffset });
+        scrollStatus.innerText = hasMore ? t('scrollMore') : t('archiveEnd');
 
       } catch (err) {
-        scrollStatus.innerText = 'Ошибка сети';
+        scrollStatus.innerText = t('netError');
       } finally {
         isLoading = false;
       }
@@ -2202,11 +2675,11 @@
           <div class="poster-watermark">${mono}</div>
           <div>
             <div class="poster-icon">🎬</div>
-            <div class="poster-title-preview">${m.title || 'Фильм'}</div>
+            <div class="poster-title-preview">${m.title || 'Movie'}</div>
           </div>
         </div>
         <div class="card-info">
-          <div class="card-title">${m.title || 'Без названия'}</div>
+          <div class="card-title">${m.title || 'Untitled'}</div>
           <div class="card-meta">
             ${m.country_flag ? m.country_flag + ' ' : ''}${m.studio || 'The Sinners'}
           </div>
@@ -2252,7 +2725,7 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       if (tg?.BackButton) tg.BackButton.show();
 
-      document.getElementById('sheet-title').innerText = m.title || 'Без названия';
+      document.getElementById('sheet-title').innerText = m.title || 'Untitled';
       
       const meta = document.getElementById('sheet-meta');
       meta.innerHTML = `
@@ -2263,7 +2736,7 @@
       `;
 
       const actorsEl = document.getElementById('sheet-actors');
-      actorsEl.innerHTML = m.actors ? `<span>В главных ролях:</span>${m.actors}` : '';
+      actorsEl.innerHTML = m.actors ? `<span>${t('sheetStarring')}</span>${m.actors}` : '';
       actorsEl.style.display = m.actors ? 'block' : 'none';
 
       document.getElementById('sheet-fav-btn').classList.toggle('active', isFav(m.id));
@@ -2279,7 +2752,7 @@
 
     function openChannelPost(movie) {
       if (!movie || !movie.telegram_url) {
-        alert('Ссылка на этот релиз ещё не добавлена в базу');
+        alert(t('noLink'));
         return;
       }
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
@@ -2293,7 +2766,8 @@
       }
     }
 
-    updateFavCounter();
+    // Инициализация
+    applyLanguageUI();
     loadFeedShowcase();
     fetchMovies();
   </script>
