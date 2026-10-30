@@ -35,7 +35,7 @@
       padding-bottom: calc(var(--bottom-bar-h) + 25px);
     }
 
-    /* Прилипающая шапка с поиском */
+    /* Верхняя закрепленная шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -117,7 +117,7 @@
       cursor: pointer;
     }
 
-    /* Алфавитная лента */
+    /* Алфавитная полоса */
     .alphabet-scroll {
       display: flex;
       gap: 6px;
@@ -154,7 +154,7 @@
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
     }
 
-    /* Список элементов по алфавиту (студии, актеры) */
+    /* Список студий / актёров */
     .alpha-list {
       display: flex;
       flex-direction: column;
@@ -173,7 +173,6 @@
       cursor: pointer;
       font-size: 14px;
       font-weight: 600;
-      transition: background 0.15s;
     }
 
     .alpha-item:active {
@@ -248,7 +247,6 @@
       justify-content: center;
       font-size: 13px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.2s;
     }
 
     .card-pepper.active {
@@ -321,7 +319,7 @@
       opacity: 0.7;
     }
 
-    /* Нижнее меню */
+    /* Нижняя навигация */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -353,7 +351,6 @@
       padding: 6px 12px;
       cursor: pointer;
       position: relative;
-      transition: color 0.15s, transform 0.1s;
     }
 
     .nav-btn .icon {
@@ -366,10 +363,6 @@
 
     .nav-btn.active .icon {
       filter: drop-shadow(0 0 6px rgba(229, 9, 20, 0.6));
-    }
-
-    .nav-btn:active {
-      transform: scale(0.92);
     }
 
     .nav-btn-icon-only .icon {
@@ -389,7 +382,7 @@
       display: none;
     }
 
-    /* 1. Шторка подробностей (Bottom Sheet) */
+    /* Шторка подробностей */
     .overlay {
       position: fixed;
       inset: 0;
@@ -497,7 +490,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.2s;
     }
 
     .btn-sheet-pepper.active {
@@ -505,7 +497,7 @@
       border-color: var(--accent);
     }
 
-    /* 2. Модальное окно РУЛЕТКИ (по центру экрана) */
+    /* Модальное окно РУЛЕТКИ (по центру экрана) */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -618,7 +610,7 @@
 </head>
 <body>
 
-  <!-- Фиксированная шапка с живым поиском -->
+  <!-- Поиск -->
   <div class="sticky-header">
     <div class="header-top">
       <h1 id="header-title">THE SINNERS</h1>
@@ -644,21 +636,21 @@
     <div id="scroll-sentinel" style="height: 20px;"></div>
   </div>
 
-  <!-- Вкладка: СТУДИИ (с алфавитным указателем) -->
+  <!-- Вкладка: СТУДИИ -->
   <div id="tab-studios" class="tab-view">
     <div class="alphabet-scroll" id="studios-alphabet"></div>
     <div class="alpha-list" id="studios-list"></div>
     <div id="studios-status" class="status-msg">Выберите букву для поиска студий</div>
   </div>
 
-  <!-- Вкладка: АКТЁРЫ (с алфавитным указателем) -->
+  <!-- Вкладка: АКТЁРЫ -->
   <div id="tab-actors" class="tab-view">
     <div class="alphabet-scroll" id="actors-alphabet"></div>
     <div class="alpha-list" id="actors-list"></div>
     <div id="actors-status" class="status-msg">Выберите букву для поиска актёров</div>
   </div>
 
-  <!-- Вкладка: ИЗБРАННОЕ (ПЕРЧИКИ) -->
+  <!-- Вкладка: ИЗБРАННОЕ -->
   <div id="tab-favorites" class="tab-view">
     <div id="favorites-grid" class="grid"></div>
     <div id="favorites-empty" class="placeholder-view" style="display: none;">
@@ -668,7 +660,7 @@
     </div>
   </div>
 
-  <!-- Нижняя панель навигации -->
+  <!-- Нижняя панель -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="icon">🎬</span>
@@ -691,7 +683,7 @@
     </button>
   </nav>
 
-  <!-- Шторка подробностей фильма -->
+  <!-- Шторка фильма -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
@@ -710,7 +702,7 @@
     </div>
   </div>
 
-  <!-- Окно РУЛЕТКИ (по центру) -->
+  <!-- Модальное окно РУЛЕТКИ -->
   <div id="roulette-modal" class="modal-overlay" onclick="closeRoulette()">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeRoulette()">✕</button>
@@ -759,11 +751,7 @@
     let rouletteMovie = null;
     let currentTab = 'feed';
 
-    // Алфавит для студий и актеров
     const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
-    let selectedStudioLetter = 'A';
-    let selectedActorLetter = 'A';
-
     let favorites = JSON.parse(localStorage.getItem('sinners_favs') || '[]');
 
     const grid = document.getElementById('catalog-grid');
@@ -817,7 +805,6 @@
       });
     }
 
-    // Переключение основных вкладок
     function switchTab(tab) {
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
       currentTab = tab;
@@ -856,12 +843,10 @@
       favorites.forEach(m => favoritesGrid.appendChild(createCardElement(m)));
     }
 
-    // ----------------------------------------------------
-    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ ДЛЯ СТУДИЙ И АКТЁРОВ
-    // ----------------------------------------------------
+    // Алфавитный указатель
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
-      if (container.children.length > 0) return; // Уже построен
+      if (container.children.length > 0) return;
 
       ALPHABET.forEach(letter => {
         const btn = document.createElement('button');
@@ -871,7 +856,6 @@
         container.appendChild(btn);
       });
 
-      // Загружаем первую букву по умолчанию
       loadAlphabetData(type, 'A');
     }
 
@@ -890,7 +874,6 @@
 
       try {
         if (type === 'studios') {
-          // Ищем студии на выбранную букву
           const filter = letter === '#' ? 'studio=not.ilike.*' : `studio=ilike.${letter}*`;
           const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=studio&${filter}&limit=600`;
           
@@ -898,8 +881,6 @@
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
           const data = await res.json();
-          
-          // Дедупликация
           const studios = Array.from(new Set(data.map(d => d.studio?.trim()).filter(Boolean))).sort();
 
           if (studios.length === 0) {
@@ -917,7 +898,6 @@
           });
 
         } else if (type === 'actors') {
-          // Ищем актеров по тегам #Letter...
           const filter = `actors=ilike.*%23${letter}*`;
           const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&${filter}&limit=600`;
 
@@ -958,7 +938,6 @@
       }
     }
 
-    // Клик по студии или актеру мгновенно фильтрует каталог в Новинках
     function filterFeedByQuery(query) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
       searchInput.value = query;
@@ -968,9 +947,7 @@
       fetchMovies(true);
     }
 
-    // ----------------------------------------------------
-    // ОКНО РУЛЕТКИ (СЛУЧАЙНЫЙ ФИЛЬМ)
-    // ----------------------------------------------------
+    // Рулетка
     async function spinRoulette() {
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
       if (tg?.BackButton) tg.BackButton.show();
@@ -1014,9 +991,7 @@
       if (tg?.BackButton) tg.BackButton.hide();
     }
 
-    // ----------------------------------------------------
-    // ЗАГРУЗКА И СЕТКА ФИЛЬМОВ
-    // ----------------------------------------------------
+    // Загрузка новинок
     async function fetchMovies(isReset = false) {
       if (isLoading || (!hasMore && !isReset)) return;
       isLoading = true;
@@ -1118,7 +1093,7 @@
       fetchMovies(true);
     }
 
-    // Бесконечный скролл
+    // Скролл
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !isLoading && hasMore && currentTab === 'feed') {
         fetchMovies();
@@ -1127,7 +1102,7 @@
 
     observer.observe(document.getElementById('scroll-sentinel'));
 
-    // Шторка с деталями
+    // Шторка
     function showMovieDetails(m) {
       activeMovie = m;
       if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
@@ -1170,7 +1145,6 @@
       }
     }
 
-    // Старт
     updateFavCounter();
     fetchMovies();
   </script>
