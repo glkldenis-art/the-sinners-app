@@ -40,7 +40,6 @@
       overflow-x: hidden;
     }
 
-    /* Верхняя закрепленная шапка */
     .sticky-header {
       position: sticky;
       top: 0;
@@ -160,7 +159,6 @@
       cursor: pointer;
     }
 
-    /* Общие стили SVG иконок */
     .btn-svg {
       width: 15px;
       height: 15px;
@@ -196,7 +194,6 @@
       margin-right: 6px;
     }
 
-    /* Векторный перчик */
     .pepper-svg {
       width: 18px;
       height: 18px;
@@ -220,7 +217,6 @@
       transform: scale(1.15);
     }
 
-    /* 1. ГЛАВНАЯ ВИТРИНА (НОВИНКИ) */
     .hero-banner {
       background: radial-gradient(circle at 85% 20%, rgba(229, 9, 20, 0.28) 0%, transparent 60%),
                   linear-gradient(145deg, #221217 0%, #141318 55%, #0e0e12 100%);
@@ -286,12 +282,22 @@
       font-weight: 900;
       line-height: 1.25;
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       letter-spacing: -0.3px;
+    }
+
+    .hero-alt-title {
+      font-size: 12px;
+      color: #a1a1aa;
+      font-style: italic;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .hero-meta {
@@ -521,7 +527,6 @@
       transform: scale(1.04);
     }
 
-    /* 2. КАРТОЧКИ ФИЛЬМОВ */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -659,7 +664,6 @@
       text-overflow: ellipsis;
     }
 
-    /* 3. ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK) */
     .bottom-nav {
       position: fixed;
       bottom: 12px;
@@ -745,7 +749,6 @@
       box-shadow: 0 2px 6px rgba(229, 9, 20, 0.5);
     }
 
-    /* 4. ШТОРКА ФИЛЬМА И РУЛЕТКА */
     .overlay {
       position: fixed;
       inset: 0;
@@ -794,8 +797,16 @@
       font-size: 19px;
       font-weight: 900;
       line-height: 1.3;
-      margin-bottom: 10px;
+      margin-bottom: 4px;
       letter-spacing: -0.3px;
+    }
+
+    .sheet-alt-title {
+      font-size: 13px;
+      color: #a1a1aa;
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.3;
     }
 
     .sheet-meta-row {
@@ -881,7 +892,6 @@
       box-shadow: 0 0 14px rgba(229, 9, 20, 0.5);
     }
 
-    /* Модалка Рулетки */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -990,7 +1000,6 @@
       cursor: pointer;
     }
 
-    /* Модалка выбора языка */
     .lang-item {
       display: flex;
       align-items: center;
@@ -1016,7 +1025,6 @@
       transform: scale(0.98);
     }
 
-    /* VIP Студии & Актёры */
     .studios-wrap, .actors-wrap {
       margin-top: 6px;
     }
@@ -1163,7 +1171,6 @@
       font-weight: 600;
     }
 
-    /* Франшизы */
     .franchise-section {
       margin-bottom: 18px;
     }
@@ -1195,7 +1202,7 @@
 
     .franchise-chip {
       min-width: 130px;
-      max-width: 180px;
+      max-width: 200px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -1208,8 +1215,13 @@
       justify-content: space-between;
     }
 
+    .franchise-chip.current-part {
+      border-color: var(--accent);
+      background: rgba(229, 9, 20, 0.15);
+    }
+
     .franchise-chip:active {
-      background: rgba(229, 9, 20, 0.18);
+      background: rgba(229, 9, 20, 0.25);
       border-color: var(--accent);
       transform: scale(0.97);
     }
@@ -1228,7 +1240,8 @@
 
     .franchise-chip-meta {
       font-size: 10px;
-      color: var(--subtext);
+      color: #fbbf24;
+      font-weight: 600;
     }
 
     .tab-view {
@@ -1341,7 +1354,7 @@
         id="search-input" 
         class="search-input" 
         type="text" 
-        placeholder="Search by title or studio..."
+        placeholder="Search by title, studio, actors..."
         autocomplete="off"
       >
       <button id="search-clear" class="search-clear" onclick="clearSearch()">✕</button>
@@ -1362,7 +1375,6 @@
             <span id="txt-hero-badge">Daily Pick</span>
           </span>
           <div id="hero-pepper-btn" class="hero-pepper" onclick="toggleHeroFavorite(event)">
-            <!-- Векторный перчик -->
             <svg class="pepper-svg" viewBox="0 0 24 24" fill="none">
               <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
               <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
@@ -1370,6 +1382,7 @@
           </div>
         </div>
         <div id="hero-title" class="hero-title">Loading daily pick...</div>
+        <div id="hero-alt-title" class="hero-alt-title" style="display:none;"></div>
         <div id="hero-meta" class="hero-meta"></div>
         <div class="hero-actions">
           <button class="hero-btn-watch" onclick="openHeroPost(event)">
@@ -1405,13 +1418,13 @@
       </div>
       <div class="country-chips-scroll" id="country-chips">
         <button class="country-chip active" id="chip-all-countries" onclick="filterByCountry('', this)">All Countries</button>
-        <button class="country-chip" onclick="filterByCountry('США', this)">🇺🇸 USA</button>
-        <button class="country-chip" onclick="filterByCountry('Чехия', this)">🇨🇿 Czechia</button>
-        <button class="country-chip" onclick="filterByCountry('Испания', this)">🇪🇸 Spain</button>
-        <button class="country-chip" onclick="filterByCountry('Германия', this)">🇩🇪 Germany</button>
-        <button class="country-chip" onclick="filterByCountry('Великобритания', this)">🇬🇧 UK</button>
-        <button class="country-chip" onclick="filterByCountry('Франция', this)">🇫🇷 France</button>
-        <button class="country-chip" onclick="filterByCountry('Бразилия', this)">🇧🇷 Brazil</button>
+        <button class="country-chip" onclick="filterByCountry('USA', this)">🇺🇸 USA</button>
+        <button class="country-chip" onclick="filterByCountry('Czech', this)">🇨🇿 Czechia</button>
+        <button class="country-chip" onclick="filterByCountry('UK', this)">🇬🇧 UK</button>
+        <button class="country-chip" onclick="filterByCountry('Germany', this)">🇩🇪 Germany</button>
+        <button class="country-chip" onclick="filterByCountry('France', this)">🇫🇷 France</button>
+        <button class="country-chip" onclick="filterByCountry('Netherlands', this)">🇳🇱 Netherlands</button>
+        <button class="country-chip" onclick="filterByCountry('Spain', this)">🇪🇸 Spain</button>
       </div>
 
       <!-- Заголовок основной сетки -->
@@ -1496,7 +1509,7 @@
     </div>
   </div>
 
-  <!-- ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ (FLOATING DOCK С SVG) -->
+  <!-- ПАРЯЩЕЕ НИЖНЕЕ МЕНЮ -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('feed')">
       <span class="nav-icon">
@@ -1555,14 +1568,16 @@
     </button>
   </nav>
 
-  <!-- Шторка фильма -->
+  <!-- Шторка фильма (со всеми 13 графами) -->
   <div id="sheet-overlay" class="overlay" onclick="closeSheet()">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
       <h2 id="sheet-title" class="sheet-title"></h2>
+      <div id="sheet-alt-title" class="sheet-alt-title" style="display:none;"></div>
       <div class="sheet-meta-row" id="sheet-meta"></div>
       <div class="sheet-actors" id="sheet-actors"></div>
       
+      <!-- Франшизы на базе franchise_key -->
       <div id="sheet-franchise" class="franchise-section" style="display: none;">
         <div class="franchise-title">
           <svg class="section-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -1601,6 +1616,7 @@
         <span id="txt-roulette-badge">Cinema Roulette</span>
       </div>
       <h2 id="roulette-title" class="modal-title">Selecting...</h2>
+      <div id="roulette-alt-title" class="hero-alt-title" style="display:none; color:#ddd;"></div>
       
       <div class="modal-meta" id="roulette-meta">
         Rolling roulette...
@@ -1632,7 +1648,7 @@
     </div>
   </div>
 
-  <!-- Модальное окно выбора языка -->
+  <!-- Модальное окно языка -->
   <div id="lang-modal" class="modal-overlay" onclick="closeLangModal()">
     <div class="modal-window" onclick="event.stopPropagation()" style="max-width:320px;">
       <button class="modal-close" onclick="closeLangModal()">✕</button>
@@ -1683,13 +1699,10 @@
       }
     }
 
-    // ====================================================
-    // СИСТЕМА ЛОКАЛИЗАЦИИ
-    // ====================================================
     const I18N = {
       en: {
         flag: "🇺🇸 EN",
-        searchPlaceholder: "Search by title or studio...",
+        searchPlaceholder: "Search title, studio, actors...",
         dailyPick: "Daily Pick",
         watch: "Watch in Channel",
         details: "Details ›",
@@ -1745,7 +1758,7 @@
       },
       es: {
         flag: "🇪🇸 ES",
-        searchPlaceholder: "Buscar por título o estudio...",
+        searchPlaceholder: "Buscar título, estudio, actores...",
         dailyPick: "Elección del día",
         watch: "Ver en el canal",
         details: "Detalles ›",
@@ -1801,7 +1814,7 @@
       },
       de: {
         flag: "🇩🇪 DE",
-        searchPlaceholder: "Nach Titel oder Studio suchen...",
+        searchPlaceholder: "Titel, Studio, Darsteller suchen...",
         dailyPick: "Tipp des Tages",
         watch: "Im Kanal ansehen",
         details: "Details ›",
@@ -1857,7 +1870,7 @@
       },
       fr: {
         flag: "🇫🇷 FR",
-        searchPlaceholder: "Rechercher par titre ou studio...",
+        searchPlaceholder: "Titre, studio, acteurs...",
         dailyPick: "Choix du jour",
         watch: "Regarder sur le canal",
         details: "Infos ›",
@@ -1913,7 +1926,7 @@
       },
       ru: {
         flag: "🇷🇺 RU",
-        searchPlaceholder: "Поиск по названию или студии...",
+        searchPlaceholder: "Поиск по названию, студии, актёрам...",
         dailyPick: "Выбор дня",
         watch: "Смотреть в канале",
         details: "Инфо ›",
@@ -2084,10 +2097,16 @@
     }
 
     // ====================================================
-    // СЕРВЕР И ДАННЫЕ
+    // СЕРВЕР И ДАННЫЕ (SUPABASE)
     // ====================================================
     const SUPABASE_URL = 'https://otcnrvimrqyppmfjnqpv.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_niMZLppQ5UZwkQWc6Pj29g_910mdIkQ';
+    
+    // Имя таблицы для быстрого переключения на movies_v2
+    const TABLE_NAME = 'movies';
+
+    // 13 колонок в запросе к БД
+    const SELECT_FIELDS = 'id,title,alternative_titles,studio,additional_studios,year,country,country_flag,duration,actors,franchise_key,franchise_order,telegram_url';
 
     const PAGE_SIZE = 24;
     let currentOffset = 0;
@@ -2125,6 +2144,7 @@
     }
 
     function getMonogram(name) {
+      if (!name) return 'TS';
       const parts = name.split(/\s+/).filter(Boolean);
       if (parts.length >= 2) {
         return (parts[0][0] + parts[1][0]).toUpperCase();
@@ -2315,7 +2335,7 @@
     // ====================================================
     async function loadFeedShowcase() {
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=20`, {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=${SELECT_FIELDS}&order=id.desc&limit=20`, {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         });
         const recents = await res.json();
@@ -2365,13 +2385,23 @@
       if (!m) return;
       const banner = document.getElementById('hero-banner');
       document.getElementById('hero-title').innerText = m.title || 'Movie';
+      
+      const altEl = document.getElementById('hero-alt-title');
+      if (m.alternative_titles) {
+        altEl.innerText = `AKA: ${m.alternative_titles}`;
+        altEl.style.display = 'block';
+      } else {
+        altEl.style.display = 'none';
+      }
 
       const meta = document.getElementById('hero-meta');
+      const studioDisplay = m.additional_studios ? `${m.studio} / ${m.additional_studios}` : m.studio;
+
       meta.innerHTML = `
         ${m.year ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>${m.year}</span>` : ''}
         ${m.duration ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${m.duration}</span>` : ''}
         ${m.country ? `<span class="hero-meta-item">${m.country_flag || ''} ${m.country}</span>` : ''}
-        ${m.studio ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="3"/></svg>${m.studio}</span>` : ''}
+        ${studioDisplay ? `<span class="hero-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="3"/></svg>${studioDisplay}</span>` : ''}
       `;
 
       const pep = document.getElementById('hero-pepper-btn');
@@ -2411,7 +2441,7 @@
     }
 
     // ====================================================
-    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ
+    // АЛФАВИТНЫЙ УКАЗАТЕЛЬ (СТУДИИ И АКТЕРЫ)
     // ====================================================
     function initAlphabet(type) {
       const container = document.getElementById(`${type}-alphabet`);
@@ -2446,7 +2476,8 @@
           const wrap = document.getElementById('studios-wrap');
           wrap.innerHTML = '';
 
-          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=studio&studio=not.is.null&studio=ilike.*${letter}*&limit=1000`;
+          // Опрашиваем studio и additional_studios
+          const endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=studio,additional_studios&or=(studio.ilike.*${letter}*,additional_studios.ilike.*${letter}*)&limit=1000`;
           const res = await fetch(endpoint, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
@@ -2456,8 +2487,8 @@
           const studioCounts = {};
 
           data.forEach(d => {
-            if (!d.studio) return;
-            const parts = d.studio.split(/[,/]/);
+            const rawStudios = [d.studio, d.additional_studios].filter(Boolean).join(', ');
+            const parts = rawStudios.split(/[,/]/);
             parts.forEach(p => {
               const name = p.trim();
               if (!name) return;
@@ -2471,11 +2502,6 @@
                 const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
                 if (!studiosMap.has(key)) {
                   studiosMap.set(key, name);
-                } else {
-                  const existing = studiosMap.get(key);
-                  if (name.includes(' ') && !existing.includes(' ')) {
-                    studiosMap.set(key, name);
-                  }
                 }
                 const canonicalName = studiosMap.get(key);
                 studioCounts[canonicalName] = (studioCounts[canonicalName] || 0) + 1;
@@ -2543,7 +2569,7 @@
           const wrap = document.getElementById('actors-wrap');
           wrap.innerHTML = '';
 
-          const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=actors&actors=not.is.null&actors=ilike.*${letter}*&limit=1000`;
+          const endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=actors&actors=not.is.null&actors=ilike.*${letter}*&limit=1000`;
           const res = await fetch(endpoint, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
           });
@@ -2574,11 +2600,6 @@
                 const key = name.replace(/[\s\-_]+/g, '').toLowerCase();
                 if (!actorsMap.has(key)) {
                   actorsMap.set(key, name);
-                } else {
-                  const existing = actorsMap.get(key);
-                  if (name.includes(' ') && !existing.includes(' ')) {
-                    actorsMap.set(key, name);
-                  }
                 }
                 const canonicalName = actorsMap.get(key);
                 actorCounts[canonicalName] = (actorCounts[canonicalName] || 0) + 1;
@@ -2658,44 +2679,8 @@
     }
 
     // ====================================================
-    // ЛОГИКА ФРАНШИЗ
+    // ЛОГИКА ФРАНШИЗ (ПО КЛЮЧУ FRANCHISE_KEY)
     // ====================================================
-    function getFranchiseRoot(title) {
-      if (!title) return null;
-      let t = title.trim().replace(/\s*\(\d{4}\)$/, '').trim();
-
-      const patterns = [
-        /[:\s-]+(?:part|vol|volume|ep|episode)\.?\s*([0-9ivx]+)$/i,
-        /[:\s-]+([0-9]+)$/i,
-        /\s+([ivx]+)$/i
-      ];
-      for (let p of patterns) {
-        const m = t.match(p);
-        if (m) {
-          const root = t.substring(0, m.index).trim();
-          if (root.length >= 3) {
-            return { query: `title=ilike.*${encodeURIComponent(root)}*`, root };
-          }
-        }
-      }
-
-      const delims = [' – ', ' - ', ' — ', ': '];
-      for (let d of delims) {
-        if (t.includes(d)) {
-          const prefix = t.split(d)[0].trim();
-          if (prefix.length >= 3 && prefix !== t) {
-            return { query: `title=ilike.*${encodeURIComponent(prefix)}*`, root: prefix };
-          }
-        }
-      }
-
-      if (t.length >= 4) {
-        return { query: `title=ilike.${encodeURIComponent(t)}%20*`, root: t };
-      }
-
-      return null;
-    }
-
     async function loadFranchiseParts(movie, containerType) {
       const container = document.getElementById(`${containerType}-franchise`);
       const listEl = document.getElementById(`${containerType}-franchise-list`);
@@ -2704,10 +2689,9 @@
       container.style.display = 'none';
       listEl.innerHTML = '';
 
-      const fInfo = getFranchiseRoot(movie.title);
-      if (!fInfo) return;
+      if (!movie.franchise_key) return;
 
-      const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&${fInfo.query}&id=neq.${movie.id}&order=year.asc,title.asc&limit=12`;
+      const endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=${SELECT_FIELDS}&franchise_key=eq.${encodeURIComponent(movie.franchise_key)}&order=year.asc,id.asc&limit=25`;
 
       try {
         const res = await fetch(endpoint, {
@@ -2715,18 +2699,23 @@
         });
         const parts = await res.json();
 
-        if (!parts || parts.length === 0) return;
+        if (!parts || parts.length <= 1) return;
 
         listEl.innerHTML = '';
         parts.forEach(part => {
+          const isCurrent = part.id === movie.id;
           const chip = document.createElement('div');
-          chip.className = 'franchise-chip';
+          chip.className = `franchise-chip ${isCurrent ? 'current-part' : ''}`;
+          
+          const orderLabel = part.franchise_order ? `ч. ${part.franchise_order}` : (part.year || '');
+
           chip.innerHTML = `
             <div class="franchise-chip-title">${part.title}</div>
-            <div class="franchise-chip-meta">${part.year || ''} ${part.duration ? '• ' + part.duration : ''}</div>
+            <div class="franchise-chip-meta">${orderLabel} ${part.duration ? '• ' + part.duration : ''} ${isCurrent ? '★' : ''}</div>
           `;
           chip.onclick = (e) => {
             e.stopPropagation();
+            if (isCurrent) return;
             if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
 
             if (containerType === 'sheet') {
@@ -2750,12 +2739,22 @@
     function updateRouletteUI(movie) {
       rouletteMovie = movie;
       const titleEl = document.getElementById('roulette-title');
+      const altEl = document.getElementById('roulette-alt-title');
       const metaEl = document.getElementById('roulette-meta');
 
       titleEl.innerText = movie.title || 'Movie';
+      if (movie.alternative_titles) {
+        altEl.innerText = `AKA: ${movie.alternative_titles}`;
+        altEl.style.display = 'block';
+      } else {
+        altEl.style.display = 'none';
+      }
+
+      const studioDisplay = movie.additional_studios ? `${movie.studio} / ${movie.additional_studios}` : movie.studio;
+
       metaEl.innerHTML = `
         <div><b>Year:</b> ${movie.year || '—'}</div>
-        <div><b>Studio:</b> ${movie.studio || 'The Sinners'}</div>
+        <div><b>Studio:</b> ${studioDisplay || 'The Sinners'}</div>
         ${movie.country ? `<div><b>Country:</b> ${movie.country_flag || ''} ${movie.country}</div>` : ''}
         ${movie.duration ? `<div><b>Duration:</b> ${movie.duration}</div>` : ''}
         ${movie.actors ? `<div style="margin-top:4px;"><b>${t('sheetStarring')}</b> ${movie.actors}</div>` : ''}
@@ -2779,7 +2778,7 @@
       metaEl.innerHTML = t('rouletteSelecting');
 
       const randomOffset = Math.floor(Math.random() * 500);
-      const endpoint = `${SUPABASE_URL}/rest/v1/movies?select=*&limit=1&offset=${randomOffset}`;
+      const endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=${SELECT_FIELDS}&limit=1&offset=${randomOffset}`;
 
       try {
         const res = await fetch(endpoint, {
@@ -2814,11 +2813,12 @@
         scrollStatus.innerText = t('loading');
       }
 
-      let endpoint = `${SUPABASE_URL}/rest/v1/movies?select=id,title,year,studio,country,country_flag,duration,actors,telegram_url&order=id.desc&limit=${PAGE_SIZE}&offset=${currentOffset}`;
+      let endpoint = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=${SELECT_FIELDS}&order=id.desc&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
       if (currentSearch.trim()) {
         const query = encodeURIComponent(`*${currentSearch.trim()}*`);
-        endpoint += `&or=(title.ilike.${query},studio.ilike.${query},actors.ilike.${query})`;
+        // Поиск по всем ключевым полям 13-колоночной базы
+        endpoint += `&or=(title.ilike.${query},alternative_titles.ilike.${query},studio.ilike.${query},additional_studios.ilike.${query},actors.ilike.${query},franchise_key.ilike.${query})`;
       }
 
       if (currentCountry) {
@@ -2934,12 +2934,22 @@
 
       document.getElementById('sheet-title').innerText = m.title || 'Untitled';
       
+      const altEl = document.getElementById('sheet-alt-title');
+      if (m.alternative_titles) {
+        altEl.innerText = `AKA: ${m.alternative_titles}`;
+        altEl.style.display = 'block';
+      } else {
+        altEl.style.display = 'none';
+      }
+
       const meta = document.getElementById('sheet-meta');
+      const studioDisplay = m.additional_studios ? `${m.studio} / ${m.additional_studios}` : m.studio;
+
       meta.innerHTML = `
         ${m.year ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>${m.year}</div>` : ''}
         ${m.duration ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${m.duration}</div>` : ''}
         ${m.country ? `<div class="sheet-meta-item">${m.country_flag || ''} ${m.country}</div>` : ''}
-        ${m.studio ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="3"/></svg>${m.studio}</div>` : ''}
+        ${studioDisplay ? `<div class="sheet-meta-item"><svg class="meta-svg" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="3"/></svg>${studioDisplay}</div>` : ''}
       `;
 
       const actorsEl = document.getElementById('sheet-actors');
@@ -2973,7 +2983,7 @@
       }
     }
 
-    // Старт
+    // Старт приложения
     applyLanguageUI();
     loadFeedShowcase();
     fetchMovies();
