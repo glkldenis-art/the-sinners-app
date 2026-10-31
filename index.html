@@ -2868,13 +2868,14 @@
 
       card.innerHTML = `
         <div class="poster-box">
-          <div class="card-pepper ${favClass}" data-pepper-id="${m.id}" onclick="toggleFavorite(${JSON.stringify(m).replace(/"/g, '&quot;')}, event)">
-            <svg class="pepper-svg" viewBox="0 0 24 24" fill="none">
-              <path d="M16 2.5c-.6 1.4-1.5 2.2-3 2.5" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
-              <path d="M13.8 5.2c-3.2 0-6 2.4-7 5.6-1.3 4.2.6 8.5 4 10.6 1.5.8 3.5.4 4.2-.9.8-1.8-.8-3.9-.8-5.7 0-2.3 1.8-4.2 1.8-6.4-.2-.8-.7-1.5-1.4-1.8z" fill="#e50914" stroke="#ff3b30" stroke-width="1.2" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <span class="card-year">${m.year || ''}</span>
+  ${m.poster_url ? `<img src="${m.poster_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" loading="lazy" alt="" onerror="this.remove();" />` : ''}
+  <div class="card-pepper ${favClass}" style="z-index:2;">
+    <svg class="pepper-svg" viewBox="0 0 24 24">
+      <path d="M16 2.5c-.6 1.4-1.5 2.5-2.8 2.5-1.5 0-2.2-.6-3.2-1.5-.7-.6-1.5-1.5-2.5-1.5-1.4 0-2.3 1-2.5 2.5-.2 1.3.4 2.8 1.4 4.2C8 11 10.5 13 12 14c1.5-1 4-3 5.6-5.3 1-1.4 1.6-2.9 1.4-4.2-.2-1.5-1.1-2.5-2.5-2.5z"/>
+      <path d="M13.8 5.2c-3.2 0-6 2.8-6 6.8 0 4.5 4.2 7.5 6 9.5 1.8-2 6-5 6-9.5 0-4-2.8-6.8-6-6.8z"/>
+    </svg>
+  </div>
+  <span class="card-year" style="z-index:2;">${m.year || ''}</span>
           <div class="poster-watermark">${mono}</div>
           <div>
             <svg class="poster-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
