@@ -2410,7 +2410,15 @@ card.innerHTML = `
       const pep = document.getElementById('hero-pepper-btn');
       pep.classList.toggle('active', isFav(m.id));
 
-      banner.style.display = 'block';
+        if (m.poster_url) {
+    banner.style.backgroundImage = `linear-gradient(180deg, rgba(14, 14, 18, 0.72) 0%, rgba(14, 14, 18, 0.94) 100%), url('${m.poster_url}')`;
+    banner.style.backgroundSize = 'cover';
+    banner.style.backgroundPosition = 'center';
+  } else {
+    banner.style.backgroundImage = '';
+  }
+  banner.style.display = 'block';
+
     }
 
     function openHeroDetails(e) {
