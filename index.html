@@ -2346,13 +2346,16 @@
         recents.forEach(m => {
           const card = document.createElement('div');
           card.className = 'carousel-card';
-          card.onclick = () => showMovieDetails(m);
+card.style.width = '175px';
+card.style.minWidth = '175px';
+card.onclick = () => showMovieDetails(m);
 
-          const mono = m.studio ? getMonogram(m.studio) : 'TS';
+const mono = m.studio ? getMonogram(m.studio) : '';
 
-          card.innerHTML = `
-            <div class="carousel-poster">
-              <span class="card-year">${m.year || ''}</span>
+card.innerHTML = `
+  <div class="carousel-poster" style="aspect-ratio: 3 / 2; position: relative; overflow: hidden; border-radius: 10px;">
+    ${m.poster_url ? `<img src="${m.poster_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" loading="lazy" alt="" onerror="this.remove();" />` : ''}
+    <span class="card-year" style="z-index:2;">${m.year || ''}</span>
               <div class="poster-watermark" style="font-size: 60px;">${mono}</div>
               <div>
                 <svg class="poster-icon-svg" style="width:24px;height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -2738,6 +2741,23 @@
     // ====================================================
     function updateRouletteUI(movie) {
       rouletteMovie = movie;
+        const rTitle = document.getElementById('roulette-title') || document.querySelector('.roulette-title');
+  let rPoster = document.getElementById('roulette-poster-img');
+  if (!rPoster && rTitle) {
+    rPoster = document.createElement('div');
+    rPoster.id = 'roulette-poster-img';
+    rPoster.style.cssText = 'width:100%; aspect-ratio:3/2; border-radius:12px; overflow:hidden; margin-bottom:12px; background:#18181b;';
+    rTitle.parentNode.insertBefore(rPoster, rTitle);
+  }
+  if (rPoster) {
+    if (movie.poster_url) {
+      rPoster.innerHTML = `<img src="${movie.poster_url}" style="width:100%; height:100%; object-fit:cover; display:block;" alt="" onerror="this.parentElement.style.display='none';" />`;
+      rPoster.style.display = 'block';
+    } else {
+      rPoster.style.display = 'none';
+    }
+  }
+
       const titleEl = document.getElementById('roulette-title');
       const altEl = document.getElementById('roulette-alt-title');
       const metaEl = document.getElementById('roulette-meta');
@@ -2934,7 +2954,23 @@
       if (tg?.BackButton) tg.BackButton.show();
 
       document.getElementById('sheet-title').innerText = m.title || 'Untitled';
-      
+        const sTitle = document.getElementById('sheet-title');
+  let sPoster = document.getElementById('sheet-poster-img');
+  if (!sPoster && sTitle) {
+    sPoster = document.createElement('div');
+    sPoster.id = 'sheet-poster-img';
+    sPoster.style.cssText = 'width:100%; aspect-ratio:3/2; border-radius:12px; overflow:hidden; margin-bottom:14px; background:#18181b;';
+    sTitle.parentNode.insertBefore(sPoster, sTitle);
+  }
+  if (sPoster) {
+    if (m.poster_url) {
+      sPoster.innerHTML = `<img src="${m.poster_url}" style="width:100%; height:100%; object-fit:cover; display:block;" alt="" onerror="this.parentElement.style.display='none';" />`;
+      sPoster.style.display = 'block';
+    } else {
+      sPoster.style.display = 'none';
+    }
+  }
+
       const altEl = document.getElementById('sheet-alt-title');
       if (m.alternative_titles) {
         altEl.innerText = `AKA: ${m.alternative_titles}`;
