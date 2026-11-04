@@ -404,7 +404,11 @@ function setLanguage(lang) {
   applyLanguageUI();
   closeLangModal();
 
-  if (currentTab === 'studios') {
+  if (currentTab === 'feed') {
+    statusBadge.innerText = currentSearch || currentCountry 
+      ? t('moviesCount', { count: currentOffset }) 
+      : t('moviesCount', { count: totalMoviesCount });
+  } else if (currentTab === 'studios') {
     loadAlphabetData('studios', selectedStudioLetter);
   } else if (currentTab === 'actors') {
     loadAlphabetData('actors', selectedActorLetter);
@@ -434,6 +438,9 @@ let currentTab = 'feed';
 let currentMediaSubTab = 'favs';
 let selectedStudioLetter = 'A';
 let selectedActorLetter = 'A';
+
+// Общий размер архива из базы данных
+let totalMoviesCount = '500+';
 
 // Голоса и Свайп-лента
 const votesData = {};
@@ -477,6 +484,32 @@ const searchInput = document.getElementById('search-input');
 const searchClear = document.getElementById('search-clear');
 const favCounter = document.getElementById('fav-counter');
 const feedShowcase = document.getElementById('feed-showcase');
+
+async function loadTotalMoviesCount() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=id`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Range': '0-0',
+        'Prefer': 'count=exact'
+      }
+    });
+    const cr = res.headers.get('content-range');
+    if (cr && cr.includes('/')) {
+      const total = cr.split('/')[1];
+      if (total && total !== '*') {
+        totalMoviesCount = total;
+      }
+    }
+  } catch (e) {
+    console.error("Count fetch error:", e);
+  }
+
+  if (currentTab === 'feed' && !currentSearch && !currentCountry) {
+    statusBadge.innerText = t('moviesCount', { count: totalMoviesCount });
+  }
+}
 
 function updateFavCounter() {
   if (favorites.length > 0) {
@@ -572,7 +605,9 @@ function switchTab(tab) {
   if (tab === 'favorites') {
     switchMediaSubTab(currentMediaSubTab);
   } else if (tab === 'feed') {
-    statusBadge.innerText = t('moviesCount', { count: currentOffset });
+    statusBadge.innerText = currentSearch || currentCountry 
+      ? t('moviesCount', { count: currentOffset }) 
+      : t('moviesCount', { count: totalMoviesCount });
   } else if (tab === 'studios') {
     initAlphabet('studios');
   } else if (tab === 'actors') {
@@ -1471,7 +1506,12 @@ async function fetchMovies(isReset = false) {
     movies.forEach(m => grid.appendChild(createCardElement(m)));
     currentOffset += movies.length;
 
-    statusBadge.innerText = t('moviesCount', { count: currentOffset });
+    if (currentSearch || currentCountry) {
+      statusBadge.innerText = t('moviesCount', { count: currentOffset });
+    } else {
+      statusBadge.innerText = t('moviesCount', { count: totalMoviesCount });
+    }
+
     scrollStatus.innerText = hasMore ? t('scrollMore') : t('archiveEnd');
 
   } catch (err) {
@@ -1625,5 +1665,6 @@ function openChannelPost(movie) {
 
 // Старт приложения
 applyLanguageUI();
+loadTotalMoviesCount();
 loadFeedShowcase();
 fetchMovies();
