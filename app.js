@@ -485,6 +485,32 @@ const searchClear = document.getElementById('search-clear');
 const favCounter = document.getElementById('fav-counter');
 const feedShowcase = document.getElementById('feed-showcase');
 
+async function registerUserVisit() {
+  const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+  if (!user || !user.id) return;
+
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/app_users`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({
+        telegram_id: user.id,
+        username: user.username || null,
+        first_name: user.first_name || null,
+        language_code: user.language_code || null,
+        last_seen: new Date().toISOString()
+      })
+    });
+  } catch (e) {
+    console.error("Ошибка аналитики визита:", e);
+  }
+}
+
 async function loadTotalMoviesCount() {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=id`, {
@@ -1665,6 +1691,7 @@ function openChannelPost(movie) {
 
 // Старт приложения
 applyLanguageUI();
+registerUserVisit();
 loadTotalMoviesCount();
 loadFeedShowcase();
 fetchMovies();
